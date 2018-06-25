@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.DrawableTypeRequest;
-import com.bumptech.glide.Glide;
 import com.anjian.R;
 import com.anjian.base.slide.SlideBackActivity;
 import com.anjian.databinding.WidgetLayoutEmptyBinding;
@@ -21,6 +19,9 @@ import com.anjian.net.RetryWithDelayFunction;
 import com.anjian.net.ex.ApiException;
 import com.anjian.net.ex.ResultException;
 import com.anjian.widget.TitleBarLayout;
+import com.bumptech.glide.DrawableTypeRequest;
+import com.bumptech.glide.Glide;
+import com.lm.base.library.common.LoadingDialog;
 import com.zhy.autolayout.AutoFrameLayout;
 import com.zhy.autolayout.AutoLinearLayout;
 
@@ -33,7 +34,6 @@ import java.net.SocketTimeoutException;
 import io.reactivex.FlowableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import com.lm.base.library.common.LoadingDialog;
 import retrofit2.HttpException;
 
 
@@ -162,7 +162,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
      * @return
      */
     protected boolean isTitleBar() {
-        return true;
+        return false;
     }
 
     /**

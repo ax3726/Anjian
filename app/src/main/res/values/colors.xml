@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#A9092B</color>
-    <color name="colorPrimaryDark">#A9092B</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#ffffff</color>
+    <color name="colorAccent">#1F88CA</color>
+    <color name="colorTheme">#1F88CA</color>
     <color name="click_bg">#45000000</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorBackground">#f8f8f8</color>
+    <color name="colord9d9d9">#d9d9d9</color>
+    <color name="color3e3e3e">#3e3e3e</color>
+    <color name="color4a4a4a">#4a4a4a</color>
+    <color name="colorLine">#EDEDED</color>
     <color name="colorcccccc">#cccccc</color>
+    <color name="color999999">#999999</color>
     <!-- Android standard ICS color -->
     <!-- Android standard ICS color -->
     <!-- Android standard ICS color -->

@@ -1,8 +1,5 @@
 package com.anjian.ui.main;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import com.anjian.R;
 import com.anjian.base.BaseActivity;
 import com.anjian.base.BasePresenter;
@@ -23,7 +20,7 @@ public class WelcomeActivity extends BaseActivity<BasePresenter, ActivityWelcome
                     e.printStackTrace();
                 }
 
-                startActivity(MainActivity.class);
+                startActivity(LoginActivity.class);
                 finish();
             }
         }.start();

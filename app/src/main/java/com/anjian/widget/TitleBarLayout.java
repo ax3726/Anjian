@@ -5,18 +5,18 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anjian.R;
 import com.anjian.databinding.ComonTarbarLayoutBinding;
+import com.zhy.autolayout.AutoLinearLayout;
 
 
 /**
  * Created by Administrator on 2017/11/22 0022.
  */
 
-public class TitleBarLayout extends LinearLayout {
+public class TitleBarLayout extends AutoLinearLayout {
     private Context mContext = null;
     private ComonTarbarLayoutBinding mBinding;
 

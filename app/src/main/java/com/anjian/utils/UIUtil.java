@@ -36,7 +36,7 @@ public class UIUtil {
                 .doOnSubscribe(() -> {
                     textView.setEnabled(false);//在发送数据的时候设置为不能点击
                    // textView.setBackgroundResource(R.drawable.shape_code_disable);//背景色设为灰色
-                    textView.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    textView.setTextColor(context.getResources().getColor(R.color.colorTheme));
                 })
 
                 .observeOn(AndroidSchedulers.mainThread())//操作UI主要在UI线程
@@ -45,7 +45,7 @@ public class UIUtil {
                     public void onCompleted() {
                         textView.setEnabled(true);
                         textView.setText("获取验证码");//数据发送完后设置为原来的文字
-                        textView.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                        textView.setTextColor(context.getResources().getColor(R.color.colorTheme));
                        // textView.setBackgroundResource(R.drawable.shape_code_enable);//数据发送完后设置为原来背景色
                     }
 
@@ -54,7 +54,7 @@ public class UIUtil {
                         e.printStackTrace();
                         textView.setEnabled(true);
                         textView.setText("获取验证码");//数据发送完后设置为原来的文字
-                        textView.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                        textView.setTextColor(context.getResources().getColor(R.color.colorTheme));
                         //textView.setBackgroundResource(R.drawable.shape_code_enable);//数据发送完后设置为原来背景色
                     }
 
@@ -62,7 +62,7 @@ public class UIUtil {
                     public void onNext(Long aLong) { //接受到一条就是会操作一次UI
                         textView.setText(aLong + "秒");
                         textView.setEnabled(false);
-                        textView.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                        textView.setTextColor(context.getResources().getColor(R.color.colorTheme));
                     }
                 });
     }

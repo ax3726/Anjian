@@ -31,19 +31,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
         <!-- AUTO LAYOUT -->
         <meta-data
             android:name="design_width"
-            android:value="760" />
+            android:value="375" />
         <meta-data
             android:name="design_height"
-            android:value="1280" />
+            android:value="667" />
 
         <activity
             android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.main.WelcomeActivity"
             android:screenOrientation="portrait"
@@ -54,7 +52,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".ui.main.LoginActivity"></activity>
     </application>
 
 </manifest>
