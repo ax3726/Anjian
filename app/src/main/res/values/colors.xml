@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#A9092B</color>
+    <color name="colorPrimaryDark">#A9092B</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="click_bg">#45000000</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorcccccc">#cccccc</color>
+    <!-- Android standard ICS color -->
+    <!-- Android standard ICS color -->
+    <!-- Android standard ICS color -->
+
+    <color name="colore969292">#969292</color>
+</resources>
