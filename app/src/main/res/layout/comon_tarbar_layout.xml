@@ -1,14 +1,12 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"
-        android:paddingTop="@dimen/head_top"
         android:orientation="vertical"
-       >
+        android:paddingTop="@dimen/head_top">
 
 
         <LinearLayout
@@ -38,7 +36,7 @@
                 android:gravity="center"
                 android:text="标题"
                 android:textColor="@color/colord2b2b2b"
-                android:textSize="13sp" />
+                android:textSize="16dp" />
 
             <LinearLayout
                 android:id="@+id/lly_right"
@@ -52,10 +50,7 @@
                     android:id="@+id/img_right"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:paddingLeft="13dp"
-                    android:paddingRight="13dp"
-                    android:paddingTop="15dp"
+                    android:layout_gravity="center_vertical"
 
                     android:visibility="gone" />
 
@@ -92,8 +87,7 @@
             android:id="@+id/v_xian"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/colorLine"
-            />
+            android:background="@color/colorLine" />
     </LinearLayout>
 
 </layout>
