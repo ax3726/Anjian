@@ -34,5 +34,6 @@ public class LoginActivity extends BaseActivity<BasePresenter, ActivityLoginBind
                 finish();
             }
         });
+
     }
 }

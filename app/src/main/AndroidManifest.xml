@@ -52,7 +52,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.LoginActivity"></activity>
+        <activity android:name=".ui.main.LoginActivity" />
+        <activity android:name=".ui.record.SearchActivity" />
+        <activity android:name=".ui.record.AddQiyeActivity" />
+        <activity android:name=".ui.record.AddSanXiaoActivity" />
+        <activity android:name=".ui.record.QiYeActivity" />
+        <activity android:name=".ui.record.SanXiaoActivity" />
+        <activity android:name=".ui.record.FengXianActivity" />
+        <activity android:name=".ui.record.AddFengXianActivity" />
+        <activity android:name=".ui.record.AutographActivity"
+            android:screenOrientation="landscape"
+            ></activity>
     </application>
 
 </manifest>

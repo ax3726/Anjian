@@ -112,22 +112,5 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
         }
         currentFragmentPosition = position;
     }
-  /*  public void save(View view)
-    {
-        if (mBinding.lvQianming.getTouched()) {
-            try {
-                mBinding.lvQianming.save(MyApplication.getBase_Path()+ "/test.png" , true, 10);
-                mBinding.lvQianming.clear();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            showToast("您没有签名~");
-        }
-    }
 
-    public void clear(View view)
-    {
-        mBinding.lvQianming.clear();
-    }*/
 }
