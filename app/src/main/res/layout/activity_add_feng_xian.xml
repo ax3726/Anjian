@@ -3,9 +3,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-    android:background="@color/colorBackground"
-        android:scrollbars="none"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        android:scrollbars="none">
 
         <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/lly_body"
@@ -44,7 +44,6 @@
             </com.zhy.autolayout.AutoFrameLayout>
 
 
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
@@ -60,6 +59,7 @@
                 android:paddingRight="15px">
 
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="风险点名称"
@@ -67,12 +67,14 @@
                     android:textSize="16px" />
 
                 <EditText
+                    android:id="@+id/et_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
+                    android:layoutDirection="rtl"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
                     android:textSize="14px" />
@@ -99,22 +101,26 @@
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
-                <EditText
+                <TextView
+                    android:id="@+id/tv_address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
+                    android:layoutDirection="rtl"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
                     android:textSize="14px" />
 
             </com.zhy.autolayout.AutoLinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/colorLine" />
+
             <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48px"
@@ -143,11 +149,12 @@
 
                 <ImageView
                     android:layout_width="5px"
+                    android:layout_height="10px"
                     android:layout_marginLeft="8px"
-                    android:src="@drawable/record_right_icon"
-                    android:layout_height="10px" />
+                    android:src="@drawable/record_right_icon" />
 
             </com.zhy.autolayout.AutoLinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
@@ -164,11 +171,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="易引发事的故类型："
+                    android:text="易引发事故的类型："
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
-                <EditText
+                <TextView
+                    android:id="@+id/tv_shigu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -185,6 +193,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/colorLine" />
+
             <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48px"
@@ -200,7 +209,8 @@
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
-                <EditText
+                <TextView
+                    android:id="@+id/tv_suoshi"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -217,6 +227,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/colorLine" />
+
             <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48px"
@@ -232,7 +243,8 @@
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
-                <EditText
+                <TextView
+                    android:id="@+id/tv_zhengai"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -244,8 +256,6 @@
                     android:textSize="14px" />
 
             </com.zhy.autolayout.AutoLinearLayout>
-
-
 
 
         </com.zhy.autolayout.AutoLinearLayout>

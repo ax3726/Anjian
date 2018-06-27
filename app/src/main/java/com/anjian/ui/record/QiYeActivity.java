@@ -49,6 +49,7 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
             case R.id.img_xianchang:
                 break;
             case R.id.img_jiaoliu:
+                startActivity(JiaoLiuActivity.class);
                 break;
             case R.id.img_fengxian:
                 startActivity(FengXianActivity.class);
@@ -57,8 +58,10 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
                 startActivity(WeiHuaActivity.class);
                 break;
             case R.id.img_tezhong:
+                startActivity(TeZhongActivity.class);
                 break;
             case R.id.img_xiaofang:
+                startActivity(XiaoFangActivity.class);
                 break;
         }
     }

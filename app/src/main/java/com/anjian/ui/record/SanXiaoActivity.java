@@ -45,7 +45,7 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
             case R.id.img_xianchang:
                 break;
             case R.id.img_yanlian:
-                startActivity(AddYanLianActivity.class);
+                startActivity(YanLianActivity.class);
                 break;
 
         }

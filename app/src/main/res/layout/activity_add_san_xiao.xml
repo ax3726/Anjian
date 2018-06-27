@@ -97,6 +97,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layoutDirection="rtl"
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
@@ -133,6 +134,7 @@
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
+                    android:layoutDirection="rtl"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
                     android:textSize="14px" />
@@ -205,6 +207,7 @@
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
+                    android:layoutDirection="rtl"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
                     android:textSize="14px" />
@@ -238,6 +241,7 @@
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
+                    android:layoutDirection="rtl"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
                     android:textSize="14px" />
@@ -271,6 +275,7 @@
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
+                    android:layoutDirection="rtl"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
                     android:textSize="14px" />
@@ -304,6 +309,7 @@
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
+                    android:layoutDirection="rtl"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
                     android:textSize="14px" />
@@ -337,6 +343,7 @@
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="right"
+                    android:layoutDirection="rtl"
                     android:hint="点击输入"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
