@@ -298,6 +298,7 @@
                     android:textSize="16px" />
 
                 <TextView
+                    android:id="@+id/tv_guimo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -337,6 +338,7 @@
                     android:textSize="16px" />
 
                 <TextView
+                    android:id="@+id/tv_hangye"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

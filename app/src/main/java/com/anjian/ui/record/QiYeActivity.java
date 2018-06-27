@@ -1,8 +1,5 @@
 package com.anjian.ui.record;
 
-import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 
 import com.anjian.R;
@@ -47,6 +44,7 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
                 startActivity(AddQiyeActivity.class);
                 break;
             case R.id.img_xianchang:
+                startActivity(QiYeCheckActivity.class);
                 break;
             case R.id.img_jiaoliu:
                 startActivity(JiaoLiuActivity.class);

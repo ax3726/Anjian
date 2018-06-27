@@ -14,60 +14,6 @@
             android:background="@color/colorWhite"
             android:orientation="vertical">
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="13px"
-                android:layout_marginTop="13px"
-                android:background="@color/colorWhite"
-                android:gravity="center"
-                android:hint="企业名称"
-                android:textColor="@color/colord2b2b2b"
-                android:textColorHint="@color/colord9d9d9"
-                android:textSize="18px" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-
-                android:background="@color/colorLine" />
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="48px"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="15px"
-                android:paddingRight="15px">
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="会议名称"
-                    android:textColor="@color/color4a4a4a"
-                    android:textSize="16px" />
-
-                <EditText
-                    android:id="@+id/et_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/colorWhite"
-                    android:gravity="right"
-                    android:hint="点击输入"
-                    android:layoutDirection="rtl"
-                    android:textColor="@color/color4a4a4a"
-                    android:textColorHint="@color/colord9d9d9"
-                    android:textSize="14px" />
-
-            </com.zhy.autolayout.AutoLinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/colorLine" />
-
             <com.zhy.autolayout.AutoFrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="170px"
@@ -84,7 +30,7 @@
                     android:drawablePadding="15px"
                     android:drawableTop="@drawable/record_add_img_icon"
                     android:gravity="center_horizontal"
-                    android:text="点击添加照片"
+                    android:text="点击添加隐患照片"
                     android:textColor="@color/color4a4a4a"
                     android:textSize="14px" />
 
@@ -113,29 +59,26 @@
                 android:paddingRight="15px">
 
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="参会人员"
+                    android:text="隐患描述"
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
                 <TextView
-                    android:id="@+id/tv_people"
+                    android:id="@+id/tv_yinhuan"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
-                    android:layoutDirection="rtl"
                     android:singleLine="true"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
                     android:textSize="14px" />
 
             </com.zhy.autolayout.AutoLinearLayout>
-
 
             <View
                 android:layout_width="match_parent"
@@ -151,22 +94,56 @@
                 android:paddingRight="15px">
 
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="会议内容"
+                    android:text="整改措施"
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
                 <TextView
-                    android:id="@+id/tv_content"
+                    android:id="@+id/tv_cuoshi"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
-                    android:layoutDirection="rtl"
+                    android:singleLine="true"
+                    android:textColor="@color/color4a4a4a"
+                    android:textColorHint="@color/colord9d9d9"
+                    android:textSize="14px" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/colorLine" />
+
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48px"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15px"
+                android:paddingRight="15px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="法律依据："
+                    android:textColor="@color/color4a4a4a"
+                    android:textSize="16px" />
+
+                <TextView
+                    android:id="@+id/tv_falv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite"
+                    android:gravity="right"
+                    android:hint="点击输入"
                     android:singleLine="true"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"

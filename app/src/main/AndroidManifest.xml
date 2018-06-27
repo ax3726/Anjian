@@ -17,15 +17,14 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:name=".common.MyApplication"
-        android:allowBackup="true"
+
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -68,6 +67,12 @@
         <activity android:name=".ui.record.XiaoFangActivity" />
         <activity android:name=".ui.record.TeZhongActivity" />
         <activity android:name=".ui.record.AddJiaoLiuActivity" />
+        <activity android:name=".ui.record.QiYeCheckActivity" />
+        <activity android:name=".ui.record.SanXiaoCheckActivity" />
+        <activity android:name=".ui.record.SanXiaoCheckInfoActivity" />
+        <activity android:name=".ui.record.AddSanXiaoCheckActivity" />
+        <activity android:name=".ui.record.QiYeCheckInfoActivity" />
+        <activity android:name=".ui.record.AddQiyeCheckActivity" />
         <activity
             android:name=".ui.record.AutographActivity"
             android:screenOrientation="landscape" />

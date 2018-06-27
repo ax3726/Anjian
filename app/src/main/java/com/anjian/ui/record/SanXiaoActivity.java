@@ -1,13 +1,10 @@
 package com.anjian.ui.record;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 
 import com.anjian.R;
 import com.anjian.base.BaseActivity;
 import com.anjian.base.BasePresenter;
-import com.anjian.databinding.ActivityQiYeBinding;
 import com.anjian.databinding.ActivitySanXiaoBinding;
 
 public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiaoBinding> implements View.OnClickListener {
@@ -43,6 +40,7 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
                 startActivity(AddSanXiaoActivity.class);
                 break;
             case R.id.img_xianchang:
+                startActivity(SanXiaoCheckActivity.class);
                 break;
             case R.id.img_yanlian:
                 startActivity(YanLianActivity.class);
