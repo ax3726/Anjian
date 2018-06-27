@@ -50,7 +50,7 @@ public class JiaoLiuActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(AddYanLianActivity.class);
+                startActivity(AddJiaoLiuActivity.class);
             }
         });
     }

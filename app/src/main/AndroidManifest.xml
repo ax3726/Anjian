@@ -67,6 +67,7 @@
         <activity android:name=".ui.record.JiaoLiuActivity" />
         <activity android:name=".ui.record.XiaoFangActivity" />
         <activity android:name=".ui.record.TeZhongActivity" />
+        <activity android:name=".ui.record.AddJiaoLiuActivity" />
         <activity
             android:name=".ui.record.AutographActivity"
             android:screenOrientation="landscape" />
