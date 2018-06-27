@@ -44,7 +44,7 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_xiugai:
-                startActivity(AutographActivity.class);
+                startActivity(AddQiyeActivity.class);
                 break;
             case R.id.img_xianchang:
                 break;
@@ -54,6 +54,7 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
                 startActivity(FengXianActivity.class);
                 break;
             case R.id.img_weihua:
+                startActivity(WeiHuaActivity.class);
                 break;
             case R.id.img_tezhong:
                 break;

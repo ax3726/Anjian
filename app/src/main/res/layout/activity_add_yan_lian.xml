@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ScrollView
+        android:layout_width="match_parent"
+    android:background="@color/colorBackground"
+        android:scrollbars="none"
+        android:layout_height="match_parent">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/lly_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+
+            <com.zhy.autolayout.AutoFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="170px"
+                android:layout_marginLeft="15px"
+                android:layout_marginRight="15px"
+                android:layout_marginTop="11px"
+                android:background="@drawable/record_img_bg_icon">
+
+                <TextView
+                    android:id="@+id/tv_add_timg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:drawablePadding="15px"
+                    android:drawableTop="@drawable/record_add_img_icon"
+                    android:gravity="center_horizontal"
+                    android:text="点击拍摄演练照片"
+                    android:textColor="@color/color4a4a4a"
+                    android:textSize="14px" />
+
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+            </com.zhy.autolayout.AutoFrameLayout>
+
+
+            <com.zhy.autolayout.AutoFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="170px"
+                android:layout_marginLeft="15px"
+                android:layout_marginRight="15px"
+                android:layout_marginTop="11px"
+                android:background="@drawable/record_img_bg_icon">
+
+                <TextView
+                    android:id="@+id/tv_add_timg1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:drawablePadding="15px"
+                    android:drawableTop="@drawable/record_add_img_icon"
+                    android:gravity="center_horizontal"
+                    android:text="点击拍摄演练照片"
+                    android:textColor="@color/color4a4a4a"
+                    android:textSize="14px" />
+
+
+                <ImageView
+                    android:id="@+id/img1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+            </com.zhy.autolayout.AutoFrameLayout>
+
+
+
+
+
+
+
+        </com.zhy.autolayout.AutoLinearLayout>
+    </ScrollView>
+</layout>

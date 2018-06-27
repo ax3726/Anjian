@@ -40,10 +40,12 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_xiugai:
+                startActivity(AddSanXiaoActivity.class);
                 break;
             case R.id.img_xianchang:
                 break;
             case R.id.img_yanlian:
+                startActivity(AddYanLianActivity.class);
                 break;
 
         }

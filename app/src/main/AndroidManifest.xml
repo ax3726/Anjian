@@ -60,9 +60,13 @@
         <activity android:name=".ui.record.SanXiaoActivity" />
         <activity android:name=".ui.record.FengXianActivity" />
         <activity android:name=".ui.record.AddFengXianActivity" />
-        <activity android:name=".ui.record.AutographActivity"
-            android:screenOrientation="landscape"
-            ></activity>
+        <activity android:name=".ui.record.AddYanLianActivity" />
+        <activity android:name=".ui.record.AddWeiHuaActivity" />
+        <activity android:name=".ui.record.WeiHuaActivity" />
+        <activity
+            android:name=".ui.record.AutographActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".ui.record.EditActivity"></activity>
     </application>
 
 </manifest>

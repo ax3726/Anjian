@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:id="@+id/lly_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/et_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="11px"
+            android:paddingBottom="11px"
+            android:paddingRight="15px"
+            android:paddingLeft="15px"
+            android:hint="请输入"
+            android:gravity="left"
+            android:textColor="@color/color4a4a4a"
+            android:textSize="14px"
+            android:lineSpacingExtra="4px"
+            android:textColorHint="@color/colord9d9d9"
+            android:background="@color/colorWhite"
+            android:minHeight="222px"
+            />
+
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>
