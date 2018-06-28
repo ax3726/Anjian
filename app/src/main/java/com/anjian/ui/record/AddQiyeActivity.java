@@ -1,17 +1,32 @@
 package com.anjian.ui.record;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import com.anjian.R;
 import com.anjian.base.BaseActivity;
+import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
+import com.anjian.common.Api;
+import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddQiyeBinding;
+import com.anjian.model.BaseBean;
+import com.anjian.model.record.SysAreaModel;
+import com.anjian.model.request.AddQiYeRequset;
+import com.anjian.ui.common.PhotoActivity;
+import com.anjian.utils.DemoUtils;
+import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
+import com.bumptech.glide.Glide;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.qqtheme.framework.picker.OptionPicker;
 
-public class AddQiyeActivity extends BaseActivity<BasePresenter,ActivityAddQiyeBinding> implements View.OnClickListener{
+public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiyeBinding> implements View.OnClickListener {
 
-
+    private String mImgHead="";//门头照片
     @Override
     protected boolean isPrestener() {
         return false;
@@ -42,7 +57,7 @@ public class AddQiyeActivity extends BaseActivity<BasePresenter,ActivityAddQiyeB
         mTitleBarLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                submitMessage();
             }
         });
     }
@@ -50,17 +65,24 @@ public class AddQiyeActivity extends BaseActivity<BasePresenter,ActivityAddQiyeB
     @Override
     protected void initEvent() {
         super.initEvent();
+        mBinding.tvJiedao.setOnClickListener(this);
         mBinding.tvGuimo.setOnClickListener(this);
         mBinding.tvHangye.setOnClickListener(this);
+        mBinding.flyImgTou.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_jiedao://街道
+                selectJieDao();
+
+                break;
             case R.id.tv_guimo://企业规模
                 OptionPicker picker = new OptionPicker(this, new String[]{
-                        "上规企业", "下规企业"
+                        "上规企业", "小微企业", "三小场所"
                 });
+
                 picker.setOffset(2);
                 picker.setSelectedIndex(1);
                 picker.setTextSize(16);
@@ -88,6 +110,144 @@ public class AddQiyeActivity extends BaseActivity<BasePresenter,ActivityAddQiyeB
                 });
                 picker1.show();
                 break;
+            case R.id.fly_img_tou:
+                SelectPhotopopuwindow selectPhotopopuwindow = new SelectPhotopopuwindow(aty);
+                selectPhotopopuwindow.setSelectPhotoListener(new SelectPhotopopuwindow.SelectPhotoListener() {
+                    @Override
+                    public void onAlbum() {
+                        pickphoto();
+                    }
+
+                    @Override
+                    public void onCamera() {
+                        doPhoto();
+                    }
+                });
+                selectPhotopopuwindow.showPopupWindow();
+                break;
         }
+    }
+
+    private void submitMessage() {
+        String name = mBinding.etName.getText().toString().trim();
+        String jiedao = mBinding.tvJiedao.getText().toString().trim();
+        String zhizhao = mBinding.etZhizhao.getText().toString().trim();
+        String ContactsName = mBinding.etContactsName.getText().toString().trim();
+        String ContactsPhone = mBinding.etContactsPhone.getText().toString().trim();
+        String Mail = mBinding.etMail.getText().toString().trim();
+        String Guimo = mBinding.tvGuimo.getText().toString().trim();
+        String Hangye = mBinding.tvHangye.getText().toString().trim();
+        String Mianji = mBinding.etMianji.getText().toString().trim();
+        String Num = mBinding.etNum.getText().toString().trim();
+
+        AddQiYeRequset addQiYeRequset = new AddQiYeRequset();
+        addQiYeRequset.setEnterpriseName(name);
+        addQiYeRequset.setBusinessLicenceCode(zhizhao);
+        addQiYeRequset.setContactName(ContactsName);
+        addQiYeRequset.setContactPhone(ContactsPhone);
+        addQiYeRequset.setEmail(Mail);
+        addQiYeRequset.setEnterpriseScale("1");
+        addQiYeRequset.setAreaId(fourId);
+        addQiYeRequset.setAreaRelation(threeId);
+        addQiYeRequset.setDetailAddress(jiedao);
+        addQiYeRequset.setAreaName(fourName);
+        addQiYeRequset.setFloorArea(Mianji);
+        addQiYeRequset.setEmployeeNum(Num);
+        addQiYeRequset.setPosition("0,0");
+        addQiYeRequset.setEnterpriseDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+        Api.getApi().addQiYe(getRequestBody(addQiYeRequset), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+            @Override
+            public void onSuccess(BaseBean baseBean) {
+                showToast("成功!");
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
+    }
+
+    private void selectJieDao() {
+        index = 0;
+
+        getAreadata();
+    }
+
+    private String oneName = "";
+    private String twoName = "";
+    private String threeName = "";
+    private String threeId = "";
+    private String fourName = "";
+    private String fourId = "";
+
+    private String areaId = "";
+    private int index = 0;
+
+    private void getAreadata() {
+        Api.getApi().sysArea(index == 0 ? "0" : areaId, MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SysAreaModel>(this, true) {
+            @Override
+            public void onSuccess(SysAreaModel sysAreaModel) {
+                List<String> list = new ArrayList<>();
+                for (SysAreaModel.DataBean dataBean : sysAreaModel.getData()) {
+                    list.add(dataBean.getName());
+                }
+                OptionPicker picker = new OptionPicker(aty, list);
+                picker.setOffset(2);
+                picker.setSelectedIndex(1);
+                picker.setTextSize(16);
+                picker.setCycleDisable(true); //选项不循环滚动
+                picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+                    @Override
+                    public void onOptionPicked(int i, String s) {
+                        if (index == 0) {
+                            oneName = s;
+                            areaId = sysAreaModel.getData().get(i).getId();
+                        } else if (index == 1) {
+                            twoName = s;
+                            areaId = sysAreaModel.getData().get(i).getId();
+                        } else if (index == 2) {
+                            threeName = s;
+                            areaId = sysAreaModel.getData().get(i).getId();
+                            threeId = sysAreaModel.getData().get(i).getId();
+                        } else if (index == 3) {
+                            fourName = s;
+                            areaId = sysAreaModel.getData().get(i).getId();
+                        }
+
+                        if (index < 3) {
+                            index++;
+                            getAreadata();
+                        } else if (index == 3) {
+                            index = 0;
+                            mBinding.tvJiedao.setText(oneName + twoName + threeName + fourName);
+                        }
+
+                    }
+                });
+                picker.show();
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
+    }
+
+
+    @Override
+    public void photoSuccess(String path, File file, int... queue) {
+        if (!TextUtils.isEmpty(path)) {
+            mImgHead=path;
+            mBinding.tvAddTou.setVisibility(View.GONE);
+            mBinding.imgTou.setVisibility(View.VISIBLE);
+            Glide.with(aty).load(file).into(mBinding.imgTou);
+        }
+    }
+
+    @Override
+    public void photoFaild() {
+        showToast("图片加载失败!");
     }
 }

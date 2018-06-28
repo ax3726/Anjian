@@ -6,31 +6,31 @@ package com.anjian.model;
 
 public class BaseBean<T> {
 
-    private String ReturnMessage;
-    private int ReturnCode;
-    private T ReturnData;
+    private String message;
+    private int code;
+    private T data;
 
-    public String getReturnMessage() {
-        return ReturnMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setReturnMessage(String returnMessage) {
-        ReturnMessage = returnMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public int getReturnCode() {
-        return ReturnCode;
+    public int getCode() {
+        return code;
     }
 
-    public void setReturnCode(int returnCode) {
-        ReturnCode = returnCode;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public T getReturnData() {
-        return ReturnData;
+    public T getData() {
+        return data;
     }
 
-    public void setReturnData(T returnData) {
-        ReturnData = returnData;
+    public void setData(T data) {
+        this.data = data;
     }
 }

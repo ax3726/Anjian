@@ -15,6 +15,7 @@
             android:orientation="vertical">
 
             <com.zhy.autolayout.AutoFrameLayout
+                android:id="@+id/fly_img"
                 android:layout_width="match_parent"
                 android:layout_height="170px"
                 android:layout_marginLeft="15px"
@@ -37,6 +38,7 @@
 
                 <ImageView
                     android:id="@+id/img"
+                    android:scaleType="fitXY"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="gone" />
@@ -137,6 +139,7 @@
                     android:textSize="16px" />
 
                 <TextView
+                    android:id="@+id/tv_fengxian"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

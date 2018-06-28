@@ -30,7 +30,7 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
         try {
             //ResultResponse 只解析code字段进行约定异常处理
             ResultResponse resultResponse = gson.fromJson(response, ResultResponse.class);
-            if (resultResponse.getReturnCode()==1) {
+            if (resultResponse.getCode()==200) {
                return gson.fromJson(response, type);
             }
          /*
@@ -40,7 +40,7 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
 
             else {
                 BaseBean baseBean = gson.fromJson(response, BaseBean.class);
-                throw new ResultException(baseBean.getReturnCode(), baseBean.getReturnMessage());
+                throw new ResultException(baseBean.getCode(), baseBean.getMessage());
             }
         } finally {
             value.close();

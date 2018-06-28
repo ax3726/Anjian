@@ -1,6 +1,7 @@
 package com.anjian.ui.record;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.anjian.R;
@@ -8,8 +9,13 @@ import com.anjian.base.BaseActivity;
 import com.anjian.base.BasePresenter;
 import com.anjian.databinding.ActivityAddFengXianBinding;
 import com.anjian.databinding.ActivityAddJiaoLiuBinding;
+import com.anjian.ui.common.PhotoActivity;
+import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
+import com.bumptech.glide.Glide;
 
-public class AddJiaoLiuActivity extends BaseActivity<BasePresenter, ActivityAddJiaoLiuBinding >{
+import java.io.File;
+
+public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAddJiaoLiuBinding > {
 
 
     @Override
@@ -64,6 +70,25 @@ public class AddJiaoLiuActivity extends BaseActivity<BasePresenter, ActivityAddJ
                 startActivityForResult(intent,1002);
             }
         });
+        mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectPhotopopuwindow selectPhotopopuwindow = new SelectPhotopopuwindow(aty);
+                selectPhotopopuwindow.setSelectPhotoListener(new SelectPhotopopuwindow.SelectPhotoListener() {
+                    @Override
+                    public void onAlbum() {
+                        pickphoto();
+                    }
+
+                    @Override
+                    public void onCamera() {
+                        doPhoto();
+                    }
+                });
+                selectPhotopopuwindow.showPopupWindow();
+
+            }
+        });
 
     }
 
@@ -84,5 +109,19 @@ public class AddJiaoLiuActivity extends BaseActivity<BasePresenter, ActivityAddJ
             }
 
         }
+    }
+
+    @Override
+    public void photoSuccess(String path, File file, int... queue) {
+        if (!TextUtils.isEmpty(path)) {
+            mBinding.tvAddTimg.setVisibility(View.GONE);
+            mBinding.img.setVisibility(View.VISIBLE);
+            Glide.with(aty).load(file).into(mBinding.img);
+        }
+    }
+
+    @Override
+    public void photoFaild() {
+        showToast("图片加载失败!");
     }
 }

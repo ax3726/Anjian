@@ -7,22 +7,22 @@ package com.anjian.model;
 
 public class ResultResponse {
 
-    private String ReturnMessage;
-    private int ReturnCode;
+    private String message;
+    private int code;
 
-    public String getReturnMessage() {
-        return ReturnMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setReturnMessage(String returnMessage) {
-        ReturnMessage = returnMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public int getReturnCode() {
-        return ReturnCode;
+    public int getCode() {
+        return code;
     }
 
-    public void setReturnCode(int returnCode) {
-        ReturnCode = returnCode;
+    public void setCode(int code) {
+        this.code = code;
     }
 }

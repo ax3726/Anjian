@@ -24,7 +24,7 @@ import com.lm.base.library.utils.Utils;
 public class MyApplication extends Application {
     private static MyApplication instance;
     public static String Base_Path = "";
-
+    private String token="";//token
     public static MyApplication getInstance() {
         return instance;
     }
@@ -72,6 +72,14 @@ public class MyApplication extends Application {
                 return new ClassicsFooter(context).setDrawableSize(20);
             }
         });
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public static String getBase_Path() {

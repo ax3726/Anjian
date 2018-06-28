@@ -4,10 +4,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -16,25 +20,20 @@ import com.anjian.R;
 import com.anjian.base.slide.SlideBackActivity;
 import com.anjian.databinding.WidgetLayoutEmptyBinding;
 import com.anjian.net.RetryWithDelayFunction;
-import com.anjian.net.ex.ApiException;
-import com.anjian.net.ex.ResultException;
 import com.anjian.widget.TitleBarLayout;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
+
 import com.lm.base.library.common.LoadingDialog;
+
+import com.lm.base.library.utils.ParseJsonUtils;
 import com.zhy.autolayout.AutoFrameLayout;
 import com.zhy.autolayout.AutoLinearLayout;
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
 
 import io.reactivex.FlowableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.HttpException;
+import okhttp3.RequestBody;
 
 
 /**
@@ -42,7 +41,7 @@ import retrofit2.HttpException;
  * Description:
  */
 
-public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBinding> extends SlideBackActivity implements BaseView {
+public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBinding> extends SlideBackActivity implements BaseView,BaseHttpListener {
 
     protected P mPresenter;
     protected B mBinding;
@@ -59,12 +58,17 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//添加沉浸式状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //需要设置这个 flag 才能调用 setStatusBarColor 来设置状态栏颜色
-            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            //设置状态栏颜色
-            //getWindow().setStatusBarColor(color);
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//添加沉浸式状态栏
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(Color.TRANSPARENT);
+            }
         }*/
 
         if (isPrestener()) {
@@ -171,7 +175,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
      * @return
      */
     protected boolean isPrestener() {
-        return true;
+        return false;
     }
 
     @Override
@@ -181,23 +185,28 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
 
     @Override
     public void showToast(final String s) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(aty, s, Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (aty!=null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(aty, s, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+
     }
 
     @Override
     public void showToast(final int id) {
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(aty, getResources().getString(id), Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (aty!=null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(aty, getResources().getString(id), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
     }
 
@@ -211,13 +220,13 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
      * @return
      */
 
-    public LoadingDialog showWaitDialog(String message) {
-        return showWaitDialog(message, true, null);
+    public void showWaitDialog(String message) {
+        showWaitDialog(message, true, null);
     }
 
     @Override
-    public LoadingDialog showWaitDialog(boolean isCancel, DialogInterface.OnCancelListener cancelListener) {
-        return showWaitDialog("", isCancel, cancelListener);
+    public void showWaitDialog(boolean isCancel, DialogInterface.OnCancelListener cancelListener) {
+         showWaitDialog("", isCancel, cancelListener);
     }
 
 
@@ -227,8 +236,8 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
      * @return
      */
 
-    public LoadingDialog showWaitDialog() {
-        return showWaitDialog("", true, null);
+    public void showWaitDialog() {
+        showWaitDialog("", true, null);
     }
 
     /**
@@ -240,11 +249,13 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
      * @return
      */
 
-    public LoadingDialog showWaitDialog(String message, boolean isCancel, DialogInterface.OnCancelListener cancelListener) {
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new LoadingDialog(this, message);
+    public void showWaitDialog(String message, boolean isCancel, DialogInterface.OnCancelListener cancelListener) {
+        if (aty==null) {
+            return;
         }
-
+        if (mLoadingDialog == null) {
+            mLoadingDialog = new LoadingDialog(aty, message);
+        }
         mLoadingDialog.setCancelable(isCancel);
         if (isCancel == true && cancelListener != null) {
             mLoadingDialog.setOnCancelListener(cancelListener);
@@ -254,7 +265,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
             mLoadingDialog.show();
         }
 
-        return mLoadingDialog;
+
     }
     /***************************************************************************
      * 弹出窗方法
@@ -263,6 +274,9 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
      * 隐藏
      */
     public void hideWaitDialog() {
+        if (aty==null) {
+            return;
+        }
         if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
             mLoadingDialog.dismiss();
             mLoadingDialog = null;
@@ -277,74 +291,20 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
         }
     }
 
-    public abstract class BaseNetSubscriber<T> implements Subscriber<T> {
-       private Subscription subscription;
-        public BaseNetSubscriber() {
-
-        }
-        public BaseNetSubscriber(boolean bl) {
-            if (aty!=null&&bl) {
-              showWaitDialog();
-            }
-        }
-        @Override
-        public void onSubscribe(Subscription s) {
-            subscription = s;
-            s.request(1); //请求一个数据
-        }
-
-        @Override
-        public void onComplete() {
-            subscription.cancel(); //取消订阅
-            if (aty != null) {
-                hideWaitDialog();
-            }
-        }
-
-
-        @Override
-        public void onError(Throwable e) {
-            e.printStackTrace();
-            if (aty == null) {
-                return;
-            }
-            hideWaitDialog();
-            if (e instanceof HttpException) {
-                showToast("网络错误");
-            } else if (e instanceof ApiException) {
-                showToast("Aip异常");
-            } else if (e instanceof SocketTimeoutException) {
-                showToast("连接服务器超时");
-            } else if (e instanceof ConnectException) {
-                showToast("未能连接到服务器");
-            } else if (e instanceof ResultException) {
-                showToast(e.getMessage());
-            } else {
-                showToast("未知错误");
-            }
-        }
-
-        @Override
-        public void onNext(T t) {
-            //处理完后，再请求一个数据
-            subscription.request(1);
-        }
-    }
-
-
-
     public <T> FlowableTransformer<T, T> callbackOnIOToMainThread() {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(RetryWithDelayFunction.create())
-                .filter(t -> aty!=null)
+                .filter(t -> aty != null)
                 .compose(bindToLifecycle());
     }
-
 
 
     @Override
     public void setEmptyState(@EmptyState int emptyState) {
         mStateModel.setEmptyState(emptyState);
+    }
+    public RequestBody getRequestBody(Object object) {
+        return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), ParseJsonUtils.getjsonStr(object));
     }
 }

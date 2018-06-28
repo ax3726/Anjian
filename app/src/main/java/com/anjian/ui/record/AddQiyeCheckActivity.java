@@ -3,14 +3,20 @@ package com.anjian.ui.record;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.anjian.R;
 import com.anjian.base.BaseActivity;
 import com.anjian.base.BasePresenter;
 import com.anjian.databinding.ActivityAddQiyeCheckBinding;
+import com.anjian.ui.common.PhotoActivity;
+import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
+import com.bumptech.glide.Glide;
 
-public class AddQiyeCheckActivity extends BaseActivity<BasePresenter, ActivityAddQiyeCheckBinding> {
+import java.io.File;
+
+public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityAddQiyeCheckBinding> {
 
 
     @Override
@@ -90,6 +96,25 @@ public class AddQiyeCheckActivity extends BaseActivity<BasePresenter, ActivityAd
                 startActivityForResult(intent,1003);
             }
         });
+        mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectPhotopopuwindow selectPhotopopuwindow = new SelectPhotopopuwindow(aty);
+                selectPhotopopuwindow.setSelectPhotoListener(new SelectPhotopopuwindow.SelectPhotoListener() {
+                    @Override
+                    public void onAlbum() {
+                        pickphoto();
+                    }
+
+                    @Override
+                    public void onCamera() {
+                        doPhoto();
+                    }
+                });
+                selectPhotopopuwindow.showPopupWindow();
+
+            }
+        });
     }
 
     @Override
@@ -111,5 +136,18 @@ public class AddQiyeCheckActivity extends BaseActivity<BasePresenter, ActivityAd
             }
 
         }
+    }
+    @Override
+    public void photoSuccess(String path, File file, int... queue) {
+        if (!TextUtils.isEmpty(path)) {
+            mBinding.tvAddTimg.setVisibility(View.GONE);
+            mBinding.img.setVisibility(View.VISIBLE);
+            Glide.with(aty).load(file).into(mBinding.img);
+        }
+    }
+
+    @Override
+    public void photoFaild() {
+        showToast("图片加载失败!");
     }
 }

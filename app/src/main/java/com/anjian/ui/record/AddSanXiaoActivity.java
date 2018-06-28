@@ -10,7 +10,9 @@ import com.anjian.base.BasePresenter;
 import com.anjian.databinding.ActivityAddQiyeBinding;
 import com.anjian.databinding.ActivityAddSanXiaoBinding;
 
-public class AddSanXiaoActivity extends BaseActivity<BasePresenter,ActivityAddSanXiaoBinding> {
+import cn.qqtheme.framework.picker.OptionPicker;
+
+public class AddSanXiaoActivity extends BaseActivity<BasePresenter,ActivityAddSanXiaoBinding> implements View.OnClickListener{
 
 
     @Override
@@ -46,5 +48,32 @@ public class AddSanXiaoActivity extends BaseActivity<BasePresenter,ActivityAddSa
 
             }
         });
+    }
+
+    @Override
+    protected void initEvent() {
+        super.initEvent();
+        mBinding.tvType.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_type://所属类别
+                OptionPicker picker1 = new OptionPicker(this, new String[]{
+                        "人员密集场所", "三小场所", "出租屋", "其他"
+                });
+                picker1.setOffset(2);
+                picker1.setSelectedIndex(1);
+                picker1.setTextSize(16);
+                picker1.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+                    @Override
+                    public void onOptionPicked(int i, String s) {
+                        mBinding.tvType.setText(s);
+                    }
+                });
+                picker1.show();
+                break;
+        }
     }
 }

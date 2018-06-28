@@ -5,8 +5,7 @@ package com.anjian.common;
  */
 
 public class Link {
-    public static final String SEREVE = "http://yichao.gzqnkj.com/WebService/";
-    //图片地址
-    public static final String DVLURL= "http://yichao.gzqnkj.com";
+    public static final String SEREVE = "http://101.236.25.68:81/";
+
 
 }

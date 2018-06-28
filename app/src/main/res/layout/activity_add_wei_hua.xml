@@ -15,6 +15,7 @@
             android:orientation="vertical">
 
             <com.zhy.autolayout.AutoFrameLayout
+                android:id="@+id/fly_img"
                 android:layout_width="match_parent"
                 android:layout_height="170px"
                 android:layout_marginLeft="15px"
@@ -39,6 +40,7 @@
                     android:id="@+id/img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="fitXY"
                     android:visibility="gone" />
 
             </com.zhy.autolayout.AutoFrameLayout>

@@ -91,8 +91,8 @@ public class Api {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                .addInterceptor(new LoggerInterceptor("msg", true))
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
-                .readTimeout(10000L, TimeUnit.MILLISECONDS)
-                .addInterceptor(chain -> {//添加公共信息
+                .readTimeout(10000L, TimeUnit.MILLISECONDS);
+               /* .addInterceptor(chain -> {//添加公共信息
                     Request originalRequest = chain.request();
                     String canshu = obtainNoSignNameFromHeaders(originalRequest);
                     Log.e("eeee","不加密的参数有"+canshu);
@@ -106,7 +106,7 @@ public class Api {
                         if (!"CMD".equals(key))
                             rootMap.put(key, httpUrlurl.queryParameter(key));
 
-                    }
+                    }*/
 
                     /*//get请求的封装
                     if (originalRequest.method().equals("GET")) {
@@ -127,7 +127,7 @@ public class Api {
                             }
                         }
                     }*/
-                    String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+                    /*String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
                     rootMap.put("appKey", "gzqnkj");
                     rootMap.put("_timestamp", timestamp);
                     rootMap.put("appSecret", "gzqnkj123456");
@@ -151,7 +151,7 @@ public class Api {
 
 
                     return chain.proceed(newRequest);
-                });
+                });*/
         if (downLoadListener.length > 0) {
             builder.addNetworkInterceptor(new Interceptor() {
                 @Override
