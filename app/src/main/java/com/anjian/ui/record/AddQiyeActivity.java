@@ -4,7 +4,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.anjian.R;
-import com.anjian.base.BaseActivity;
 import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
@@ -27,6 +26,9 @@ import cn.qqtheme.framework.picker.OptionPicker;
 public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiyeBinding> implements View.OnClickListener {
 
     private String mImgHead="";//门头照片
+    private String mImgZhi="";//执照照片
+    private int type = 0;
+    private int mTypeIndex=1;//企业规模(1规上企业 2小微企业 3三小场所)
     @Override
     protected boolean isPrestener() {
         return false;
@@ -69,6 +71,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         mBinding.tvGuimo.setOnClickListener(this);
         mBinding.tvHangye.setOnClickListener(this);
         mBinding.flyImgTou.setOnClickListener(this);
+        mBinding.flyImgZhi.setOnClickListener(this);
     }
 
     @Override
@@ -91,6 +94,8 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
                     @Override
                     public void onOptionPicked(int i, String s) {
                         mBinding.tvGuimo.setText(s);
+                        mTypeIndex=i+1;  //企业规模(1规上企业 2小微企业 3三小场所)
+
                     }
                 });
                 picker.show();
@@ -111,6 +116,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
                 picker1.show();
                 break;
             case R.id.fly_img_tou:
+                type=1;
                 SelectPhotopopuwindow selectPhotopopuwindow = new SelectPhotopopuwindow(aty);
                 selectPhotopopuwindow.setSelectPhotoListener(new SelectPhotopopuwindow.SelectPhotoListener() {
                     @Override
@@ -124,6 +130,22 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
                     }
                 });
                 selectPhotopopuwindow.showPopupWindow();
+                break;
+            case R.id.fly_img_zhi:
+                type=2;
+                SelectPhotopopuwindow selectPhotopopuwindow1 = new SelectPhotopopuwindow(aty);
+                selectPhotopopuwindow1.setSelectPhotoListener(new SelectPhotopopuwindow.SelectPhotoListener() {
+                    @Override
+                    public void onAlbum() {
+                        pickphoto();
+                    }
+
+                    @Override
+                    public void onCamera() {
+                        doPhoto();
+                    }
+                });
+                selectPhotopopuwindow1.showPopupWindow();
                 break;
         }
     }
@@ -146,19 +168,31 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         addQiYeRequset.setContactName(ContactsName);
         addQiYeRequset.setContactPhone(ContactsPhone);
         addQiYeRequset.setEmail(Mail);
-        addQiYeRequset.setEnterpriseScale("1");
+        addQiYeRequset.setEnterpriseScale(String.valueOf(mTypeIndex));
         addQiYeRequset.setAreaId(fourId);
         addQiYeRequset.setAreaRelation(threeId);
         addQiYeRequset.setDetailAddress(jiedao);
         addQiYeRequset.setAreaName(fourName);
         addQiYeRequset.setFloorArea(Mianji);
         addQiYeRequset.setEmployeeNum(Num);
-        addQiYeRequset.setPosition("0,0");
+        addQiYeRequset.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
         addQiYeRequset.setEnterpriseDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
         Api.getApi().addQiYe(getRequestBody(addQiYeRequset), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
             @Override
             public void onSuccess(BaseBean baseBean) {
-                showToast("成功!");
+                showToast(baseBean.getMessage());
+                new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        try {
+                            sleep(1500);
+                            finish();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
             }
 
             @Override
@@ -170,7 +204,6 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
 
     private void selectJieDao() {
         index = 0;
-
         getAreadata();
     }
 
@@ -213,6 +246,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
                         } else if (index == 3) {
                             fourName = s;
                             areaId = sysAreaModel.getData().get(i).getId();
+                            fourId = sysAreaModel.getData().get(i).getId();
                         }
 
                         if (index < 3) {
@@ -239,10 +273,18 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
     @Override
     public void photoSuccess(String path, File file, int... queue) {
         if (!TextUtils.isEmpty(path)) {
-            mImgHead=path;
-            mBinding.tvAddTou.setVisibility(View.GONE);
-            mBinding.imgTou.setVisibility(View.VISIBLE);
-            Glide.with(aty).load(file).into(mBinding.imgTou);
+            if (type == 1) {
+                mImgHead = path;
+                mBinding.tvAddTou.setVisibility(View.GONE);
+                mBinding.imgTou.setVisibility(View.VISIBLE);
+                Glide.with(aty).load(file).into(mBinding.imgTou);
+            } else if (type == 2) {
+                mImgZhi = path;
+                mBinding.tvAddZhi.setVisibility(View.GONE);
+                mBinding.imgZhi.setVisibility(View.VISIBLE);
+                Glide.with(aty).load(file).into(mBinding.imgZhi);
+            }
+
         }
     }
 

@@ -46,6 +46,7 @@
             </com.zhy.autolayout.AutoFrameLayout>
 
             <com.zhy.autolayout.AutoFrameLayout
+                android:id="@+id/fly_img_zhi"
                 android:layout_width="match_parent"
                 android:layout_height="170px"
                 android:layout_marginLeft="15px"
@@ -68,6 +69,7 @@
 
                 <ImageView
                     android:id="@+id/img_zhi"
+                    android:scaleType="fitXY"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="gone" />
@@ -399,6 +401,7 @@
                     android:gravity="right"
                     android:layoutDirection="rtl"
                     android:hint="点击输入"
+                    android:inputType="number"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
                     android:textSize="14px" />
@@ -440,6 +443,7 @@
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
+                    android:inputType="number"
                     android:layoutDirection="rtl"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"

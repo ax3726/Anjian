@@ -1,5 +1,8 @@
 package com.anjian.utils;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.text.TextUtils;
 import android.util.Base64;
 
@@ -46,6 +49,23 @@ public class DemoUtils {
 
         }
         return result;
+
+    }
+
+    /**
+     * 获取经纬度
+     * @param context
+     * @return
+     */
+    public static String getLatitudeAndLongitude(Context context)
+    {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (location != null) {
+            return location.getLongitude()+","+location.getLatitude();
+        } else {
+            return "";
+        }
 
     }
 }

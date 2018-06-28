@@ -40,11 +40,13 @@
                     android:id="@+id/img_tou"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="fitXY"
                     android:visibility="gone" />
 
             </com.zhy.autolayout.AutoFrameLayout>
 
             <com.zhy.autolayout.AutoFrameLayout
+                android:id="@+id/fly_img_zhi"
                 android:layout_width="match_parent"
                 android:layout_height="170px"
                 android:layout_marginLeft="15px"
@@ -69,6 +71,7 @@
                     android:id="@+id/img_zhi"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="fitXY"
                     android:visibility="gone" />
 
             </com.zhy.autolayout.AutoFrameLayout>
@@ -95,6 +98,7 @@
                     android:textSize="16px" />
 
                 <EditText
+                    android:id="@+id/et_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -128,17 +132,23 @@
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
-                <EditText
+                <TextView
+                    android:id="@+id/tv_jiedao"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="right"
-                    android:hint="点击输入"
-                    android:layoutDirection="rtl"
+                    android:hint="请选择"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
                     android:textSize="14px" />
+
+                <ImageView
+                    android:layout_width="5px"
+                    android:layout_height="10px"
+                    android:layout_marginLeft="8px"
+                    android:src="@drawable/record_right_icon" />
 
             </com.zhy.autolayout.AutoLinearLayout>
 
@@ -203,6 +213,7 @@
                     android:textSize="16px" />
 
                 <EditText
+                    android:id="@+id/et_zhizhao"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -237,6 +248,7 @@
                     android:textSize="16px" />
 
                 <EditText
+                    android:id="@+id/et_contact_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -271,9 +283,11 @@
                     android:textSize="16px" />
 
                 <EditText
+                    android:id="@+id/et_contact_phone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:inputType="number"
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
@@ -305,6 +319,7 @@
                     android:textSize="16px" />
 
                 <EditText
+                    android:id="@+id/et_mail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -340,12 +355,14 @@
                     android:textSize="16px" />
 
                 <EditText
+                    android:id="@+id/et_num"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
+                    android:inputType="number"
                     android:layoutDirection="rtl"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"

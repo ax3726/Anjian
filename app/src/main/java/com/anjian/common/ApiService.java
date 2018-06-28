@@ -5,25 +5,14 @@ import com.anjian.model.BaseBean;
 import com.anjian.model.main.LoginModel;
 import com.anjian.model.record.SysAreaModel;
 
-import java.util.HashMap;
-
 import io.reactivex.Flowable;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
-import retrofit2.http.Streaming;
-import retrofit2.http.Url;
-
-import static com.anjian.common.Constant.API_NO_SIGN;
 
 
 /**
@@ -48,4 +37,18 @@ public interface ApiService {
     Flowable<BaseBean> addQiYe(@Body RequestBody body,@Query("token") String token);
 
 
+    //新增三小场所信息
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("security-monitor/app/enterpriseInfo/add")
+    Flowable<BaseBean> addSanXiao(@Body RequestBody body,@Query("token") String token);
+
+    //新增现场交流信息
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("security-monitor/app/localeMeeting/add")
+    Flowable<BaseBean> addJiaoLiu(@Body RequestBody body,@Query("token") String token);
+
+    //新增现危化品信息
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("security-monitor/app/dangerChemical/add")
+    Flowable<BaseBean> addWeiHua(@Body RequestBody body,@Query("token") String token);
 }

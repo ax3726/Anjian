@@ -98,6 +98,8 @@ public class RecordFragment extends BaseFragment<BaseFragmentPresenter, Fragment
         fragments.add(mQiYeFragment);
         fragments.add(mSanXiaoFragment);
         initTablayout();
+
+
     }
 
     private void initTablayout() {
