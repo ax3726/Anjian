@@ -1,6 +1,8 @@
 package com.anjian.ui.record;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -11,16 +13,21 @@ import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddJiaoLiuBinding;
 import com.anjian.model.BaseBean;
+import com.anjian.model.record.JiaoLiuListModel;
 import com.anjian.model.request.AddJiaoLiuRequest;
 import com.anjian.ui.common.PhotoActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 
 public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAddJiaoLiuBinding> {
     private String mImgPath = "";
+    private String mImgQianMin = "";
+    private JiaoLiuListModel.DataBean mDataBean = null;
 
     @Override
     protected boolean isPrestener() {
@@ -51,9 +58,55 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitMessage();
+                new AlertDialog.Builder(aty)
+                        .setTitle("提示")
+                        .setMessage("是否添加签名？")
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                save();
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivityForResult(AutographActivity.class, 100);
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
+
             }
         });
+    }
+
+    /**
+     * 提交数据
+     */
+    private void save() {
+        submitMessage();
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        mDataBean = (JiaoLiuListModel.DataBean) getIntent().getSerializableExtra("data");
+        initView();
+    }
+
+    private void initView() {
+        if (mDataBean == null) {
+            return;
+        }
+        mTitleBarLayout.setRightShow(false);
+        mBinding.tvQiye.setText(mDataBean.getEnterpriseName());
+        mBinding.tvAddTimg.setVisibility(View.GONE);
+        mBinding.img.setVisibility(View.VISIBLE);
+        Glide.with(aty).load(mDataBean.getLocaleImg()).into(mBinding.img);
+        mBinding.etName.setText(mDataBean.getMeetingName());
+        mBinding.tvPeople.setText(mDataBean.getMeetingUser());
+        mBinding.tvContent.setText(mDataBean.getMeetingContent());
     }
 
     @Override
@@ -114,6 +167,10 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
             }
 
         }
+        if (data != null && resultCode == 200) {
+            mImgQianMin = data.getStringExtra("img_path");
+            save();
+        }
     }
 
     @Override
@@ -157,7 +214,61 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
         addJiaoLiuRequest.setMeetingUser(People);
         addJiaoLiuRequest.setMeetingContent(Content);
         addJiaoLiuRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));
+        if (!TextUtils.isEmpty(mImgQianMin)) {
+            addJiaoLiuRequest.setSelferSign(DemoUtils.imageToBase64(mImgQianMin));
+        }
         Api.getApi().addJiaoLiu(getRequestBody(addJiaoLiuRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+            @Override
+            public void onSuccess(BaseBean baseBean) {
+                showToast(baseBean.getMessage());
+                EventBus.getDefault().post("刷新");
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        try {
+                            sleep(1500);
+                            finish();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
+    }
+
+    private void updateMessage() {
+        String Name = mBinding.etName.getText().toString().trim();
+        String Content = mBinding.tvContent.getText().toString().trim();
+        String People = mBinding.tvPeople.getText().toString().trim();
+
+        if (TextUtils.isEmpty(Name)) {
+            showToast("会议名称不能为空!");
+            return;
+        }
+        if (TextUtils.isEmpty(People)) {
+            showToast("参会人员不能为空!");
+            return;
+        }
+        if (TextUtils.isEmpty(Content)) {
+            showToast("会议内容不能为空!");
+            return;
+        }
+        AddJiaoLiuRequest addJiaoLiuRequest = new AddJiaoLiuRequest();
+        addJiaoLiuRequest.setEnterpriseId(mDataBean.getEnterpriseId());
+        addJiaoLiuRequest.setMeetingName(Name);
+        addJiaoLiuRequest.setMeetingUser(People);
+        addJiaoLiuRequest.setMeetingContent(Content);
+        if (!TextUtils.isEmpty(mImgPath)) {
+            addJiaoLiuRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));
+        }
+        Api.getApi().updateJiaoLiu(getRequestBody(addJiaoLiuRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
             @Override
             public void onSuccess(BaseBean baseBean) {
                 showToast(baseBean.getMessage());

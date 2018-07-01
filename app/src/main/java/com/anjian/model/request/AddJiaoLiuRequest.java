@@ -10,6 +10,15 @@ public class AddJiaoLiuRequest {
     private String meetingUser;
     private String meetingContent;
     private String localeImg;
+    private String selferSign;
+
+    public String getSelferSign() {
+        return selferSign;
+    }
+
+    public void setSelferSign(String selferSign) {
+        this.selferSign = selferSign;
+    }
 
     public String getEnterpriseId() {
         return enterpriseId;

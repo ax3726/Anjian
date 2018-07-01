@@ -4,14 +4,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -23,16 +19,14 @@ import com.anjian.net.RetryWithDelayFunction;
 import com.anjian.widget.TitleBarLayout;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
-
-import com.lm.base.library.common.LoadingDialog;
-
-import com.lm.base.library.utils.ParseJsonUtils;
 import com.zhy.autolayout.AutoFrameLayout;
 import com.zhy.autolayout.AutoLinearLayout;
 
 import io.reactivex.FlowableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import ml.gsy.com.library.common.LoadingDialog;
+import ml.gsy.com.library.utils.ParseJsonUtils;
 import okhttp3.RequestBody;
 
 
@@ -143,6 +137,9 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
     }
 
 
+    protected void startActivityForResult(Class<?> cls,int requestCode) {
+        startActivityForResult(new Intent(aty, cls),requestCode);
+    }
     protected void initEvent() {
 
     }
@@ -305,6 +302,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
         mStateModel.setEmptyState(emptyState);
     }
     public RequestBody getRequestBody(Object object) {
-        return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), ParseJsonUtils.getjsonStr(object));
+        String str = ParseJsonUtils.getjsonStr(object);
+        return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), str);
     }
 }

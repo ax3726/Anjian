@@ -1,29 +1,42 @@
 package com.anjian.ui.record;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.anjian.R;
 import com.anjian.base.BaseActivity;
-import com.anjian.base.BaseFragmentPresenter;
+import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
+import com.anjian.common.Api;
+import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityFengXianBinding;
-import com.lm.base.library.adapters.recyclerview.CommonAdapter;
-import com.lm.base.library.adapters.recyclerview.base.ViewHolder;
+import com.anjian.model.record.FengXianListModel;
+import com.anjian.model.request.AddListRequest;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ml.gsy.com.library.adapters.recyclerview.CommonAdapter;
+import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
+
 public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXianBinding> {
 
 
-    private List<String> mDataList = new ArrayList<>();
-    private CommonAdapter<String> mCommonAdapter;
+    private List<FengXianListModel.DataBean> mDataList = new ArrayList<>();
+    private CommonAdapter<FengXianListModel.DataBean> mCommonAdapter;
 
-
+    private int mPosition = 1;
+    private int mSize = 10;
     @Override
     protected boolean isPrestener() {
         return false;
@@ -61,28 +74,93 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
     @Override
     protected void initData() {
         super.initData();
+        EventBus.getDefault().register(aty);
 
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mCommonAdapter = new CommonAdapter<String>(aty, R.layout.item_company_list, mDataList) {
+        mCommonAdapter = new CommonAdapter<FengXianListModel.DataBean>(aty, R.layout.item_company_list, mDataList) {
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
+            protected void convert(ViewHolder holder, FengXianListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
+                holder.setImageurl(R.id.img,item.getLocaleImg(),0);
+                holder.setText(R.id.tv_name,item.getDangerName());
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Intent intent = new Intent(aty, AddFengXianActivity.class);
+                        intent.putExtra("data",item);
+                        startActivity(intent);
                     }
                 });
-
             }
         };
         mBinding.rcBody.setLayoutManager(new LinearLayoutManager(aty));
         mBinding.rcBody.setAdapter(mCommonAdapter);
+
+        mBinding.srlBodyList.setRefreshHeader(new ClassicsHeader(aty));
+        mBinding.srlBodyList.setRefreshFooter(new ClassicsFooter(aty));
+        mBinding.srlBodyList.setOnRefreshListener(new OnRefreshLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                mPosition++;
+                getFengXianList();
+            }
+
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                mPosition = 1;
+                mBinding.srlBodyList.resetNoMoreData();
+                getFengXianList();
+            }
+        });
+        getFengXianList();
+    }
+
+    private void getFengXianList() {
+        AddListRequest addListRequest = new AddListRequest();
+        addListRequest.setCurrent(mPosition);
+        addListRequest.setSize(mSize);
+        addListRequest.getCondition().setId("1012329476849090561");
+        Api.getApi().getFengXianList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<FengXianListModel>(this, true) {
+            @Override
+            public void onSuccess(FengXianListModel baseBean) {
+
+               finishRefersh();
+                if (mPosition==1) {
+                    mDataList.clear();
+                }
+                List<FengXianListModel.DataBean> data = baseBean.getData();
+                if (data!=null&data.size()>0) {
+                    mDataList.addAll(data);
+                    if (data.size()<mSize) {
+                        mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                    }
+                }
+                mCommonAdapter.notifyDataSetChanged();
+
+
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+                finishRefersh();
+            }
+        });
+    }
+
+    private void finishRefersh() {
+        mBinding.srlBodyList.finishLoadmore();
+        mBinding.srlBodyList.finishRefresh();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refersh(String messageEvent) {
+        if ("刷新".equals(messageEvent)) {
+            mPosition = 1;
+            getFengXianList();
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(aty);
+        super.onDestroy();
 
     }
 }

@@ -8,6 +8,8 @@ public class AddQiYeRequset {
     String enterpriseName;
     String enterpriseDoorHeadImg;
     String businessLicenceCode;
+    String businessLicenceImg;
+    String industry;
     String contactName;
     String contactPhone;
     String email;
@@ -19,9 +21,7 @@ public class AddQiYeRequset {
     String floorArea;
     String employeeNum;
     String position;
-    String dangerChemicalDesc;
-    String specialDevice;
-    String fireDevice;
+
 
     public String getEnterpriseName() {
         return enterpriseName;
@@ -135,27 +135,21 @@ public class AddQiYeRequset {
         this.position = position;
     }
 
-    public String getDangerChemicalDesc() {
-        return dangerChemicalDesc;
+    public String getBusinessLicenceImg() {
+        return businessLicenceImg;
     }
 
-    public void setDangerChemicalDesc(String dangerChemicalDesc) {
-        this.dangerChemicalDesc = dangerChemicalDesc;
+    public void setBusinessLicenceImg(String businessLicenceImg) {
+        this.businessLicenceImg = businessLicenceImg;
     }
 
-    public String getSpecialDevice() {
-        return specialDevice;
+    public String getIndustry() {
+        return industry;
     }
 
-    public void setSpecialDevice(String specialDevice) {
-        this.specialDevice = specialDevice;
-    }
-
-    public String getFireDevice() {
-        return fireDevice;
-    }
-
-    public void setFireDevice(String fireDevice) {
-        this.fireDevice = fireDevice;
+    public void setIndustry(String industry) {
+        this.industry = industry;
     }
 }
+
+

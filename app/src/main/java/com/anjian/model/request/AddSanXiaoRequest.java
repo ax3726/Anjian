@@ -7,13 +7,17 @@ package com.anjian.model.request;
 public class AddSanXiaoRequest {
     private String tspName;
     private String tspDoorHeadImg;
+    private String industry;
     private String areaId;
+    private String areaName;
     private String areaRelation;
     private String position;
-    private String business_licence_img;
+    private String businessLicenceImg;
+    private String businessLicenceCode;
     private String employeeNum;
     private String contactName;
     private String contactPhone;
+    private String email;
 
     public String getTspName() {
         return tspName;
@@ -55,13 +59,6 @@ public class AddSanXiaoRequest {
         this.position = position;
     }
 
-    public String getBusiness_licence_img() {
-        return business_licence_img;
-    }
-
-    public void setBusiness_licence_img(String business_licence_img) {
-        this.business_licence_img = business_licence_img;
-    }
 
     public String getEmployeeNum() {
         return employeeNum;
@@ -85,5 +82,45 @@ public class AddSanXiaoRequest {
 
     public void setContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public String getBusinessLicenceImg() {
+        return businessLicenceImg;
+    }
+
+    public void setBusinessLicenceImg(String businessLicenceImg) {
+        this.businessLicenceImg = businessLicenceImg;
+    }
+
+    public String getBusinessLicenceCode() {
+        return businessLicenceCode;
+    }
+
+    public void setBusinessLicenceCode(String businessLicenceCode) {
+        this.businessLicenceCode = businessLicenceCode;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

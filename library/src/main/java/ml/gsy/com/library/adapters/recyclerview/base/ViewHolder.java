@@ -112,6 +112,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+
     public ViewHolder setImageDrawable(int viewId, Drawable drawable) {
         ImageView view = getView(viewId);
         view.setImageDrawable(drawable);

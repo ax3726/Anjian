@@ -1,7 +1,5 @@
 package com.anjian.ui.record;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,11 +8,12 @@ import com.anjian.R;
 import com.anjian.base.BaseActivity;
 import com.anjian.base.BasePresenter;
 import com.anjian.databinding.ActivityWeiHuaBinding;
-import com.lm.base.library.adapters.recyclerview.CommonAdapter;
-import com.lm.base.library.adapters.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ml.gsy.com.library.adapters.recyclerview.CommonAdapter;
+import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
 
 public class SanXiaoCheckInfoActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBinding> {
 

@@ -19,9 +19,6 @@ import com.anjian.net.RetryWithDelayFunction;
 import com.anjian.widget.TitleBarLayout;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
-
-import com.lm.base.library.common.LoadingDialog;
-
 import com.trello.rxlifecycle2.components.support.RxFragment;
 import com.zhy.autolayout.AutoFrameLayout;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -29,6 +26,9 @@ import com.zhy.autolayout.AutoLinearLayout;
 import io.reactivex.FlowableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import ml.gsy.com.library.common.LoadingDialog;
+import ml.gsy.com.library.utils.ParseJsonUtils;
+import okhttp3.RequestBody;
 
 
 /**
@@ -291,5 +291,7 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends Vi
     public void setEmptyState(@EmptyState int emptyState) {
         mStateModel.setEmptyState(emptyState);
     }
-
+    public RequestBody getRequestBody(Object object) {
+        return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), ParseJsonUtils.getjsonStr(object));
+    }
 }

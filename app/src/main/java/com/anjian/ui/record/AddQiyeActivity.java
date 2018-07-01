@@ -29,6 +29,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
     private String mImgZhi="";//执照照片
     private int type = 0;
     private int mTypeIndex=1;//企业规模(1规上企业 2小微企业 3三小场所)
+    private int mHnagyeindex=0;
     @Override
     protected boolean isPrestener() {
         return false;
@@ -110,6 +111,12 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
                 picker1.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
                     @Override
                     public void onOptionPicked(int i, String s) {
+                        if (i < 10) {
+                            i++;
+                        } else {
+                            i=0;
+                        }
+                        mHnagyeindex=i;
                         mBinding.tvHangye.setText(s);
                     }
                 });
@@ -177,6 +184,9 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         addQiYeRequset.setEmployeeNum(Num);
         addQiYeRequset.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
         addQiYeRequset.setEnterpriseDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+        addQiYeRequset.setBusinessLicenceImg(DemoUtils.imageToBase64(mImgZhi));
+        addQiYeRequset.setIndustry(String.valueOf(mHnagyeindex));
+
         Api.getApi().addQiYe(getRequestBody(addQiYeRequset), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
             @Override
             public void onSuccess(BaseBean baseBean) {

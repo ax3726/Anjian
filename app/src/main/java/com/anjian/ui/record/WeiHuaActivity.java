@@ -1,26 +1,42 @@
 package com.anjian.ui.record;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.anjian.R;
 import com.anjian.base.BaseActivity;
+import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
-import com.anjian.databinding.ActivityFengXianBinding;
+import com.anjian.common.Api;
+import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityWeiHuaBinding;
-import com.lm.base.library.adapters.recyclerview.CommonAdapter;
-import com.lm.base.library.adapters.recyclerview.base.ViewHolder;
+import com.anjian.model.record.WeiHuaListModel;
+import com.anjian.model.request.AddListRequest;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ml.gsy.com.library.adapters.recyclerview.CommonAdapter;
+import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
+
 public class WeiHuaActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBinding> {
 
 
-    private List<String> mDataList = new ArrayList<>();
-    private CommonAdapter<String> mCommonAdapter;
+    private List<WeiHuaListModel.DataBean> mDataList = new ArrayList<>();
+    private CommonAdapter<WeiHuaListModel.DataBean> mCommonAdapter;
 
+    private int mPosition = 1;
+    private int mSize = 10;
 
     @Override
     protected boolean isPrestener() {
@@ -51,7 +67,7 @@ public class WeiHuaActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBi
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(AddWeiHuaActivity.class);
+                startActivity(AddWeiHuaActivity.class);
             }
         });
     }
@@ -59,21 +75,20 @@ public class WeiHuaActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBi
     @Override
     protected void initData() {
         super.initData();
+        EventBus.getDefault().register(aty);
 
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mCommonAdapter = new CommonAdapter<String>(aty, R.layout.item_wei_hua, mDataList) {
+        mCommonAdapter = new CommonAdapter<WeiHuaListModel.DataBean>(aty, R.layout.item_wei_hua, mDataList) {
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
+            protected void convert(ViewHolder holder, WeiHuaListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
+                holder.setText(R.id.tv_name, item.getChemicalName());
+                holder.setText(R.id.tv_num, "数量:" + item.getChemicalNum());
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Intent intent = new Intent(aty, AddWeiHuaActivity.class);
+                        intent.putExtra("data",item);
+                        startActivity(intent);
                     }
                 });
 
@@ -81,6 +96,75 @@ public class WeiHuaActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBi
         };
         mBinding.rcBody.setLayoutManager(new LinearLayoutManager(aty));
         mBinding.rcBody.setAdapter(mCommonAdapter);
+
+        mBinding.srlBodyList.setRefreshHeader(new ClassicsHeader(aty));
+        mBinding.srlBodyList.setRefreshFooter(new ClassicsFooter(aty));
+        mBinding.srlBodyList.setOnRefreshListener(new OnRefreshLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                mPosition++;
+                getWeiHuaList();
+            }
+
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                mPosition = 1;
+                mBinding.srlBodyList.resetNoMoreData();
+                getWeiHuaList();
+            }
+        });
+        getWeiHuaList();
+    }
+
+    private void getWeiHuaList() {
+        AddListRequest addListRequest = new AddListRequest();
+        addListRequest.setCurrent(mPosition);
+        addListRequest.setSize(mSize);
+        addListRequest.getCondition().setId("1012329476849090561");
+        Api.getApi().getWeiHuaList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<WeiHuaListModel>(this, true) {
+            @Override
+            public void onSuccess(WeiHuaListModel baseBean) {
+
+                finishRefersh();
+                if (mPosition == 1) {
+                    mDataList.clear();
+                }
+                List<WeiHuaListModel.DataBean> data = baseBean.getData();
+                if (data != null & data.size() > 0) {
+                    mDataList.addAll(data);
+                    if (data.size() < mSize) {
+                        mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                    }
+                }
+                mCommonAdapter.notifyDataSetChanged();
+
+
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+                finishRefersh();
+            }
+        });
+    }
+
+    private void finishRefersh() {
+        mBinding.srlBodyList.finishLoadmore();
+        mBinding.srlBodyList.finishRefresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refersh(String messageEvent) {
+        if ("刷新".equals(messageEvent)) {
+            mPosition = 1;
+            getWeiHuaList();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(aty);
+        super.onDestroy();
 
     }
 }

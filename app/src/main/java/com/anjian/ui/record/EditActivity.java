@@ -1,15 +1,13 @@
 package com.anjian.ui.record;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.anjian.R;
 import com.anjian.base.BaseActivity;
 import com.anjian.base.BasePresenter;
-import com.anjian.databinding.ActivityAddFengXianBinding;
 import com.anjian.databinding.ActivityEditBinding;
 
 public class EditActivity extends BaseActivity<BasePresenter, ActivityEditBinding> {
@@ -40,6 +38,9 @@ public class EditActivity extends BaseActivity<BasePresenter, ActivityEditBindin
     protected void initTitleBar() {
         super.initTitleBar();
         String txt = getIntent().getStringExtra("txt");
+        if ("数量".equals(txt)) {
+            mBinding.etBody.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        }
         mTitleBarLayout.setTitle(txt);
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightTxt("保存");

@@ -62,10 +62,40 @@ public class DemoUtils {
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         if (location != null) {
-            return location.getLongitude()+","+location.getLatitude();
+            return location.getLatitude()+","+location.getLongitude();
         } else {
             return "";
         }
 
+    }
+    /**
+     * 获取经纬度
+     * @param context
+     * @return
+     */
+    public static Location getLocation(Context context)
+    {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+       return location;
+
+    }
+    /**
+     * 格式化时间
+     * @param time
+     * @return
+     */
+    public static String getTime(String time)
+    {
+        if (!TextUtils.isEmpty(time)) {
+            String[] split = time.split(" ");
+            if (split.length > 0) {
+                return split[0];
+            } else {
+                return "未知时间";
+            }
+        } else {
+            return "未知时间";
+        }
     }
 }

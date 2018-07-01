@@ -22,10 +22,6 @@ import android.widget.Toast;
 import com.anjian.base.BaseActivity;
 import com.anjian.base.BasePresenter;
 import com.anjian.common.MyApplication;
-import com.lm.base.library.utils.Utils;
-import com.lm.base.library.utils.runtimepermission.PermissionsManager;
-import com.lm.base.library.utils.runtimepermission.PermissionsResultAction;
-
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -34,6 +30,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import ml.gsy.com.library.utils.Utils;
+import ml.gsy.com.library.utils.runtimepermission.PermissionsManager;
+import ml.gsy.com.library.utils.runtimepermission.PermissionsResultAction;
 
 /**
  * Created by It_young on 15/4/8.

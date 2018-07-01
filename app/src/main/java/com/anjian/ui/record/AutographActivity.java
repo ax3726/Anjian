@@ -1,7 +1,6 @@
 package com.anjian.ui.record;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.content.Intent;
 import android.view.View;
 
 import com.anjian.R;
@@ -9,9 +8,10 @@ import com.anjian.base.BaseActivity;
 import com.anjian.base.BasePresenter;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAutographBinding;
-import com.anjian.databinding.ActivityQiYeBinding;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AutographActivity extends BaseActivity<BasePresenter, ActivityAutographBinding> {
 
@@ -40,13 +40,19 @@ public class AutographActivity extends BaseActivity<BasePresenter, ActivityAutog
                 finish();
             }
         });
+
     }
 
     public void save(View view) {
         if (mBinding.lvBody.getTouched()) {
             try {
-                mBinding.lvBody.save(MyApplication.getBase_Path() + "/test.png", true, 10);
+                SimpleDateFormat t = new SimpleDateFormat("yyyyMMddssSSS");
+                String filename = "QM" + (t.format(new Date())) + ".jpg";
+                mBinding.lvBody.save(MyApplication.getBase_Path() + "/" + filename, true, 10);
                 mBinding.lvBody.clear();
+                Intent intent = new Intent();
+                intent.putExtra("img_path", MyApplication.getBase_Path() + "/" + filename);
+                setResult(200, intent);
                 finish();
             } catch (IOException e) {
                 e.printStackTrace();

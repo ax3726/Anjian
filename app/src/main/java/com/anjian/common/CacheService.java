@@ -1,7 +1,9 @@
 package com.anjian.common;
 
 import com.anjian.model.UserModel;
-import com.lm.base.library.utils.CacheUtils;
+
+import ml.gsy.com.library.utils.CacheUtils;
+
 
 /**
  * Created by Administrator on 2017/11/22 0022.
@@ -54,9 +56,9 @@ public class CacheService {
     /**
      * 清除用户信息
      *
-     * @param userInfo
+     * @param
      */
-    public void clearUser(UserModel userInfo) {
+    public void clearUser() {
         CacheUtils.getInstance().removeCache(Constant.USER_INFO);
     }
 }

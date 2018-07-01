@@ -28,7 +28,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
     private String mImgHead = "";//门头照片
     private String mImgZhi = "";//执照照片
     private int type = 0;
-
+    private int mTypeIndex=0;//1:"人员密集场所",2:"三小场所",3:"出租屋"0:"其他"）
     @Override
     protected boolean isPrestener() {
         return false;
@@ -86,6 +86,12 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
                 picker1.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
                     @Override
                     public void onOptionPicked(int i, String s) {
+                        if (i < 3) {
+                            i++;
+                        } else {
+                            i=0;
+                        }
+                        mTypeIndex=i;
                         mBinding.tvType.setText(s);
                     }
                 });
@@ -143,11 +149,15 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         addSanXiaoRequest.setTspDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
         addSanXiaoRequest.setAreaId(fourId);
         addSanXiaoRequest.setAreaRelation(threeId);
+        addSanXiaoRequest.setAreaName(fourName);
         addSanXiaoRequest.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
-        addSanXiaoRequest.setBusiness_licence_img(DemoUtils.imageToBase64(mImgZhi));
+        addSanXiaoRequest.setBusinessLicenceImg(DemoUtils.imageToBase64(mImgZhi));
+        addSanXiaoRequest.setBusinessLicenceCode(zhizhao);
         addSanXiaoRequest.setEmployeeNum(Num);
         addSanXiaoRequest.setContactName(ContactsName);
         addSanXiaoRequest.setContactPhone(ContactsPhone);
+        addSanXiaoRequest.setEmail(Mail);
+        addSanXiaoRequest.setIndustry(String.valueOf(mTypeIndex));
 
 
         Api.getApi().addSanXiao(getRequestBody(addSanXiaoRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {

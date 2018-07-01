@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.anjian">
-   <!-- //ACCESS_FINE_LOCATION：允许APP访问精确地理位置。-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-  <!--  //ACCESS_COARSE_LOCATION：允许APP访问大概地理位置-->
+
+    <!-- //ACCESS_FINE_LOCATION：允许APP访问精确地理位置。 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- //ACCESS_COARSE_LOCATION：允许APP访问大概地理位置 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,14 +21,12 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:name=".common.MyApplication"
-
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -76,10 +75,13 @@
         <activity android:name=".ui.record.AddSanXiaoCheckActivity" />
         <activity android:name=".ui.record.QiYeCheckInfoActivity" />
         <activity android:name=".ui.record.AddQiyeCheckActivity" />
+        <activity android:name=".ui.record.AddTeZhongActivity" />
+        <activity android:name=".ui.record.AddXiaoFangActivity" />
         <activity
             android:name=".ui.record.AutographActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".ui.record.EditActivity"></activity>
+        <activity android:name=".ui.record.EditActivity" />
+        <activity android:name=".ui.record.SanxiaoSelectActivity"></activity>
     </application>
 
 </manifest>

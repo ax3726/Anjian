@@ -16,24 +16,32 @@
 
         <TextView
             android:id="@+id/tv_hint"
-            android:layout_marginLeft="15px"
-            android:layout_marginRight="15px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="15px"
+            android:layout_marginRight="15px"
             android:layout_marginTop="15px"
             android:text="在您附近的企业："
             android:textColor="@color/colorAEAEAE"
             android:textSize="16px" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rc_body"
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/srl_body_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginLeft="15px"
             android:layout_marginRight="15px"
-            android:background="@color/colorBackground"
-            android:layout_weight="1"
-            ></android.support.v7.widget.RecyclerView>
+            android:layout_weight="1">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rc_body"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:background="@color/colorBackground"
+
+                ></android.support.v7.widget.RecyclerView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

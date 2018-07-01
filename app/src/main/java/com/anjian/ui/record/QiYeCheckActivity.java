@@ -8,8 +8,9 @@ import com.anjian.R;
 import com.anjian.base.BaseActivity;
 import com.anjian.base.BasePresenter;
 import com.anjian.databinding.ActivityWeiHuaBinding;
-import com.lm.base.library.adapters.recyclerview.CommonAdapter;
-import com.lm.base.library.adapters.recyclerview.base.ViewHolder;
+
+import ml.gsy.com.library.adapters.recyclerview.CommonAdapter;
+import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;

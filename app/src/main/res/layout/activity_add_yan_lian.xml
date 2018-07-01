@@ -14,7 +14,28 @@
             android:background="@color/colorWhite"
             android:orientation="vertical">
 
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="13px"
+                android:layout_marginTop="13px"
+                android:background="@color/colorWhite"
+                android:gravity="center"
+                android:hint="请输入演练名称"
+                android:textColor="@color/colord2b2b2b"
+                android:textColorHint="@color/colord9d9d9"
+                android:textSize="18px" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+
+                android:background="@color/colorLine" />
+
             <com.zhy.autolayout.AutoFrameLayout
+                android:id="@+id/fly_img"
                 android:layout_width="match_parent"
                 android:layout_height="170px"
                 android:layout_marginLeft="15px"
@@ -30,7 +51,7 @@
                     android:drawablePadding="15px"
                     android:drawableTop="@drawable/record_add_img_icon"
                     android:gravity="center_horizontal"
-                    android:text="点击拍摄演练照片"
+                    android:text="点击拍摄培训照片"
                     android:textColor="@color/color4a4a4a"
                     android:textSize="14px" />
 
@@ -38,6 +59,7 @@
                 <ImageView
                     android:id="@+id/img"
                     android:layout_width="match_parent"
+                    android:scaleType="fitXY"
                     android:layout_height="match_parent"
                     android:visibility="gone" />
 
@@ -45,6 +67,7 @@
 
 
             <com.zhy.autolayout.AutoFrameLayout
+                android:id="@+id/fly_img1"
                 android:layout_width="match_parent"
                 android:layout_height="170px"
                 android:layout_marginLeft="15px"
@@ -68,6 +91,7 @@
                 <ImageView
                     android:id="@+id/img1"
                     android:layout_width="match_parent"
+                    android:scaleType="fitXY"
                     android:layout_height="match_parent"
                     android:visibility="gone" />
 

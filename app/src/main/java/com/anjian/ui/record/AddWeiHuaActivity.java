@@ -11,16 +11,21 @@ import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddWeiHuaBinding;
 import com.anjian.model.BaseBean;
+import com.anjian.model.record.WeiHuaListModel;
 import com.anjian.model.request.AddWeiHuaRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
 public class AddWeiHuaActivity extends PhotoActivity<BasePresenter, ActivityAddWeiHuaBinding> {
 
     private String mImgPath = "";
+    private WeiHuaListModel.DataBean mDataBean = null;
 
     @Override
     protected boolean isPrestener() {
@@ -54,6 +59,28 @@ public class AddWeiHuaActivity extends PhotoActivity<BasePresenter, ActivityAddW
                 submitMessage();
             }
         });
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        mDataBean = (WeiHuaListModel.DataBean) getIntent().getSerializableExtra("data");
+        initView();
+    }
+
+    private void initView() {
+        if (mDataBean == null) {
+            return;
+        }
+        mTitleBarLayout.setRightShow(false);
+
+        mBinding.tvAddTimg.setVisibility(View.GONE);
+        mBinding.img.setVisibility(View.VISIBLE);
+        Glide.with(aty).load(mDataBean.getLocaleImg()).into(mBinding.img);
+        mBinding.tvName.setText(mDataBean.getChemicalName());
+        mBinding.tvNum.setText(String.valueOf(mDataBean.getChemicalNum()));
+        mBinding.tvAddress.setText(mDataBean.getWorkPosition());
+
     }
 
     @Override
@@ -150,7 +177,7 @@ public class AddWeiHuaActivity extends PhotoActivity<BasePresenter, ActivityAddW
             return;
         }
         if (TextUtils.isEmpty(Name)) {
-            showToast("会议名称不能为空!");
+            showToast("名称不能为空!");
             return;
         }
         if (TextUtils.isEmpty(Num)) {
@@ -167,11 +194,12 @@ public class AddWeiHuaActivity extends PhotoActivity<BasePresenter, ActivityAddW
         addWeiHuaRequest.setChemicalName(Name);
         addWeiHuaRequest.setChemicalNum(Num);
         addWeiHuaRequest.setWorkPosition(Address);
-        addWeiHuaRequest.setLocaleImg(mImgPath);
+        addWeiHuaRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));
         Api.getApi().addWeiHua(getRequestBody(addWeiHuaRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
             @Override
             public void onSuccess(BaseBean baseBean) {
                 showToast(baseBean.getMessage());
+                EventBus.getDefault().post("刷新");
                 new Thread() {
                     @Override
                     public void run() {

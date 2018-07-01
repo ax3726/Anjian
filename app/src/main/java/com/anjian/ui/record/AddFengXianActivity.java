@@ -1,20 +1,24 @@
 package com.anjian.ui.record;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.anjian.R;
-import com.anjian.base.BaseActivity;
+import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
+import com.anjian.common.Api;
+import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddFengXianBinding;
-import com.anjian.databinding.ActivityFengXianBinding;
-import com.anjian.databinding.PopupwindowSelectPhotoBinding;
+import com.anjian.model.BaseBean;
+import com.anjian.model.record.FengXianListModel;
+import com.anjian.model.request.AddFengXianRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
@@ -23,6 +27,7 @@ import cn.qqtheme.framework.picker.OptionPicker;
 public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAddFengXianBinding> {
 
     private String mImgPath = "";//图片路径
+    private FengXianListModel.DataBean mDataBean = null;
 
     @Override
     protected boolean isPrestener() {
@@ -53,9 +58,33 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                submitMessage();
             }
         });
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        mDataBean = (FengXianListModel.DataBean) getIntent().getSerializableExtra("data");
+        initView();
+    }
+
+    private void initView() {
+        if (mDataBean == null) {
+            return;
+        }
+        mTitleBarLayout.setRightShow(false);
+
+        mBinding.tvAddTimg.setVisibility(View.GONE);
+        mBinding.img.setVisibility(View.VISIBLE);
+        Glide.with(aty).load(mDataBean.getLocaleImg()).into(mBinding.img);
+        mBinding.etName.setText(mDataBean.getDangerName());
+        mBinding.tvAddress.setText(mDataBean.getDetailPosition());
+        mBinding.tvFengxian.setText(mDataBean.getDangerLevel());
+        mBinding.tvShigu.setText(mDataBean.getEasyHappenCaseType());
+        mBinding.tvSuoshi.setText(mDataBean.getLossPrediction());
+        mBinding.tvZhengai.setText(mDataBean.getModifyStep());
     }
 
     @Override
@@ -135,7 +164,6 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -163,6 +191,7 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
     @Override
     public void photoSuccess(String path, File file, int... queue) {
         if (!TextUtils.isEmpty(path)) {
+            mImgPath = path;
             mBinding.tvAddTimg.setVisibility(View.GONE);
             mBinding.img.setVisibility(View.VISIBLE);
             Glide.with(aty).load(file).into(mBinding.img);
@@ -172,5 +201,77 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
     @Override
     public void photoFaild() {
         showToast("图片加载失败!");
+    }
+
+
+    private void submitMessage() {
+        String Name = mBinding.etName.getText().toString().trim();
+        String Address = mBinding.tvAddress.getText().toString().trim();
+        String Fengxian = mBinding.tvFengxian.getText().toString().trim();
+        String Shigu = mBinding.tvShigu.getText().toString().trim();
+        String Suoshi = mBinding.tvSuoshi.getText().toString().trim();
+        String Zhengai = mBinding.tvZhengai.getText().toString().trim();
+        if (TextUtils.isEmpty(mImgPath)) {
+            showToast("请添加现场图片!");
+            return;
+        }
+        if (TextUtils.isEmpty(Name)) {
+            showToast("风险点名称不能为空!");
+            return;
+        }
+        if (TextUtils.isEmpty(Address)) {
+            showToast("详细地址不能为空!");
+            return;
+        }
+        if (TextUtils.isEmpty(Fengxian)) {
+            showToast("请选择风险等级!");
+            return;
+        }
+
+        if (TextUtils.isEmpty(Shigu)) {
+            showToast("易引发事故的类型不能为空!");
+            return;
+        }
+        if (TextUtils.isEmpty(Suoshi)) {
+            showToast("伤亡/财产损失预测不能为空!");
+            return;
+        }
+        if (TextUtils.isEmpty(Zhengai)) {
+            showToast("整改措施不能为空!");
+            return;
+        }
+        AddFengXianRequest addFengXianRequest = new AddFengXianRequest();
+        addFengXianRequest.setEnterpriseId("1012329476849090561");
+        addFengXianRequest.setDangerName(Name);
+        addFengXianRequest.setDetailPosition(Address);
+        addFengXianRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));
+        addFengXianRequest.setEasyHappenCaseType(Shigu);
+        addFengXianRequest.setLossPrediction(Suoshi);
+        addFengXianRequest.setDangerLevel(Fengxian);
+        addFengXianRequest.setModifyStep(Zhengai);
+        Api.getApi().addFengXian(getRequestBody(addFengXianRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+            @Override
+            public void onSuccess(BaseBean baseBean) {
+                showToast(baseBean.getMessage());
+                EventBus.getDefault().post("刷新");
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        try {
+                            sleep(1500);
+                            finish();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
     }
 }
