@@ -12,12 +12,16 @@ import com.anjian.base.BaseNetListener;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.FragmentCompanylistBinding;
-import com.anjian.model.BaseBean;
+import com.anjian.model.record.CompanyLisyModel;
 import com.anjian.model.request.JingWeiRequest;
 import com.anjian.utils.DemoUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +34,8 @@ import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
  */
 
 public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, FragmentCompanylistBinding> {
-    private List<String> mDataList = new ArrayList<>();
-    private CommonAdapter<String> mCommonAdapter;
+    private List<CompanyLisyModel.DataBean> mDataList = new ArrayList<>();
+    private CommonAdapter<CompanyLisyModel.DataBean> mCommonAdapter;
     private int mType = 0;  //0 企业  1三小
 
     @Override
@@ -52,25 +56,24 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
     @Override
     protected void initData() {
         super.initData();
+        EventBus.getDefault().register(this);
         mType = getArguments().getInt("type", 0);
         mBinding.tvHint.setText(mType == 0 ? "在您附近的企业" : "在您附近的三小场所");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mDataList.add("");
-        mCommonAdapter = new CommonAdapter<String>(aty, R.layout.item_company_list, mDataList) {
+
+        mCommonAdapter = new CommonAdapter<CompanyLisyModel.DataBean>(aty, R.layout.item_company_list, mDataList) {
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
+            protected void convert(ViewHolder holder, CompanyLisyModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
+                holder.setText(R.id.tv_name, item.getName());
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getDoorHeadImg()), 0);
+
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (mType == 0) {//企业
-                            startActivity(QiYeActivity.class);
+                            startActivity(QiYeActivity.class, item.getKey());
                         } else {
-                            startActivity(SanXiaoActivity.class);
+                            startActivity(SanXiaoActivity.class, item.getKey());
                         }
                     }
                 });
@@ -112,11 +115,19 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
             jingWeiRequest.setLongitude(String.valueOf(location.getLongitude()));
         }
 
-        Api.getApi().qiYeList(getRequestBody(jingWeiRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this) {
+        Api.getApi().qiYeList(getRequestBody(jingWeiRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<CompanyLisyModel>(this) {
             @Override
-            public void onSuccess(BaseBean baseBean) {
+            public void onSuccess(CompanyLisyModel baseBean) {
                 finishRefersh();
-                showToast(baseBean.getMessage());
+                mDataList.clear();
+                List<CompanyLisyModel.DataBean> data = baseBean.getData();
+                if (data != null && data.size() > 0) {
+                    mBinding.rcBody.setBackground(null);
+                    mDataList.addAll(data);
+                } else {
+                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                }
+                mCommonAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -135,11 +146,19 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
             jingWeiRequest.setLongitude(String.valueOf(location.getLongitude()));
         }
 
-        Api.getApi().sanXiaoList(getRequestBody(jingWeiRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this) {
+        Api.getApi().sanXiaoList(getRequestBody(jingWeiRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<CompanyLisyModel>(this) {
             @Override
-            public void onSuccess(BaseBean baseBean) {
+            public void onSuccess(CompanyLisyModel baseBean) {
                 finishRefersh();
-                showToast(baseBean.getMessage());
+                mDataList.clear();
+                List<CompanyLisyModel.DataBean> data = baseBean.getData();
+                if (data != null && data.size() > 0) {
+                    mBinding.rcBody.setBackground(null);
+                    mDataList.addAll(data);
+                } else {
+                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                }
+                mCommonAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -148,5 +167,20 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
             }
         });
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refersh(String messageEvent) {
+        if ("刷新企业".equals(messageEvent)) {
+            getQiYeList();
+        } else if ("刷新三小".equals(messageEvent)) {
+            getSanXiaoList();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

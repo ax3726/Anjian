@@ -35,7 +35,7 @@ public class YanLianActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
 
     private List<YanLianListModel.DataBean> mDataList = new ArrayList<>();
     private CommonAdapter<YanLianListModel.DataBean> mCommonAdapter;
-
+    private String mId="";
 
     private int mPosition = 1;
     private int mSize = 10;
@@ -69,7 +69,7 @@ public class YanLianActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(AddYanLianActivity.class);
+                startActivity(AddYanLianActivity.class,mId);
             }
         });
     }
@@ -78,12 +78,12 @@ public class YanLianActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
     protected void initData() {
         super.initData();
         EventBus.getDefault().register(aty);
-
+        mId= getIntent().getStringExtra("id");
         mCommonAdapter = new CommonAdapter<YanLianListModel.DataBean>(aty, R.layout.item_yan_lian, mDataList) {
             @Override
             protected void convert(ViewHolder holder, YanLianListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
-                holder.setImageurl(R.id.img,item.getLocaleActImg(),0);
+                holder.setImageurl(R.id.img,DemoUtils.getUrl(item.getLocaleActImg()),0);
                 holder.setText(R.id.tv_name,item.getTitle());
                 holder.setText(R.id.tv_time, DemoUtils.getTime(item.getCreateTime()));
                 lly_item.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +124,7 @@ public class YanLianActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
         AddListRequest addListRequest = new AddListRequest();
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
-        addListRequest.getCondition().setId("1013363647155511297");
+        addListRequest.getCondition().setId(mId);
         Api.getApi().getYanLianList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<YanLianListModel>(this, true) {
             @Override
             public void onSuccess(YanLianListModel baseBean) {
@@ -139,6 +139,11 @@ public class YanLianActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
                     if (data.size() < mSize) {
                         mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
                     }
+                }
+                if (mPosition == 1 && mDataList.size() == 0) {
+                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                } else {
+                    mBinding.rcBody.setBackground(null);
                 }
                 mCommonAdapter.notifyDataSetChanged();
 

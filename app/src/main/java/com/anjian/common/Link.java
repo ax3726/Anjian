@@ -6,6 +6,7 @@ package com.anjian.common;
 
 public class Link {
     public static final String SEREVE = "http://101.236.25.68:81/";
+    public static final String PHOTOSEREVE = "http://101.236.25.68:81/security-monitor/app";
 
 
 }

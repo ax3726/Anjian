@@ -65,5 +65,5 @@ public interface BaseFragmentView {
      * @return
      */
     void showWaitDialog(String message, boolean isCancel, DialogInterface.OnCancelListener cancelListener);
-
+    void backToLogin();
 }

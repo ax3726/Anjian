@@ -14,6 +14,7 @@ import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityFengXianBinding;
 import com.anjian.model.record.FengXianListModel;
 import com.anjian.model.request.AddListRequest;
+import com.anjian.utils.DemoUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -37,6 +38,7 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
 
     private int mPosition = 1;
     private int mSize = 10;
+    private String mId="";
     @Override
     protected boolean isPrestener() {
         return false;
@@ -66,7 +68,7 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(AddFengXianActivity.class);
+               startActivity(AddFengXianActivity.class,mId);
             }
         });
     }
@@ -75,12 +77,12 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
     protected void initData() {
         super.initData();
         EventBus.getDefault().register(aty);
-
+        mId=getIntent().getStringExtra("id");
         mCommonAdapter = new CommonAdapter<FengXianListModel.DataBean>(aty, R.layout.item_company_list, mDataList) {
             @Override
             protected void convert(ViewHolder holder, FengXianListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
-                holder.setImageurl(R.id.img,item.getLocaleImg(),0);
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getLocaleImg()),0);
                 holder.setText(R.id.tv_name,item.getDangerName());
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -118,7 +120,7 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
         AddListRequest addListRequest = new AddListRequest();
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
-        addListRequest.getCondition().setId("1012329476849090561");
+        addListRequest.getCondition().setId(mId);
         Api.getApi().getFengXianList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<FengXianListModel>(this, true) {
             @Override
             public void onSuccess(FengXianListModel baseBean) {
@@ -134,6 +136,13 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
                         mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
                     }
                 }
+                if (mPosition == 1 && mDataList.size() == 0) {
+                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                } else {
+                    mBinding.rcBody.setBackground(null);
+                }
+
+
                 mCommonAdapter.notifyDataSetChanged();
 
 

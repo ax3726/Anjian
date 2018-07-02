@@ -67,5 +67,5 @@ public interface BaseView {
      * @return
      */
     void showWaitDialog(String message, boolean isCancel, DialogInterface.OnCancelListener cancelListener);
-
+    void backToLogin();
 }

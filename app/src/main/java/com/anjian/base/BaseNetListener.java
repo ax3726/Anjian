@@ -1,7 +1,7 @@
 package com.anjian.base;
 
 
-
+import com.anjian.model.ResponseCodeEnum;
 import com.anjian.net.ex.ApiException;
 import com.anjian.net.ex.ResultException;
 
@@ -51,7 +51,14 @@ public abstract class BaseNetListener<T> implements Subscriber<T> {
         if (e instanceof HttpException) {
             err_msg="网络错误";
         } else if (e instanceof ApiException) {
-            err_msg="Aip异常";
+            ApiException exception= (ApiException) e;
+            if (exception.getResponseCode() == ResponseCodeEnum.AUTH_FAILURE) {//token失效 需要重新登录
+                err_msg="账号验证异常，请重新登陆";
+
+            } else {
+                err_msg="Aip异常";
+            }
+
         } else if (e instanceof SocketTimeoutException) {
             err_msg="连接服务器超时";
         } else if (e instanceof ConnectException) {

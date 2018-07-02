@@ -5,6 +5,7 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/srl_body_list"
         android:layout_width="match_parent"
+        android:background="@color/colorBackground"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
@@ -13,7 +14,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="15px"
             android:layout_marginRight="15px"
-            android:background="@color/colorBackground"
+
 
             ></android.support.v7.widget.RecyclerView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>

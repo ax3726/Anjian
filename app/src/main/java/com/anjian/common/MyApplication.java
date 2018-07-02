@@ -1,7 +1,10 @@
 package com.anjian.common;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Environment;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -12,6 +15,9 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import ml.gsy.com.library.utils.CacheUtils;
 import ml.gsy.com.library.utils.Utils;
@@ -28,7 +34,7 @@ public class MyApplication extends Application {
     public static MyApplication getInstance() {
         return instance;
     }
-
+    public static List<Activity> mList = new LinkedList<>();
     public String mEasyId="";//便利架ID
 
     public String getEasyId() {
@@ -48,7 +54,32 @@ public class MyApplication extends Application {
         //缓存初始化
         CacheUtils.getInstance().init(CacheUtils.CacheMode.CACHE_MAX,
                 Utils.getCacheDirectory(this, Environment.DIRECTORY_DOCUMENTS).getAbsolutePath());
+        this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle bundle) {
+                mList.add(activity);
+            }
 
+            public void onActivityStarted(Activity activity) {
+            }
+
+            public void onActivityResumed(Activity activity) {
+            }
+
+            public void onActivityPaused(Activity activity) {
+            }
+
+            public void onActivityStopped(Activity activity) {
+            }
+
+            public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                mList.remove(activity);
+            }
+        });
 
     }
 
@@ -84,5 +115,35 @@ public class MyApplication extends Application {
 
     public static String getBase_Path() {
         return Base_Path;
+    }
+
+    public static List<Activity> getList() {
+        return mList;
+    }
+
+    public static void setList(List<Activity> mList) {
+        MyApplication.mList = mList;
+    }
+    public void exit() {
+        try {
+            for (Activity activity : mList)
+                if (activity != null)
+                    activity.finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+
+    }
+    public static void backToLogin(Context context, Intent intent) {
+        context.startActivity(intent);
+        try {
+            for (Activity activity : mList)
+                if (activity != null)
+                    activity.finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
     }
 }

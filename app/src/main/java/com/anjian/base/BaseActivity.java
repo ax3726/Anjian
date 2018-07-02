@@ -8,14 +8,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.anjian.R;
 import com.anjian.base.slide.SlideBackActivity;
+import com.anjian.common.MyApplication;
 import com.anjian.databinding.WidgetLayoutEmptyBinding;
 import com.anjian.net.RetryWithDelayFunction;
+import com.anjian.ui.main.LoginActivity;
 import com.anjian.widget.TitleBarLayout;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
@@ -92,7 +95,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
             WidgetLayoutEmptyBinding emptyBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.widget_layout_empty, null, false);
             emptyBinding.setStateModel(mStateModel);
             fly.addView(emptyBinding.getRoot());
-            lly.addView(fly);
+            lly.addView(fly,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             setContentView(lly);
             mTitleBarLayout.setLeftListener(new View.OnClickListener() {
                 @Override
@@ -136,6 +139,11 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
         startActivity(new Intent(aty, cls));
     }
 
+    protected void startActivity(Class<?> cls,String id) {
+        Intent intent = new Intent(aty, cls);
+        intent.putExtra("id",id);
+        startActivity(intent);
+    }
 
     protected void startActivityForResult(Class<?> cls,int requestCode) {
         startActivityForResult(new Intent(aty, cls),requestCode);
@@ -304,5 +312,10 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
     public RequestBody getRequestBody(Object object) {
         String str = ParseJsonUtils.getjsonStr(object);
         return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), str);
+    }
+
+    @Override
+    public void backToLogin() {
+        MyApplication.backToLogin(aty,new Intent(aty, LoginActivity.class));
     }
 }

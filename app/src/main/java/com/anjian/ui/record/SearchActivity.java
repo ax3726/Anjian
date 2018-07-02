@@ -15,6 +15,7 @@ import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivitySearchBinding;
 import com.anjian.model.record.SearchModel;
+import com.anjian.utils.DemoUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,11 +72,11 @@ public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBi
             protected void convert(ViewHolder holder, SearchModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
                 holder.setText(R.id.tv_name,item.getEnterpriseName());
-               holder.setImageurl(R.id.img,item.getEnterpriseDoorHeadImg(),0);
+               holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getEnterpriseDoorHeadImg()),0);
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                            startActivity(QiYeActivity.class);
+                            startActivity(QiYeActivity.class,item.getId());
                     }
                 });
 

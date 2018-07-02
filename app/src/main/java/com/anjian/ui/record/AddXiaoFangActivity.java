@@ -26,6 +26,7 @@ public class AddXiaoFangActivity extends PhotoActivity<BasePresenter, ActivityAd
 
     private String mImgPath = "";
     private XiaoFangListModel.DataBean mDataBean=null;
+    private String mId="";
     @Override
     protected boolean isPrestener() {
         return false;
@@ -51,6 +52,7 @@ public class AddXiaoFangActivity extends PhotoActivity<BasePresenter, ActivityAd
         super.initData();
         mBinding.tvAddTimg.setText("点击添加消防设施照片");
         mDataBean = (XiaoFangListModel.DataBean) getIntent().getSerializableExtra("data");
+        mId= getIntent().getStringExtra("id");
         initView();
     }
 
@@ -62,7 +64,7 @@ public class AddXiaoFangActivity extends PhotoActivity<BasePresenter, ActivityAd
 
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);
-        Glide.with(aty).load(mDataBean.getLocaleImg()).into(mBinding.img);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
         mBinding.tvName.setText(mDataBean.getFireDeviceName());
         mBinding.tvNum.setText(String.valueOf(mDataBean.getFireDeviceNum()));
         mBinding.tvAddress.setText(mDataBean.getWorkPosition());
@@ -190,7 +192,7 @@ public class AddXiaoFangActivity extends PhotoActivity<BasePresenter, ActivityAd
         }
         AddXiaoFangRequest addXiaoFangRequest=new AddXiaoFangRequest();
 
-        addXiaoFangRequest.setEnterpriseId("1012329476849090561");
+        addXiaoFangRequest.setEnterpriseId(mId);
         addXiaoFangRequest.setFireDeviceName(Name);
         addXiaoFangRequest.setFireDeviceNum(Num);
         addXiaoFangRequest.setWorkPosition(Address);

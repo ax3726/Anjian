@@ -12,5 +12,6 @@ public interface BaseHttpListener {
     void showWaitDialog();
     void hideWaitDialog();
     void showToast(String str);
+    void backToLogin();
 
 }

@@ -19,7 +19,8 @@
 
 
             <ImageView
-                android:id="@+id/img"
+                android:id="@+id/img_back"
+                android:scaleType="fitXY"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

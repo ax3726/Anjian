@@ -17,6 +17,8 @@ import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,8 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
     private String mImgHead = "";//门头照片
     private String mImgZhi = "";//执照照片
     private int type = 0;
-    private int mTypeIndex=0;//1:"人员密集场所",2:"三小场所",3:"出租屋"0:"其他"）
+    private int mTypeIndex = 0;//1:"人员密集场所",2:"三小场所",3:"出租屋"0:"其他"）
+
     @Override
     protected boolean isPrestener() {
         return false;
@@ -89,9 +92,9 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
                         if (i < 3) {
                             i++;
                         } else {
-                            i=0;
+                            i = 0;
                         }
-                        mTypeIndex=i;
+                        mTypeIndex = i;
                         mBinding.tvType.setText(s);
                     }
                 });
@@ -163,8 +166,9 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         Api.getApi().addSanXiao(getRequestBody(addSanXiaoRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
             @Override
             public void onSuccess(BaseBean baseBean) {
-               showToast(baseBean.getMessage());
-                new Thread(){
+                showToast(baseBean.getMessage());
+                EventBus.getDefault().post("刷新三小");
+                new Thread() {
                     @Override
                     public void run() {
                         super.run();

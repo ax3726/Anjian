@@ -26,7 +26,7 @@ public class AddWeiHuaActivity extends PhotoActivity<BasePresenter, ActivityAddW
 
     private String mImgPath = "";
     private WeiHuaListModel.DataBean mDataBean = null;
-
+    private String mId="";
     @Override
     protected boolean isPrestener() {
         return false;
@@ -65,6 +65,7 @@ public class AddWeiHuaActivity extends PhotoActivity<BasePresenter, ActivityAddW
     protected void initData() {
         super.initData();
         mDataBean = (WeiHuaListModel.DataBean) getIntent().getSerializableExtra("data");
+        mId=getIntent().getStringExtra("id");
         initView();
     }
 
@@ -76,7 +77,7 @@ public class AddWeiHuaActivity extends PhotoActivity<BasePresenter, ActivityAddW
 
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);
-        Glide.with(aty).load(mDataBean.getLocaleImg()).into(mBinding.img);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
         mBinding.tvName.setText(mDataBean.getChemicalName());
         mBinding.tvNum.setText(String.valueOf(mDataBean.getChemicalNum()));
         mBinding.tvAddress.setText(mDataBean.getWorkPosition());
@@ -190,7 +191,7 @@ public class AddWeiHuaActivity extends PhotoActivity<BasePresenter, ActivityAddW
         }
         AddWeiHuaRequest addWeiHuaRequest = new AddWeiHuaRequest();
 
-        addWeiHuaRequest.setEnterpriseId("1012329476849090561");
+        addWeiHuaRequest.setEnterpriseId(mId);
         addWeiHuaRequest.setChemicalName(Name);
         addWeiHuaRequest.setChemicalNum(Num);
         addWeiHuaRequest.setWorkPosition(Address);

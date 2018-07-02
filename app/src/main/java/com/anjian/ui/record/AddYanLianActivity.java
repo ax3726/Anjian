@@ -30,6 +30,7 @@ public class AddYanLianActivity extends PhotoActivity<BasePresenter, ActivityAdd
     private String mImgYan="";//演练照片
     private String mImgQianMin="";//
     private int type = 0;
+    private String mId="";
     private YanLianListModel.DataBean mDataBean=null;
     @Override
     protected boolean isPrestener() {
@@ -86,6 +87,7 @@ public class AddYanLianActivity extends PhotoActivity<BasePresenter, ActivityAdd
     protected void initData() {
         super.initData();
         mDataBean = (YanLianListModel.DataBean) getIntent().getSerializableExtra("data");
+        mId= getIntent().getStringExtra("id");
         initView();
     }
 
@@ -101,8 +103,8 @@ public class AddYanLianActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mBinding.tvAddTimg1.setVisibility(View.GONE);
         mBinding.img1.setVisibility(View.VISIBLE);
 
-        Glide.with(aty).load(mDataBean.getLocaleTeachImg()).into(mBinding.img);
-        Glide.with(aty).load(mDataBean.getLocaleActImg()).into(mBinding.img1);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleTeachImg())).into(mBinding.img);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleActImg())).into(mBinding.img1);
         mBinding.etName.setText(mDataBean.getTitle());
 
 
@@ -189,7 +191,7 @@ public class AddYanLianActivity extends PhotoActivity<BasePresenter, ActivityAdd
             return;
         }
         AddYanLianRequest addYanLianRequest=new AddYanLianRequest();
-        addYanLianRequest.setTspId("1013363647155511297");
+        addYanLianRequest.setTspId(mId);
         addYanLianRequest.setTitle(Name);
         addYanLianRequest.setLocaleTeachImg(DemoUtils.imageToBase64(mImgPei));
         addYanLianRequest.setLocale_act_img(DemoUtils.imageToBase64(mImgYan));

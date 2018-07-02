@@ -48,7 +48,7 @@ public class DemoUtils {
             }
 
         }
-        return result;
+        return "data:image/png;base64,"+result;
 
     }
 
@@ -97,5 +97,15 @@ public class DemoUtils {
         } else {
             return "未知时间";
         }
+    }
+
+    /**
+     * 获取图片路径
+     * @param url
+     * @return
+     */
+    public static  String getUrl(String url)
+    {
+        return "https://security-monitor.oss-cn-shenzhen.aliyuncs.com"+url;
     }
 }

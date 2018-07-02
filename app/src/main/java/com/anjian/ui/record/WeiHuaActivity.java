@@ -14,6 +14,7 @@ import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityWeiHuaBinding;
 import com.anjian.model.record.WeiHuaListModel;
 import com.anjian.model.request.AddListRequest;
+import com.anjian.utils.DemoUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -37,7 +38,7 @@ public class WeiHuaActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBi
 
     private int mPosition = 1;
     private int mSize = 10;
-
+    private String mId="";
     @Override
     protected boolean isPrestener() {
         return false;
@@ -67,7 +68,7 @@ public class WeiHuaActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBi
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(AddWeiHuaActivity.class);
+                startActivity(AddWeiHuaActivity.class,mId);
             }
         });
     }
@@ -76,13 +77,14 @@ public class WeiHuaActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBi
     protected void initData() {
         super.initData();
         EventBus.getDefault().register(aty);
-
+        mId=getIntent().getStringExtra("id");
         mCommonAdapter = new CommonAdapter<WeiHuaListModel.DataBean>(aty, R.layout.item_wei_hua, mDataList) {
             @Override
             protected void convert(ViewHolder holder, WeiHuaListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
                 holder.setText(R.id.tv_name, item.getChemicalName());
                 holder.setText(R.id.tv_num, "数量:" + item.getChemicalNum());
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getLocaleImg()),0);
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -120,7 +122,7 @@ public class WeiHuaActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBi
         AddListRequest addListRequest = new AddListRequest();
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
-        addListRequest.getCondition().setId("1012329476849090561");
+        addListRequest.getCondition().setId(mId);
         Api.getApi().getWeiHuaList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<WeiHuaListModel>(this, true) {
             @Override
             public void onSuccess(WeiHuaListModel baseBean) {
@@ -135,6 +137,11 @@ public class WeiHuaActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBi
                     if (data.size() < mSize) {
                         mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
                     }
+                }
+                if (mPosition == 1 && mDataList.size() == 0) {
+                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                } else {
+                    mBinding.rcBody.setBackground(null);
                 }
                 mCommonAdapter.notifyDataSetChanged();
 

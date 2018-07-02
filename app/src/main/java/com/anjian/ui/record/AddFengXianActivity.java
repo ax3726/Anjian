@@ -28,7 +28,7 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
 
     private String mImgPath = "";//图片路径
     private FengXianListModel.DataBean mDataBean = null;
-
+    private String mId="";
     @Override
     protected boolean isPrestener() {
         return false;
@@ -67,6 +67,7 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
     protected void initData() {
         super.initData();
         mDataBean = (FengXianListModel.DataBean) getIntent().getSerializableExtra("data");
+        mId=getIntent().getStringExtra("id");
         initView();
     }
 
@@ -78,7 +79,7 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
 
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);
-        Glide.with(aty).load(mDataBean.getLocaleImg()).into(mBinding.img);
+        Glide.with(aty).load( DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
         mBinding.etName.setText(mDataBean.getDangerName());
         mBinding.tvAddress.setText(mDataBean.getDetailPosition());
         mBinding.tvFengxian.setText(mDataBean.getDangerLevel());
@@ -241,7 +242,7 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
             return;
         }
         AddFengXianRequest addFengXianRequest = new AddFengXianRequest();
-        addFengXianRequest.setEnterpriseId("1012329476849090561");
+        addFengXianRequest.setEnterpriseId(mId);
         addFengXianRequest.setDangerName(Name);
         addFengXianRequest.setDetailPosition(Address);
         addFengXianRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));

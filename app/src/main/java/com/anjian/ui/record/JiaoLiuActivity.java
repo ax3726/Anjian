@@ -37,7 +37,7 @@ public class JiaoLiuActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
     private CommonAdapter<JiaoLiuListModel.DataBean> mCommonAdapter;
     private int mPosition = 1;
     private int mSize = 10;
-
+    private String mId="";
     @Override
     protected boolean isPrestener() {
         return false;
@@ -67,7 +67,7 @@ public class JiaoLiuActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(AddJiaoLiuActivity.class);
+                startActivity(AddJiaoLiuActivity.class,mId);
             }
         });
     }
@@ -76,11 +76,12 @@ public class JiaoLiuActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
     protected void initData() {
         super.initData();
         EventBus.getDefault().register(aty);
+        mId=getIntent().getStringExtra("id");
         mCommonAdapter = new CommonAdapter<JiaoLiuListModel.DataBean>(aty, R.layout.item_yan_lian, mDataList) {
             @Override
             protected void convert(ViewHolder holder, JiaoLiuListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
-                holder.setImageurl(R.id.img,item.getLocaleImg(),0);
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getLocaleImg()),0);
                 holder.setText(R.id.tv_name,item.getMeetingName());
                 holder.setText(R.id.tv_time, DemoUtils.getTime(item.getCreateTime()));
                 lly_item.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +121,7 @@ public class JiaoLiuActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
         AddListRequest addListRequest = new AddListRequest();
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
-        addListRequest.getCondition().setId("1012329476849090561");
+        addListRequest.getCondition().setId(mId);
         Api.getApi().getJiaoLiuList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<JiaoLiuListModel>(this, true) {
             @Override
             public void onSuccess(JiaoLiuListModel baseBean) {
@@ -135,6 +136,11 @@ public class JiaoLiuActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
                     if (data.size()<mSize) {
                         mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
                     }
+                }
+                if (mPosition == 1 && mDataList.size() == 0) {
+                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                } else {
+                    mBinding.rcBody.setBackground(null);
                 }
                 mCommonAdapter.notifyDataSetChanged();
             }

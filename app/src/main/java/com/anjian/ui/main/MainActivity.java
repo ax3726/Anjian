@@ -58,8 +58,8 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
                         }
                         break;
                     case R.id.rb_mine:
-                        if (currentFragmentPosition != 2) {
-                            changeFragment(2);
+                        if (currentFragmentPosition != 3) {
+                            changeFragment(3);
                         }
                         break;
                 }

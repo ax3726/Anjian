@@ -17,6 +17,8 @@ import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -191,6 +193,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
             @Override
             public void onSuccess(BaseBean baseBean) {
                 showToast(baseBean.getMessage());
+                EventBus.getDefault().post("刷新企业");
                 new Thread(){
                     @Override
                     public void run() {

@@ -28,7 +28,7 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
     private String mImgPath = "";
     private String mImgQianMin = "";
     private JiaoLiuListModel.DataBean mDataBean = null;
-
+    private String mId="";
     @Override
     protected boolean isPrestener() {
         return false;
@@ -92,6 +92,7 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
     protected void initData() {
         super.initData();
         mDataBean = (JiaoLiuListModel.DataBean) getIntent().getSerializableExtra("data");
+        mId=getIntent().getStringExtra("id");
         initView();
     }
 
@@ -103,7 +104,7 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mBinding.tvQiye.setText(mDataBean.getEnterpriseName());
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);
-        Glide.with(aty).load(mDataBean.getLocaleImg()).into(mBinding.img);
+        Glide.with(aty).load( DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
         mBinding.etName.setText(mDataBean.getMeetingName());
         mBinding.tvPeople.setText(mDataBean.getMeetingUser());
         mBinding.tvContent.setText(mDataBean.getMeetingContent());
@@ -209,7 +210,7 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
             return;
         }
         AddJiaoLiuRequest addJiaoLiuRequest = new AddJiaoLiuRequest();
-        addJiaoLiuRequest.setEnterpriseId("1012329476849090561");
+        addJiaoLiuRequest.setEnterpriseId(mId);
         addJiaoLiuRequest.setMeetingName(Name);
         addJiaoLiuRequest.setMeetingUser(People);
         addJiaoLiuRequest.setMeetingContent(Content);
@@ -261,7 +262,7 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
             return;
         }
         AddJiaoLiuRequest addJiaoLiuRequest = new AddJiaoLiuRequest();
-        addJiaoLiuRequest.setEnterpriseId(mDataBean.getEnterpriseId());
+        addJiaoLiuRequest.setEnterpriseId(mId);
         addJiaoLiuRequest.setMeetingName(Name);
         addJiaoLiuRequest.setMeetingUser(People);
         addJiaoLiuRequest.setMeetingContent(Content);

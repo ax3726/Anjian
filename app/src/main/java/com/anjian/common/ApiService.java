@@ -3,6 +3,7 @@ package com.anjian.common;
 
 import com.anjian.model.BaseBean;
 import com.anjian.model.main.LoginModel;
+import com.anjian.model.record.CompanyLisyModel;
 import com.anjian.model.record.FengXianListModel;
 import com.anjian.model.record.JiaoLiuListModel;
 import com.anjian.model.record.SearchModel;
@@ -50,12 +51,20 @@ public interface ApiService {
     //企业列表信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/geo/enterprise")
-    Flowable<BaseBean> qiYeList(@Body RequestBody body, @Query("token") String token);
+    Flowable<CompanyLisyModel> qiYeList(@Body RequestBody body, @Query("token") String token);
+    //企业信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("security-monitor/app/enterpriseInfo/info/{id}")
+    Flowable<BaseBean> qiYeInfo(@Path("id") String id, @Query("token") String token);
 
+    //三小信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("security-monitor/app/tspInfo/info/{id}")
+    Flowable<BaseBean> sanXiaoInfo(@Path("id") String id, @Query("token") String token);
     //三小场所信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/geo/tsp")
-    Flowable<BaseBean> sanXiaoList(@Body RequestBody body, @Query("token") String token);
+    Flowable<CompanyLisyModel> sanXiaoList(@Body RequestBody body, @Query("token") String token);
 
     //新增三小场所信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})

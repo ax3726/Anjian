@@ -1,7 +1,6 @@
 package com.anjian.base;
 
 
-
 import com.anjian.net.RetryWithDelayFunction;
 import com.trello.rxlifecycle2.LifecycleProvider;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -107,8 +106,13 @@ public class BasePresenter<V extends BaseView> implements IBasePresenter<V> , Li
         getView().showToast(str);
     }
 
+    @Override
+    public void backToLogin() {
+        if (isViewAttach()) {
+            getView().backToLogin();
+        }
 
-
+    }
 
 
 }

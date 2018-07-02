@@ -53,8 +53,8 @@ android {
     }
     signingConfigs {
         xxconfig {
-            storeFile file("ycbl.jks")
-            keyAlias "ycbl"
+            storeFile file("anjian.jks")
+            keyAlias "anjian"
             keyPassword "111111"
             storePassword "111111"
         }

@@ -14,6 +14,7 @@ import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityWeiHuaBinding;
 import com.anjian.model.record.XiaoFangListModel;
 import com.anjian.model.request.AddListRequest;
+import com.anjian.utils.DemoUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -35,7 +36,7 @@ public class XiaoFangActivity extends BaseActivity<BasePresenter, ActivityWeiHua
 
     private int mPosition = 1;
     private int mSize = 10;
-
+    private String mId="";
     @Override
     protected boolean isPrestener() {
         return false;
@@ -65,7 +66,7 @@ public class XiaoFangActivity extends BaseActivity<BasePresenter, ActivityWeiHua
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(AddXiaoFangActivity.class);
+               startActivity(AddXiaoFangActivity.class,mId);
             }
         });
     }
@@ -74,13 +75,14 @@ public class XiaoFangActivity extends BaseActivity<BasePresenter, ActivityWeiHua
     protected void initData() {
         super.initData();
         EventBus.getDefault().register(aty);
-
+        mId= getIntent().getStringExtra("id");
         mCommonAdapter = new CommonAdapter<XiaoFangListModel.DataBean>(aty, R.layout.item_wei_hua, mDataList) {
             @Override
             protected void convert(ViewHolder holder, XiaoFangListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
                 holder.setText(R.id.tv_name, item.getFireDeviceName());
                 holder.setText(R.id.tv_num, "数量:" + item.getFireDeviceNum());
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getLocaleImg()),0);
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -118,7 +120,7 @@ public class XiaoFangActivity extends BaseActivity<BasePresenter, ActivityWeiHua
         AddListRequest addListRequest = new AddListRequest();
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
-        addListRequest.getCondition().setId("1012329476849090561");
+        addListRequest.getCondition().setId(mId);
         Api.getApi().getXiaoFangList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<XiaoFangListModel>(this, true) {
             @Override
             public void onSuccess(XiaoFangListModel baseBean) {
@@ -133,6 +135,11 @@ public class XiaoFangActivity extends BaseActivity<BasePresenter, ActivityWeiHua
                     if (data.size() < mSize) {
                         mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
                     }
+                }
+                if (mPosition == 1 && mDataList.size() == 0) {
+                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                } else {
+                    mBinding.rcBody.setBackground(null);
                 }
                 mCommonAdapter.notifyDataSetChanged();
 
