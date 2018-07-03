@@ -25,8 +25,9 @@ import java.io.File;
 public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAddWeiHuaBinding> {
 
     private String mImgPath = "";
-    private TeZhongListModel.DataBean mDataBean=null;
-    private String mId="";
+    private TeZhongListModel.DataBean mDataBean = null;
+    private String mId = "";
+
     @Override
     protected boolean isPrestener() {
         return false;
@@ -52,7 +53,7 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
         super.initData();
         mBinding.tvAddTimg.setText("点击添加特种设备照片");
         mDataBean = (TeZhongListModel.DataBean) getIntent().getSerializableExtra("data");
-        mId= getIntent().getStringExtra("id");
+        mId = getIntent().getStringExtra("id");
         initView();
     }
 
@@ -79,7 +80,9 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
 
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);
-        Glide.with(aty).load( DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
+
+
         mBinding.tvName.setText(mDataBean.getSpecialDeviceName());
         mBinding.tvNum.setText(String.valueOf(mDataBean.getSpecialDeviceNum()));
         mBinding.tvAddress.setText(mDataBean.getWorkPosition());
@@ -89,6 +92,10 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
     @Override
     protected void initEvent() {
         super.initEvent();
+
+        if (mDataBean != null) {
+            return;
+        }
         mBinding.tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,7 +199,7 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
             return;
         }
 
-        AddTeZhongRequest addTeZhongRequest=new AddTeZhongRequest();
+        AddTeZhongRequest addTeZhongRequest = new AddTeZhongRequest();
         addTeZhongRequest.setEnterpriseId(mId);
         addTeZhongRequest.setSpecialDeviceName(Name);
         addTeZhongRequest.setSpecialDeviceNum(Num);

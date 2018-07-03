@@ -71,12 +71,12 @@ public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBi
             @Override
             protected void convert(ViewHolder holder, SearchModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
-                holder.setText(R.id.tv_name,item.getEnterpriseName());
-               holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getEnterpriseDoorHeadImg()),0);
+                holder.setText(R.id.tv_name, item.getEnterpriseName());
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getEnterpriseDoorHeadImg()), 0);
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                            startActivity(QiYeActivity.class,item.getId());
+                        startActivity(QiYeActivity.class, item.getId());
                     }
                 });
 
@@ -87,18 +87,17 @@ public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBi
     }
 
 
-
     private void seatch() {
         String content = mBinding.etSearch.getText().toString().trim();
         if (TextUtils.isEmpty(content)) {
             showToast("请输入关键字");
             return;
         }
-        Api.getApi().search(MyApplication.getInstance().getToken(), content).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SearchModel>(this,true) {
+        Api.getApi().search(MyApplication.getInstance().getToken(), content).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SearchModel>(this, true) {
             @Override
             public void onSuccess(SearchModel baseBean) {
                 mDataList.clear();
-                if (baseBean.getData()!=null&&baseBean.getData().size()>0) {
+                if (baseBean.getData() != null && baseBean.getData().size() > 0) {
                     mDataList.addAll(baseBean.getData());
                 }
                 mCommonAdapter.notifyDataSetChanged();

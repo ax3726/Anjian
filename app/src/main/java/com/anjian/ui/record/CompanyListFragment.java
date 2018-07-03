@@ -1,6 +1,11 @@
 package com.anjian.ui.record;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -95,6 +100,7 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
         getdata();
     }
 
+
     private void getdata() {
         if (mType == 0) {//企业
             getQiYeList();
@@ -171,9 +177,9 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refersh(String messageEvent) {
-        if ("刷新企业".equals(messageEvent)) {
+        if ("刷新企业".equals(messageEvent)&&mType == 0) {
             getQiYeList();
-        } else if ("刷新三小".equals(messageEvent)) {
+        } else if ("刷新三小".equals(messageEvent)&&mType == 1) {
             getSanXiaoList();
         }
     }

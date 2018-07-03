@@ -95,7 +95,7 @@ public class AddYanLianActivity extends PhotoActivity<BasePresenter, ActivityAdd
         if (mDataBean == null) {
             return;
         }
-        mTitleBarLayout.setRightShow(false);
+        mTitleBarLayout.setRightTxt("");
 
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);
@@ -112,6 +112,9 @@ public class AddYanLianActivity extends PhotoActivity<BasePresenter, ActivityAdd
     @Override
     protected void initEvent() {
         super.initEvent();
+        if (mDataBean != null) {
+            return;
+        }
         mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

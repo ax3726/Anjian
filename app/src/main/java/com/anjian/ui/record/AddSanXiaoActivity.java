@@ -10,8 +10,11 @@ import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddSanXiaoBinding;
 import com.anjian.model.BaseBean;
+import com.anjian.model.record.QiYeInfoModel;
+import com.anjian.model.record.SanXiaoInfoModel;
 import com.anjian.model.record.SysAreaModel;
 import com.anjian.model.request.AddSanXiaoRequest;
+import com.anjian.model.request.UpdateSanXiaoRequest;
 import com.anjian.ui.common.PhotoActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
@@ -26,11 +29,14 @@ import java.util.List;
 import cn.qqtheme.framework.picker.OptionPicker;
 
 public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAddSanXiaoBinding> implements View.OnClickListener {
-
+    private String[] mTypeList = new String[]{
+            "人员密集场所", "三小场所", "出租屋", "其他"
+    };
     private String mImgHead = "";//门头照片
     private String mImgZhi = "";//执照照片
     private int type = 0;
     private int mTypeIndex = 0;//1:"人员密集场所",2:"三小场所",3:"出租屋"0:"其他"）
+    private SanXiaoInfoModel.DataBean mDataBean = null;
 
     @Override
     protected boolean isPrestener() {
@@ -62,9 +68,54 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mTitleBarLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitMessage();
+                if (mDataBean != null) {
+                    updateMessage();
+                } else {
+                    submitMessage();
+                }
             }
         });
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        mDataBean = (SanXiaoInfoModel.DataBean) getIntent().getSerializableExtra("data");
+        initView();
+    }
+
+    private void initView() {
+        if (mDataBean == null) {
+            return;
+        }
+        mBinding.tvAddTou.setVisibility(View.GONE);
+        mBinding.imgTou.setVisibility(View.VISIBLE);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getTspDoorHeadImg())).into(mBinding.imgTou);
+
+        mBinding.tvAddZhi.setVisibility(View.GONE);
+        mBinding.imgZhi.setVisibility(View.VISIBLE);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getBusinessLicenceImg())).into(mBinding.imgZhi);
+
+
+        mBinding.etName.setText(mDataBean.getTspName());
+        // mBinding.tvJiedao.setText(mDataBean.get());
+        mBinding.etZhizhao.setText(mDataBean.getBusinessLicenceCode());
+        mBinding.etContactName.setText(mDataBean.getContactName());
+        mBinding.etContactPhone.setText(mDataBean.getContactPhone());
+        mBinding.etMail.setText(mDataBean.getEmail());
+
+        mTypeIndex = mDataBean.getIndustry();
+        mBinding.tvType.setText(mTypeList[mTypeIndex == 0 ? 3 : mTypeIndex--]);
+
+
+        mBinding.etNum.setText(mDataBean.getEmployeeNum() + "");
+
+        fourId = mDataBean.getAreaId();
+        areaId = mDataBean.getAreaId();
+
+        threeId = mDataBean.getAreaRelation();
+        fourName = mDataBean.getAreaName();
+
     }
 
     @Override
@@ -80,9 +131,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_type://所属类别
-                OptionPicker picker1 = new OptionPicker(this, new String[]{
-                        "人员密集场所", "三小场所", "出租屋", "其他"
-                });
+                OptionPicker picker1 = new OptionPicker(this, mTypeList);
                 picker1.setOffset(2);
                 picker1.setSelectedIndex(1);
                 picker1.setTextSize(16);
@@ -164,6 +213,62 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
 
 
         Api.getApi().addSanXiao(getRequestBody(addSanXiaoRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+            @Override
+            public void onSuccess(BaseBean baseBean) {
+                showToast(baseBean.getMessage());
+                EventBus.getDefault().post("刷新三小");
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        try {
+                            sleep(1500);
+                            finish();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
+    }
+
+    private void updateMessage() {
+        String name = mBinding.etName.getText().toString().trim();
+        String jiedao = mBinding.tvJiedao.getText().toString().trim();
+        String zhizhao = mBinding.etZhizhao.getText().toString().trim();
+        String ContactsName = mBinding.etContactName.getText().toString().trim();
+        String ContactsPhone = mBinding.etContactPhone.getText().toString().trim();
+        String Mail = mBinding.etMail.getText().toString().trim();
+        String Num = mBinding.etNum.getText().toString().trim();
+
+        UpdateSanXiaoRequest addSanXiaoRequest = new UpdateSanXiaoRequest();
+        addSanXiaoRequest.setId(mDataBean.getId());
+        addSanXiaoRequest.setTspName(name);
+        if (!TextUtils.isEmpty(mImgHead)) {
+            addSanXiaoRequest.setTspDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+        }
+        addSanXiaoRequest.setAreaId(fourId);
+        addSanXiaoRequest.setAreaRelation(threeId);
+        addSanXiaoRequest.setAreaName(fourName);
+        addSanXiaoRequest.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
+        if (!TextUtils.isEmpty(mImgZhi)) {
+            addSanXiaoRequest.setBusinessLicenceImg(DemoUtils.imageToBase64(mImgZhi));
+        }
+        addSanXiaoRequest.setBusinessLicenceCode(zhizhao);
+        addSanXiaoRequest.setEmployeeNum(Num);
+        addSanXiaoRequest.setContactName(ContactsName);
+        addSanXiaoRequest.setContactPhone(ContactsPhone);
+        addSanXiaoRequest.setEmail(Mail);
+        addSanXiaoRequest.setIndustry(String.valueOf(mTypeIndex));
+
+
+        Api.getApi().updateSanXiao(getRequestBody(addSanXiaoRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
             @Override
             public void onSuccess(BaseBean baseBean) {
                 showToast(baseBean.getMessage());

@@ -19,6 +19,13 @@
       <!--  <item name="android:windowBackground">@drawable/welcome_icon</item>-->
 
     </style>
+    <!-- popwindow动画样式 11-->
+    <style name="lib_popwindow_anim_style">
+        <item name="android:windowEnterAnimation">@anim/lib_pop_enter_bottom_anim</item>
+        <!-- 指定显示的动画xml -->
+        <item name="android:windowExitAnimation">@anim/lib_pop_exit_bottom_anim</item>
+        <!-- 指定消失的动画xml -->
+    </style>
     <!-- animation 样式 -->
     <style name="activityAnimation" parent="@android:style/Animation">
         <item name="android:activityOpenEnterAnimation">@anim/slide_right_in</item>

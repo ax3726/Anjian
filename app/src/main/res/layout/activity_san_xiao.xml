@@ -15,19 +15,32 @@
 
 
             <ImageView
-                android:id="@+id/img_back"
+                android:id="@+id/img"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
 
-            <ImageView
-                android:layout_width="7px"
-                android:layout_height="15px"
-                android:layout_marginLeft="15px"
-                android:layout_marginTop="20px"
-                android:src="@drawable/record_left_icon" />
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:id="@+id/rly_back"
+                android:layout_width="40px"
+                android:layout_height="40px">
+
+                <ImageView
+                    android:id="@+id/img_back"
+
+                    android:layout_width="7px"
+                    android:layout_height="15px"
+                    android:layout_marginLeft="15px"
+                    android:layout_marginTop="20px"
+
+                    android:src="@drawable/record_left_icon" />
+            </com.zhy.autolayout.AutoRelativeLayout>
+
         </com.zhy.autolayout.AutoFrameLayout>
 
         <ImageView
+            android:id="@+id/img_address"
             android:layout_width="60px"
             android:layout_height="60px"
             android:layout_gravity="right"

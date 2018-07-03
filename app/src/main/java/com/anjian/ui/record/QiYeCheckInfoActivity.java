@@ -8,6 +8,7 @@ import com.anjian.R;
 import com.anjian.base.BaseActivity;
 import com.anjian.base.BasePresenter;
 import com.anjian.databinding.ActivityWeiHuaBinding;
+import com.anjian.model.record.QiYeCheckListModel;
 
 import ml.gsy.com.library.adapters.recyclerview.CommonAdapter;
 import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
@@ -21,7 +22,7 @@ public class QiYeCheckInfoActivity extends BaseActivity<BasePresenter, ActivityW
     private List<String> mDataList = new ArrayList<>();
     private CommonAdapter<String> mCommonAdapter;
 
-
+    private QiYeCheckListModel.DataBean mDataBean=null;
     @Override
     protected boolean isPrestener() {
         return false;

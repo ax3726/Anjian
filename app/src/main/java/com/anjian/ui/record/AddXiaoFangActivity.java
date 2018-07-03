@@ -60,7 +60,7 @@ public class AddXiaoFangActivity extends PhotoActivity<BasePresenter, ActivityAd
         if (mDataBean == null) {
             return;
         }
-        mTitleBarLayout.setRightShow(false);
+        mTitleBarLayout.setRightTxt("");
 
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);
@@ -88,6 +88,9 @@ public class AddXiaoFangActivity extends PhotoActivity<BasePresenter, ActivityAd
     @Override
     protected void initEvent() {
         super.initEvent();
+        if (mDataBean != null) {
+            return;
+        }
         mBinding.tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

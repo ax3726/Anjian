@@ -6,6 +6,9 @@ import com.anjian.model.main.LoginModel;
 import com.anjian.model.record.CompanyLisyModel;
 import com.anjian.model.record.FengXianListModel;
 import com.anjian.model.record.JiaoLiuListModel;
+import com.anjian.model.record.QiYeCheckListModel;
+import com.anjian.model.record.QiYeInfoModel;
+import com.anjian.model.record.SanXiaoInfoModel;
 import com.anjian.model.record.SearchModel;
 import com.anjian.model.record.SysAreaModel;
 import com.anjian.model.record.TeZhongListModel;
@@ -48,6 +51,11 @@ public interface ApiService {
     @POST("security-monitor/app/enterpriseInfo/add")
     Flowable<BaseBean> addQiYe(@Body RequestBody body, @Query("token") String token);
 
+    //更新企业信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/enterpriseInfo/update")
+    Flowable<BaseBean> updateQiYe(@Body RequestBody body, @Query("token") String token);
+
     //企业列表信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/geo/enterprise")
@@ -55,12 +63,18 @@ public interface ApiService {
     //企业信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("security-monitor/app/enterpriseInfo/info/{id}")
-    Flowable<BaseBean> qiYeInfo(@Path("id") String id, @Query("token") String token);
+    Flowable<QiYeInfoModel> qiYeInfo(@Path("id") String id, @Query("token") String token);
 
     //三小信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("security-monitor/app/tspInfo/info/{id}")
-    Flowable<BaseBean> sanXiaoInfo(@Path("id") String id, @Query("token") String token);
+    Flowable<SanXiaoInfoModel> sanXiaoInfo(@Path("id") String id, @Query("token") String token);
+
+    //更新三小场所信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/tspInfo/update")
+    Flowable<BaseBean> updateSanXiao(@Body RequestBody body, @Query("token") String token);
+
     //三小场所信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/geo/tsp")
@@ -144,4 +158,20 @@ public interface ApiService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/tspOption/list")
     Flowable<BaseBean> getSanXiaoSelectList(@Body RequestBody body, @Query("token") String token);
+
+    //添加现场检查列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/localeExamine/add")
+    Flowable<BaseBean> addQiYeCheck(@Body RequestBody body, @Query("token") String token);
+
+    //更新现场检查列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/localeExamine/update")
+    Flowable<BaseBean> updateQiYeCheck(@Body RequestBody body, @Query("token") String token);
+
+    //现场检查列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/localeExamine/list")
+    Flowable<QiYeCheckListModel> getQiYeCheckList(@Body RequestBody body, @Query("token") String token);
+
 }

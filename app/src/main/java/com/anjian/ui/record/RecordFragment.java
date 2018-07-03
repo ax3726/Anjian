@@ -1,7 +1,11 @@
 package com.anjian.ui.record;
 
+import android.content.DialogInterface;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.anjian.R;
@@ -9,6 +13,7 @@ import com.anjian.base.BaseFragment;
 import com.anjian.base.BaseFragmentPresenter;
 import com.anjian.databinding.FragmentRecordBinding;
 import com.anjian.ui.CommonPagerAdapter;
+import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectCompanywindow;
 
 import java.util.ArrayList;
@@ -98,7 +103,7 @@ public class RecordFragment extends BaseFragment<BaseFragmentPresenter, Fragment
         fragments.add(mQiYeFragment);
         fragments.add(mSanXiaoFragment);
         initTablayout();
-
+        checkLocation();
 
     }
 
@@ -107,5 +112,37 @@ public class RecordFragment extends BaseFragment<BaseFragmentPresenter, Fragment
 
         mBinding.viewPager.setAdapter(mMyPagerAdapter);
         mBinding.tabLayout.setupWithViewPager(mBinding.viewPager);
+    }
+
+    /**
+     * 检测权限是否被禁止
+     */
+    private void checkLocation() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            LocationManager lm = (LocationManager) aty.getSystemService(aty.LOCATION_SERVICE);
+            //  boolean ok=lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);//2.通过网络定位，对定位精度度不高或省点情况可考
+            if (lm.getProvider(LocationManager.NETWORK_PROVIDER) == null) {
+                new AlertDialog.Builder(aty)
+                        .setTitle("温馨提示")
+                        .setMessage("无法定位，请打开定位服务")
+                        .setNegativeButton("稍后再说", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("去设置", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                DemoUtils.getAppDetailSettingIntent(aty);
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
+
+
+            }
+        }
+
     }
 }

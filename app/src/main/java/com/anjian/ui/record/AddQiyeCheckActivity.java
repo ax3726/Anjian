@@ -8,16 +8,30 @@ import android.view.View;
 
 import com.anjian.R;
 import com.anjian.base.BaseActivity;
+import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
+import com.anjian.common.Api;
+import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddQiyeCheckBinding;
+import com.anjian.model.BaseBean;
+import com.anjian.model.request.AddQiYeCheckRequest;
+import com.anjian.model.request.AddTeZhongRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
 public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityAddQiyeCheckBinding> {
+    private String mImgPath = "";
+    private String mId = "";
 
+    private String mImgPath1 = "";
+    private String mImgPath2 = "";
+    private String mImgPath3 = "";
 
     @Override
     protected boolean isPrestener() {
@@ -40,6 +54,16 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
     }
 
     @Override
+    protected void initData() {
+        super.initData();
+        mId = getIntent().getStringExtra("id");
+    }
+
+    private void save() {
+        submitMessage();
+    }
+
+    @Override
     protected void initTitleBar() {
         super.initTitleBar();
         mTitleBarLayout.setTitle("企业隐患检查");
@@ -55,12 +79,15 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                save();
                             }
                         })
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                startActivity(AutographActivity.class);
+                                Intent intent = new Intent(aty, AutographActivity.class);
+                                intent.putExtra("type", 1);
+                                startActivityForResult(intent,100);
                                 dialog.dismiss();
                             }
                         })
@@ -76,24 +103,24 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(aty, EditActivity.class);
-                intent.putExtra("txt","隐患描述");
-                startActivityForResult(intent,1001);
+                intent.putExtra("txt", "隐患描述");
+                startActivityForResult(intent, 1001);
             }
         });
         mBinding.tvCuoshi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(aty, EditActivity.class);
-                intent.putExtra("txt","整改措施");
-                startActivityForResult(intent,1002);
+                intent.putExtra("txt", "整改措施");
+                startActivityForResult(intent, 1002);
             }
         });
         mBinding.tvFalv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(aty, EditActivity.class);
-                intent.putExtra("txt","法律依据");
-                startActivityForResult(intent,1003);
+                intent.putExtra("txt", "法律依据");
+                startActivityForResult(intent, 1003);
             }
         });
         mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +148,7 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (data!=null&&resultCode==RESULT_OK) {
+        if (data != null && resultCode == RESULT_OK) {
             String result = data.getStringExtra("result");
             switch (requestCode) {
                 case 1001://名称
@@ -136,10 +163,18 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
             }
 
         }
+        if (data != null && resultCode == 200) {
+            mImgPath1 = data.getStringExtra("img_path1");
+            mImgPath2 = data.getStringExtra("img_path2");
+            mImgPath3 = data.getStringExtra("img_path3");
+            save();
+        }
     }
+
     @Override
     public void photoSuccess(String path, File file, int... queue) {
         if (!TextUtils.isEmpty(path)) {
+            mImgPath=path;
             mBinding.tvAddTimg.setVisibility(View.GONE);
             mBinding.img.setVisibility(View.VISIBLE);
             Glide.with(aty).load(file).into(mBinding.img);
@@ -149,5 +184,68 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
     @Override
     public void photoFaild() {
         showToast("图片加载失败!");
+    }
+
+    private void submitMessage() {
+        String Yinhuan = mBinding.tvYinhuan.getText().toString().trim();
+        String Cuoshi = mBinding.tvCuoshi.getText().toString().trim();
+        String Falv = mBinding.tvFalv.getText().toString().trim();
+        if (TextUtils.isEmpty(mImgPath)) {
+            showToast("请添加隐患图片!");
+            return;
+        }
+        if (TextUtils.isEmpty(Yinhuan)) {
+            showToast("隐患描述不能为空!");
+            return;
+        }
+        if (TextUtils.isEmpty(Cuoshi)) {
+            showToast("整改措施不能为空!");
+            return;
+        }
+        if (TextUtils.isEmpty(Falv)) {
+            showToast("法律依据不能为空!");
+            return;
+        }
+
+        AddQiYeCheckRequest addQiYeCheckRequest = new AddQiYeCheckRequest();
+        addQiYeCheckRequest.setEnterpriseId(mId);
+        addQiYeCheckRequest.setDangerDesc(Yinhuan);
+        addQiYeCheckRequest.setModifyStep(Cuoshi);
+        addQiYeCheckRequest.setLawReason(Falv);
+        addQiYeCheckRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));
+        if (!TextUtils.isEmpty(mImgPath1)) {
+            addQiYeCheckRequest.setSaferSign(DemoUtils.imageToBase64(mImgPath1));
+        }
+
+        if (!TextUtils.isEmpty(mImgPath2)) {
+            addQiYeCheckRequest.setBusinesserSign(DemoUtils.imageToBase64(mImgPath2));
+        }
+        if (!TextUtils.isEmpty(mImgPath3)) {
+            addQiYeCheckRequest.setWitherSign(DemoUtils.imageToBase64(mImgPath3));
+        }
+        Api.getApi().addQiYeCheck(getRequestBody(addQiYeCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+            @Override
+            public void onSuccess(BaseBean baseBean) {
+                showToast(baseBean.getMessage());
+                EventBus.getDefault().post("刷新");
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        try {
+                            sleep(1500);
+                            finish();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
     }
 }

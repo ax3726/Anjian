@@ -1,5 +1,6 @@
 package com.anjian.ui.record;
 
+import android.content.Intent;
 import android.view.View;
 
 import com.anjian.R;
@@ -10,9 +11,18 @@ import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityQiYeBinding;
 import com.anjian.model.BaseBean;
+import com.anjian.model.record.QiYeInfoModel;
+import com.anjian.utils.DemoUtils;
+import com.anjian.widget.popupwindow.ChooseMapPopuwindow;
+import com.bumptech.glide.Glide;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBinding> implements View.OnClickListener {
     private String mId = "";
+    private QiYeInfoModel.DataBean mDataBean = null;
 
     @Override
     protected BasePresenter createPresenter() {
@@ -32,6 +42,7 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
     @Override
     protected void initData() {
         super.initData();
+        EventBus.getDefault().register(this);
         mId = getIntent().getStringExtra("id");
         getQiyeInfo();
     }
@@ -39,7 +50,8 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
     @Override
     protected void initEvent() {
         super.initEvent();
-        mBinding.imgBack.setOnClickListener(this);
+        mBinding.imgAddress.setOnClickListener(this);
+        mBinding.rlyBack.setOnClickListener(this);
         mBinding.imgXiugai.setOnClickListener(this);
         mBinding.imgXianchang.setOnClickListener(this);
         mBinding.imgJiaoliu.setOnClickListener(this);
@@ -52,11 +64,17 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.img_back:
+            case R.id.rly_back:
                 finish();
                 break;
+            case R.id.img_address:
+                ChooseMapPopuwindow chooseMapPopuwindow=new ChooseMapPopuwindow(aty,"西湖");
+                chooseMapPopuwindow.showPopupWindow();
+                break;
             case R.id.img_xiugai:
-                startActivity(AddQiyeActivity.class, mId);
+                Intent intent = new Intent(aty, AddQiyeActivity.class);
+                intent.putExtra("data", mDataBean);
+                startActivity(intent);
                 break;
             case R.id.img_xianchang:
                 startActivity(QiYeCheckActivity.class, mId);
@@ -78,12 +96,12 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
                 break;
         }
     }
-    private void getQiyeInfo()
-    {
-        Api.getApi().qiYeInfo(mId, MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this,true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
 
+    private void getQiyeInfo() {
+        Api.getApi().qiYeInfo(mId, MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<QiYeInfoModel>(this, true) {
+            @Override
+            public void onSuccess(QiYeInfoModel baseBean) {
+                initView(baseBean.getData());
             }
 
             @Override
@@ -91,5 +109,27 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
 
             }
         });
+    }
+
+    private void initView(QiYeInfoModel.DataBean dataBean) {
+        if (dataBean == null) {
+            return;
+        }
+        mDataBean = dataBean;
+        mBinding.tvName.setText(dataBean.getEnterpriseName());
+        Glide.with(aty).load(DemoUtils.getUrl(dataBean.getEnterpriseDoorHeadImg())).into(mBinding.img);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refersh(String messageEvent) {
+        if ("刷新企业".equals(messageEvent)) {
+            getQiyeInfo();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

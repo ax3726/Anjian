@@ -94,7 +94,12 @@ public class TitleBarLayout extends AutoLinearLayout {
     public void setRightShow(boolean bl) {
         mBinding.llyRight.setVisibility(bl ? VISIBLE : GONE);
     }
-
+    /**
+     * 设置是否显示右边
+     */
+    public void setRightINVISIBLE() {
+        mBinding.llyRight.setVisibility(INVISIBLE);
+    }
     /**
      * 设置是否显示更多
      */

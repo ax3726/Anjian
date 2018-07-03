@@ -100,12 +100,18 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
         if (mDataBean == null) {
             return;
         }
-        mTitleBarLayout.setRightShow(false);
+        mTitleBarLayout.setRightTxt("");
         mBinding.tvQiye.setText(mDataBean.getEnterpriseName());
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);
         Glide.with(aty).load( DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
+
+
         mBinding.etName.setText(mDataBean.getMeetingName());
+
+        mBinding.etName.setFocusable(false);
+        mBinding.etName.setFocusableInTouchMode(false);
+
         mBinding.tvPeople.setText(mDataBean.getMeetingUser());
         mBinding.tvContent.setText(mDataBean.getMeetingContent());
     }
@@ -113,6 +119,9 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
     @Override
     protected void initEvent() {
         super.initEvent();
+        if (mDataBean != null) {
+            return;
+        }
         mBinding.tvPeople.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

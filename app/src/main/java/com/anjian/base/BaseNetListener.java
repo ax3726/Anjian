@@ -21,15 +21,18 @@ import retrofit2.HttpException;
 public abstract class BaseNetListener<T> implements Subscriber<T> {
     private Subscription subscription;
     private BaseHttpListener baseHttpListener;
+
     public BaseNetListener(BaseHttpListener baseHttpListener) {
-        this.baseHttpListener=baseHttpListener;
+        this.baseHttpListener = baseHttpListener;
     }
+
     public BaseNetListener(BaseHttpListener baseHttpListener, boolean bl) {
-        this.baseHttpListener=baseHttpListener;
-        if ( this.baseHttpListener!=null&& bl) {
+        this.baseHttpListener = baseHttpListener;
+        if (this.baseHttpListener != null && bl) {
             this.baseHttpListener.showWaitDialog();
         }
     }
+
     @Override
     public void onSubscribe(Subscription s) {
         subscription = s;
@@ -39,7 +42,7 @@ public abstract class BaseNetListener<T> implements Subscriber<T> {
     @Override
     public void onComplete() {
         subscription.cancel(); //取消订阅
-        if ( this.baseHttpListener!=null) {
+        if (this.baseHttpListener != null) {
             this.baseHttpListener.hideWaitDialog();
         }
     }
@@ -47,28 +50,30 @@ public abstract class BaseNetListener<T> implements Subscriber<T> {
     @Override
     public void onError(Throwable e) {
         e.printStackTrace();
-        String err_msg="";
+        String err_msg = "";
         if (e instanceof HttpException) {
-            err_msg="网络错误";
+            err_msg = "网络错误";
         } else if (e instanceof ApiException) {
-            ApiException exception= (ApiException) e;
+            ApiException exception = (ApiException) e;
             if (exception.getResponseCode() == ResponseCodeEnum.AUTH_FAILURE) {//token失效 需要重新登录
-                err_msg="账号验证异常，请重新登陆";
-
+                err_msg = "账号验证异常，请重新登陆";
+                if (this.baseHttpListener != null) {
+                    this.baseHttpListener.backToLogin();
+                }
             } else {
-                err_msg="Aip异常";
+                err_msg = "Aip异常";
             }
 
         } else if (e instanceof SocketTimeoutException) {
-            err_msg="连接服务器超时";
+            err_msg = "连接服务器超时";
         } else if (e instanceof ConnectException) {
-            err_msg="未能连接到服务器";
+            err_msg = "未能连接到服务器";
         } else if (e instanceof ResultException) {
-            err_msg=e.getMessage();
+            err_msg = e.getMessage();
         } else {
-            err_msg="未知错误";
+            err_msg = "未知错误";
         }
-        if ( this.baseHttpListener!=null) {
+        if (this.baseHttpListener != null) {
             this.baseHttpListener.hideWaitDialog();
             this.baseHttpListener.showToast(err_msg);
         }
@@ -81,7 +86,9 @@ public abstract class BaseNetListener<T> implements Subscriber<T> {
         subscription.request(1);
         onSuccess(t);
     }
+
     public abstract void onSuccess(T t);
+
     public abstract void onFail(String errMsg);
 
 }

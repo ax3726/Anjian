@@ -75,12 +75,16 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
         if (mDataBean == null) {
             return;
         }
-        mTitleBarLayout.setRightShow(false);
+        mTitleBarLayout.setRightTxt("");
 
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);
         Glide.with(aty).load( DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
         mBinding.etName.setText(mDataBean.getDangerName());
+
+        mBinding.etName.setFocusable(false);
+        mBinding.etName.setFocusableInTouchMode(false);
+
         mBinding.tvAddress.setText(mDataBean.getDetailPosition());
         mBinding.tvFengxian.setText(mDataBean.getDangerLevel());
         mBinding.tvShigu.setText(mDataBean.getEasyHappenCaseType());
@@ -91,6 +95,9 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
     @Override
     protected void initEvent() {
         super.initEvent();
+        if (mDataBean != null) {
+            return;
+        }
         mBinding.tvAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
