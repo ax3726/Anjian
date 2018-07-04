@@ -8,16 +8,33 @@ import android.view.View;
 
 import com.anjian.R;
 import com.anjian.base.BaseActivity;
+import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
+import com.anjian.common.Api;
+import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddQiyeCheckBinding;
+import com.anjian.model.BaseBean;
+import com.anjian.model.record.QiYeCheckListModel;
+import com.anjian.model.record.SanXiaoCheckListModel;
+import com.anjian.model.request.AddQiYeCheckRequest;
+import com.anjian.model.request.AddSanXiaoCheckRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
 public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, ActivityAddQiyeCheckBinding> {
-
+    private String mImgPath = "";
+    private String mId = "";
+    private String mOptionId = "";
+    private String mImgPath1 = "";
+    private String mImgPath2 = "";
+    private String mImgPath3 = "";
+    private SanXiaoCheckListModel.DataBean mDataBean = null;
 
     @Override
     protected boolean isPrestener() {
@@ -40,6 +57,33 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
     }
 
     @Override
+    protected void initData() {
+        super.initData();
+        mId = getIntent().getStringExtra("id");
+        mOptionId = getIntent().getStringExtra("optionId");
+        mDataBean = (SanXiaoCheckListModel.DataBean) getIntent().getSerializableExtra("data");
+        initView();
+    }
+
+    private void initView() {
+        if (mDataBean == null) {
+            return;
+        }
+        mTitleBarLayout.setRightTxt("");
+        mBinding.tvAddTimg.setVisibility(View.GONE);
+        mBinding.img.setVisibility(View.VISIBLE);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
+        mBinding.tvYinhuan.setText(mDataBean.getDangerDesc());
+        mBinding.tvCuoshi.setText(mDataBean.getModifyStep());
+        mBinding.tvFalv.setText(mDataBean.getLawReason());
+
+    }
+
+    private void save() {
+        submitMessage();
+    }
+
+    @Override
     protected void initTitleBar() {
         super.initTitleBar();
         mTitleBarLayout.setTitle("三小场所隐患检查");
@@ -55,12 +99,15 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                save();
                             }
                         })
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                startActivity(AutographActivity.class);
+                                Intent intent = new Intent(aty, AutographActivity.class);
+                                intent.putExtra("type", 1);
+                                startActivityForResult(intent, 100);
                                 dialog.dismiss();
                             }
                         })
@@ -72,28 +119,31 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
     @Override
     protected void initEvent() {
         super.initEvent();
+        if (mDataBean != null) {
+            return;
+        }
         mBinding.tvYinhuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(aty, EditActivity.class);
-                intent.putExtra("txt","隐患描述");
-                startActivityForResult(intent,1001);
+                intent.putExtra("txt", "隐患描述");
+                startActivityForResult(intent, 1001);
             }
         });
         mBinding.tvCuoshi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(aty, EditActivity.class);
-                intent.putExtra("txt","整改措施");
-                startActivityForResult(intent,1002);
+                intent.putExtra("txt", "整改措施");
+                startActivityForResult(intent, 1002);
             }
         });
         mBinding.tvFalv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(aty, EditActivity.class);
-                intent.putExtra("txt","法律依据");
-                startActivityForResult(intent,1003);
+                intent.putExtra("txt", "法律依据");
+                startActivityForResult(intent, 1003);
             }
         });
         mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +171,7 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (data!=null&&resultCode==RESULT_OK) {
+        if (data != null && resultCode == RESULT_OK) {
             String result = data.getStringExtra("result");
             switch (requestCode) {
                 case 1001://名称
@@ -136,10 +186,18 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
             }
 
         }
+        if (data != null && resultCode == 200) {
+            mImgPath1 = data.getStringExtra("img_path1");
+            mImgPath2 = data.getStringExtra("img_path2");
+            mImgPath3 = data.getStringExtra("img_path3");
+            save();
+        }
     }
+
     @Override
     public void photoSuccess(String path, File file, int... queue) {
         if (!TextUtils.isEmpty(path)) {
+            mImgPath = path;
             mBinding.tvAddTimg.setVisibility(View.GONE);
             mBinding.img.setVisibility(View.VISIBLE);
             Glide.with(aty).load(file).into(mBinding.img);
@@ -149,5 +207,68 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
     @Override
     public void photoFaild() {
         showToast("图片加载失败!");
+    }
+
+    private void submitMessage() {
+        String Yinhuan = mBinding.tvYinhuan.getText().toString().trim();
+        String Cuoshi = mBinding.tvCuoshi.getText().toString().trim();
+        String Falv = mBinding.tvFalv.getText().toString().trim();
+        if (TextUtils.isEmpty(mImgPath)) {
+            showToast("请添加隐患图片!");
+            return;
+        }
+        if (TextUtils.isEmpty(Yinhuan)) {
+            showToast("隐患描述不能为空!");
+            return;
+        }
+        if (TextUtils.isEmpty(Cuoshi)) {
+            showToast("整改措施不能为空!");
+            return;
+        }
+        if (TextUtils.isEmpty(Falv)) {
+            showToast("法律依据不能为空!");
+            return;
+        }
+
+        AddSanXiaoCheckRequest addSanXiaoCheckRequest = new AddSanXiaoCheckRequest();
+        addSanXiaoCheckRequest.setTspId(mId);
+        addSanXiaoCheckRequest.setOptionId(mOptionId);
+        addSanXiaoCheckRequest.setDangerDesc(Yinhuan);
+        addSanXiaoCheckRequest.setModifyStep(Cuoshi);
+        addSanXiaoCheckRequest.setLawReason(Falv);
+        addSanXiaoCheckRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));
+        if (!TextUtils.isEmpty(mImgPath1)) {
+            addSanXiaoCheckRequest.setSaferSign(DemoUtils.imageToBase64(mImgPath1));
+        }
+        if (!TextUtils.isEmpty(mImgPath2)) {
+            addSanXiaoCheckRequest.setBusinesserSign(DemoUtils.imageToBase64(mImgPath2));
+        }
+        if (!TextUtils.isEmpty(mImgPath3)) {
+            addSanXiaoCheckRequest.setWitherSign(DemoUtils.imageToBase64(mImgPath3));
+        }
+        Api.getApi().addSanXiaoCheck(getRequestBody(addSanXiaoCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+            @Override
+            public void onSuccess(BaseBean baseBean) {
+                showToast(baseBean.getMessage());
+                EventBus.getDefault().post("刷新");
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        try {
+                            sleep(1500);
+                            finish();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
     }
 }

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.anjian.R;
 import com.anjian.databinding.PopuwindowChooseMapBinding;
+import com.anjian.model.request.JingWeiRequest;
 
 import java.io.File;
 
@@ -30,9 +31,9 @@ import java.io.File;
 
 public class ChooseMapPopuwindow implements View.OnClickListener {
     private Context mContext;
-    private String mAddressModel;
+    private JingWeiRequest mAddressModel;
 
-    public ChooseMapPopuwindow(Context context, String addressModel) {
+    public ChooseMapPopuwindow(Context context, JingWeiRequest addressModel) {
         mContext = context;
         mAddressModel = addressModel;
     }
@@ -137,7 +138,7 @@ public class ChooseMapPopuwindow implements View.OnClickListener {
     private void initBaidu() {
         if (isBaiduMapInstalled()) {
             Intent i1 = new Intent();
-            i1.setData(Uri.parse("baidumap://map/geocoder?address=" + mAddressModel));
+            i1.setData(Uri.parse("baidumap://map/geocoder?location=" + mAddressModel.getLatitude() + "," + mAddressModel.getLongitude()));
             // 反向地址解析
             //i1.setData(Uri.parse("baidumap://map/geocoder?location=39.98871,116.43234"));
             mContext.startActivity(i1);
@@ -153,7 +154,7 @@ public class ChooseMapPopuwindow implements View.OnClickListener {
          /*   i1.setData(Uri.parse("androidamap://viewMap?sourceApplication=蚂蚁快服&poiname=" + mAddressModel.getAddress() +
                     "&lat=" + mAddressModel.getPoint().getLatitude() + "&lon=" + mAddressModel.getPoint().getLongitude() + "&dev=0"));
             mContext.startActivity(i1); */
-            i1.setData(Uri.parse("androidamap://viewMap?sourceApplication=安监&poiname=" + mAddressModel));
+            i1.setData(Uri.parse("androidamap://viewReGeo?sourceApplication=安监&lat=" + mAddressModel.getLatitude() + "&lon=" + mAddressModel.getLongitude() + "&dev=1"));
             mContext.startActivity(i1);
         } else {
             Toast.makeText(mContext, "你没有安装高德地图!", Toast.LENGTH_SHORT).show();

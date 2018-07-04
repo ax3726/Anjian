@@ -14,6 +14,7 @@ import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddQiyeCheckBinding;
 import com.anjian.model.BaseBean;
+import com.anjian.model.record.QiYeCheckListModel;
 import com.anjian.model.request.AddQiYeCheckRequest;
 import com.anjian.model.request.AddTeZhongRequest;
 import com.anjian.ui.common.PhotoActivity;
@@ -32,6 +33,7 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
     private String mImgPath1 = "";
     private String mImgPath2 = "";
     private String mImgPath3 = "";
+    private QiYeCheckListModel.DataBean mDataBean = null;
 
     @Override
     protected boolean isPrestener() {
@@ -57,6 +59,23 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
     protected void initData() {
         super.initData();
         mId = getIntent().getStringExtra("id");
+
+        mDataBean = (QiYeCheckListModel.DataBean) getIntent().getSerializableExtra("data");
+        initView();
+    }
+
+    private void initView() {
+        if (mDataBean == null) {
+            return;
+        }
+        mTitleBarLayout.setRightTxt("");
+        mBinding.tvAddTimg.setVisibility(View.GONE);
+        mBinding.img.setVisibility(View.VISIBLE);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
+        mBinding.tvYinhuan.setText(mDataBean.getDangerDesc());
+        mBinding.tvCuoshi.setText(mDataBean.getModifyStep());
+        mBinding.tvFalv.setText(mDataBean.getLawReason());
+
     }
 
     private void save() {
@@ -87,7 +106,7 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(aty, AutographActivity.class);
                                 intent.putExtra("type", 1);
-                                startActivityForResult(intent,100);
+                                startActivityForResult(intent, 100);
                                 dialog.dismiss();
                             }
                         })
@@ -99,6 +118,9 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
     @Override
     protected void initEvent() {
         super.initEvent();
+        if (mDataBean != null) {
+            return;
+        }
         mBinding.tvYinhuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,7 +196,7 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
     @Override
     public void photoSuccess(String path, File file, int... queue) {
         if (!TextUtils.isEmpty(path)) {
-            mImgPath=path;
+            mImgPath = path;
             mBinding.tvAddTimg.setVisibility(View.GONE);
             mBinding.img.setVisibility(View.VISIBLE);
             Glide.with(aty).load(file).into(mBinding.img);

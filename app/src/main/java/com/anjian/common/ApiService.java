@@ -8,7 +8,9 @@ import com.anjian.model.record.FengXianListModel;
 import com.anjian.model.record.JiaoLiuListModel;
 import com.anjian.model.record.QiYeCheckListModel;
 import com.anjian.model.record.QiYeInfoModel;
+import com.anjian.model.record.SanXiaoCheckListModel;
 import com.anjian.model.record.SanXiaoInfoModel;
+import com.anjian.model.record.SanXiaoSelectModel;
 import com.anjian.model.record.SearchModel;
 import com.anjian.model.record.SysAreaModel;
 import com.anjian.model.record.TeZhongListModel;
@@ -154,10 +156,10 @@ public interface ApiService {
     Flowable<YanLianListModel> getYanLianList(@Body RequestBody body, @Query("token") String token);
 
 
-    //三小场所选项列表
+    //新增三小场所选项列表
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("security-monitor/app/tspOption/list")
-    Flowable<BaseBean> getSanXiaoSelectList(@Body RequestBody body, @Query("token") String token);
+    @POST("security-monitor/app/tspOption/add")
+    Flowable<SanXiaoSelectModel> addSanXiaoSelectList(@Body RequestBody body, @Query("token") String token);
 
     //添加现场检查列表
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -173,5 +175,20 @@ public interface ApiService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/localeExamine/list")
     Flowable<QiYeCheckListModel> getQiYeCheckList(@Body RequestBody body, @Query("token") String token);
+
+    //添加现场检查列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/tspLocaleExamine/add")
+    Flowable<BaseBean> addSanXiaoCheck(@Body RequestBody body, @Query("token") String token);
+
+    //现场检查列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/tspLocaleExamine/list")
+    Flowable<SanXiaoCheckListModel> getSanXiaoCheckList(@Body RequestBody body, @Query("token") String token);
+
+    //更新现场检查列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/tspLocaleExamine/update")
+    Flowable<BaseBean> updateSanXiaoCheck(@Body RequestBody body, @Query("token") String token);
 
 }

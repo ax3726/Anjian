@@ -98,7 +98,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
 
 
         mBinding.etName.setText(mDataBean.getTspName());
-        // mBinding.tvJiedao.setText(mDataBean.get());
+        mBinding.tvJiedao.setText(mDataBean.getAreaName());
         mBinding.etZhizhao.setText(mDataBean.getBusinessLicenceCode());
         mBinding.etContactName.setText(mDataBean.getContactName());
         mBinding.etContactPhone.setText(mDataBean.getContactPhone());
@@ -346,7 +346,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
                             getAreadata();
                         } else if (index == 3) {
                             index = 0;
-                            mBinding.tvJiedao.setText(oneName + twoName + threeName + fourName);
+                            mBinding.tvJiedao.setText( fourName);
                         }
 
                     }

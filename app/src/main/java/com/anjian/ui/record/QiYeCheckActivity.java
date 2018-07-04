@@ -11,6 +11,7 @@ import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
+import com.anjian.databinding.ActivityQiyeCheckBinding;
 import com.anjian.databinding.ActivityWeiHuaBinding;
 import com.anjian.model.BaseBean;
 import com.anjian.model.record.QiYeCheckListModel;
@@ -32,7 +33,7 @@ import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBinding> {
+public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityQiyeCheckBinding> {
 
 
     private List<QiYeCheckListModel.DataBean> mDataList = new ArrayList<>();
@@ -41,7 +42,7 @@ public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityWeiHu
     private int mPosition = 1;
     private int mSize = 10;
 
-    private String mId="";
+    private String mId = "";
 
     @Override
     protected boolean isPrestener() {
@@ -50,7 +51,7 @@ public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityWeiHu
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_wei_hua;
+        return R.layout.activity_qiye_check;
     }
 
     @Override
@@ -63,6 +64,7 @@ public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityWeiHu
         return true;
     }
 
+
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
@@ -72,7 +74,7 @@ public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityWeiHu
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(AddQiyeCheckActivity.class,mId);
+                startActivity(AddQiyeCheckActivity.class, mId);
             }
         });
     }
@@ -82,19 +84,19 @@ public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityWeiHu
         super.initData();
 
         EventBus.getDefault().register(aty);
-        mId= getIntent().getStringExtra("id");
+        mId = getIntent().getStringExtra("id");
         mCommonAdapter = new CommonAdapter<QiYeCheckListModel.DataBean>(aty, R.layout.item_qiye_check, mDataList) {
             @Override
             protected void convert(ViewHolder holder, QiYeCheckListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
-               holder.setText(R.id.tv_name, item.getDangerDesc());
+                holder.setText(R.id.tv_name, item.getDangerDesc());
                 holder.setText(R.id.tv_num, DemoUtils.getTime(item.getCreateTime()));
-                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getLocaleImg()),0);
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getLocaleImg()), 0);
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(aty, QiYeCheckInfoActivity.class);
-                        intent.putExtra("data",item);
+                        intent.putExtra("data", item);
                         startActivity(intent);
                     }
                 });
@@ -133,7 +135,7 @@ public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityWeiHu
             public void onSuccess(QiYeCheckListModel baseBean) {
 
                 finishRefersh();
-              if (mPosition == 1) {
+                if (mPosition == 1) {
                     mDataList.clear();
                 }
                 List<QiYeCheckListModel.DataBean> data = baseBean.getData();
@@ -150,7 +152,8 @@ public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityWeiHu
                 }
                 mCommonAdapter.notifyDataSetChanged();
 
-
+                mBinding.tvHint.setVisibility(mDataList.size()==0?View.GONE:View.VISIBLE);
+                mBinding.tvHint.setText(mDataList.size() + "条待整改：");
             }
 
             @Override

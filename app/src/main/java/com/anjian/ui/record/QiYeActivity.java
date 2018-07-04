@@ -12,6 +12,7 @@ import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityQiYeBinding;
 import com.anjian.model.BaseBean;
 import com.anjian.model.record.QiYeInfoModel;
+import com.anjian.model.request.JingWeiRequest;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.ChooseMapPopuwindow;
 import com.bumptech.glide.Glide;
@@ -68,8 +69,18 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
                 finish();
                 break;
             case R.id.img_address:
-                ChooseMapPopuwindow chooseMapPopuwindow=new ChooseMapPopuwindow(aty,"西湖");
-                chooseMapPopuwindow.showPopupWindow();
+                if (mDataBean != null) {
+                    JingWeiRequest jingWeiRequest = new JingWeiRequest();
+                    String[] split = mDataBean.getPosition().split(",");
+                    if (split.length>0) {
+                        jingWeiRequest.setLatitude(split[0]);
+                        jingWeiRequest.setLongitude(split[1]);
+                    }
+                    ChooseMapPopuwindow chooseMapPopuwindow = new ChooseMapPopuwindow(aty, jingWeiRequest);
+                    chooseMapPopuwindow.showPopupWindow();
+                } else {
+                    showToast("数据有误!");
+                }
                 break;
             case R.id.img_xiugai:
                 Intent intent = new Intent(aty, AddQiyeActivity.class);

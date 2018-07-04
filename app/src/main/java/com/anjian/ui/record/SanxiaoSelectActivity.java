@@ -1,5 +1,6 @@
 package com.anjian.ui.record;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +11,27 @@ import android.widget.TextView;
 
 import com.anjian.R;
 import com.anjian.base.BaseActivity;
+import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
+import com.anjian.common.Api;
+import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivitySanxiaoSelectBinding;
+import com.anjian.model.BaseBean;
 import com.anjian.model.record.SanXiaoSelectListModel;
+import com.anjian.model.record.SanXiaoSelectModel;
+import com.anjian.model.request.AddSanXiaoRequest;
+import com.anjian.model.request.AddSanXiaoSelectRequest;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivitySanxiaoSelectBinding> {
-
+    private String mId = "";
     private List<SanXiaoSelectListModel> mDataList = new ArrayList<>();
     private Adapter mAdapter;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_sanxiao_select;
@@ -36,6 +47,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         return true;
     }
 
+
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
@@ -45,7 +57,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                sumitMessage();
             }
         });
     }
@@ -53,11 +65,12 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
     @Override
     protected void initData() {
         super.initData();
-        SanXiaoSelectListModel model=new SanXiaoSelectListModel();
+        mId = getIntent().getStringExtra("id");
+        SanXiaoSelectListModel model = new SanXiaoSelectListModel();
         model.setTitle("三合一问题");
         model.getOptions().add(new SanXiaoSelectListModel.DataBean("人员住宿与经营、存储场所合用"));
 
-        SanXiaoSelectListModel model1=new SanXiaoSelectListModel();
+        SanXiaoSelectListModel model1 = new SanXiaoSelectListModel();
         model1.setTitle("电器线路安全隐患");
         model1.getOptions().add(new SanXiaoSelectListModel.DataBean("未接地线"));
         model1.getOptions().add(new SanXiaoSelectListModel.DataBean("未使用漏电保护开关"));
@@ -68,7 +81,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         model1.getOptions().add(new SanXiaoSelectListModel.DataBean("采用闸刀开关"));
         model1.getOptions().add(new SanXiaoSelectListModel.DataBean("线路乱拉乱接"));
 
-        SanXiaoSelectListModel model2=new SanXiaoSelectListModel();
+        SanXiaoSelectListModel model2 = new SanXiaoSelectListModel();
         model2.setTitle("消防隐患");
         model2.getOptions().add(new SanXiaoSelectListModel.DataBean("场所内设置影响疏散逃生的防盗窗、铁栅栏"));
         model2.getOptions().add(new SanXiaoSelectListModel.DataBean("夹层未设置独立的直通室外的疏散通道"));
@@ -77,7 +90,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         model2.getOptions().add(new SanXiaoSelectListModel.DataBean("5.灭火器材配置不足"));
 
 
-        SanXiaoSelectListModel model3=new SanXiaoSelectListModel();
+        SanXiaoSelectListModel model3 = new SanXiaoSelectListModel();
         model3.setTitle("火灾隐患");
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("液化气_KG_瓶"));
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("天然气"));
@@ -91,7 +104,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         mDataList.add(model2);
         mDataList.add(model3);
 
-        mAdapter=new Adapter();
+        mAdapter = new Adapter();
         mBinding.elvBody.setAdapter(mAdapter);
 
     }
@@ -164,5 +177,56 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         public boolean isChildSelectable(int groupPosition, int childPosition) {
             return true;
         }
+    }
+
+    private void sumitMessage() {
+        AddSanXiaoSelectRequest selectRequest = new AddSanXiaoSelectRequest();
+        List<AddSanXiaoSelectRequest.DataBean> dataList = new ArrayList<>();
+        for (SanXiaoSelectListModel model : mDataList) {
+            for (SanXiaoSelectListModel.DataBean dataBean : model.getOptions()) {
+                if (dataBean.isselect()) {
+                    AddSanXiaoSelectRequest.DataBean bean = new AddSanXiaoSelectRequest.DataBean();
+                    bean.setTypeName(model.getTitle());
+                    bean.setItemName(dataBean.getContent());
+                    dataList.add(bean);
+                }
+            }
+        }
+        if (dataList.size() == 0) {
+            showToast("请至少选择一项！");
+            return;
+        }
+        selectRequest.setOptionItems(dataList);
+        selectRequest.setTspId(mId);
+        Api.getApi().addSanXiaoSelectList(getRequestBody(selectRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SanXiaoSelectModel>(this, true) {
+            @Override
+            public void onSuccess(SanXiaoSelectModel baseBean) {
+                showToast(baseBean.getMessage());
+
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        try {
+                            sleep(1500);
+                            Intent intent = new Intent(aty, SanXiaoCheckActivity.class);
+                            intent.putExtra("id",mId);
+                            intent.putExtra("optionId",baseBean.getData().getId());
+                            startActivity(intent);
+                            finish();
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
+
     }
 }
