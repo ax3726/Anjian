@@ -117,7 +117,7 @@ public class SanXiaoCheckInfoActivity extends PhotoActivity<BasePresenter, Activ
             mBinding.tvAddTimg.setVisibility(View.GONE);
             mBinding.imgZheng.setVisibility(View.VISIBLE);
             Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getModifyImg())).into(mBinding.imgZheng);
-            mBinding.flyZhengImg.setClickable(false);
+            mBinding.flyZhengImg.setEnabled(false);
         }
 
     }

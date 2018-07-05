@@ -110,6 +110,13 @@ public class QiYeCheckInfoActivity extends PhotoActivity<BasePresenter, Activity
         mBinding.tvName.setText(mDataBean.getDangerDesc());
         mBinding.tvNum.setText(DemoUtils.getTime(mDataBean.getCreateTime()));
 
+        if (mDataBean.getModifyStatus() == 1) {
+            mBinding.tvAddTimg.setVisibility(View.GONE);
+            mBinding.imgZheng.setVisibility(View.VISIBLE);
+            Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getModifyImg())).into(mBinding.imgZheng);
+            mBinding.flyZhengImg.setEnabled(false);
+        }
+
     }
 
     @Override

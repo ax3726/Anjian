@@ -12,7 +12,7 @@ public class QiYeCheckListModel {
     /**
      * code : 200
      * count : 1
-     * data : [{"businesserSign":"/localeExamine/2018/7/3/1e55a02ec7564616913ff82a571aaa6a.png","createBy":"988422934076903425","createName":null,"createTime":"2018-07-03 16:37:52","dangerDesc":"啦啦啦啦啦啦啦","enterpriseId":"1013739992192516097","enterpriseName":null,"id":"1014065673329950721","isDel":0,"lawReason":"开玩笑","localeImg":"/localeExamine/2018/7/3/3672c4469ad14ffc82118c10fc584956.png","modifyStep":"啊咯","saferSign":"/localeExamine/2018/7/3/ab992715ce444cb2a38d121f6fe394f1.png","updateBy":"988422934076903425","updateTime":"2018-07-03 16:37:52","witherSign":"/localeExamine/2018/7/3/e976639e49e74f8c85d0f6ced92655c6.png"}]
+     * data : [{"businesserSign":"/localeExamine/2018/7/3/1e55a02ec7564616913ff82a571aaa6a.png","createBy":"988422934076903425","createName":null,"createTime":"2018-07-03 16:37:52","dangerDesc":"啦啦啦啦啦啦啦","enterpriseId":"1013739992192516097","enterpriseName":null,"id":"1014065673329950721","isDel":0,"lawReason":"开玩笑","localeImg":"/localeExamine/2018/7/3/3672c4469ad14ffc82118c10fc584956.png","modifyImg":null,"modifyStatus":0,"modifyStep":"啊咯","modifyTime":null,"saferSign":"/localeExamine/2018/7/3/ab992715ce444cb2a38d121f6fe394f1.png","updateBy":"988422934076903425","updateTime":"2018-07-04 14:52:29","witherSign":"/localeExamine/2018/7/3/e976639e49e74f8c85d0f6ced92655c6.png"}]
      * message : 成功
      */
 
@@ -66,10 +66,13 @@ public class QiYeCheckListModel {
          * isDel : 0
          * lawReason : 开玩笑
          * localeImg : /localeExamine/2018/7/3/3672c4469ad14ffc82118c10fc584956.png
+         * modifyImg : null
+         * modifyStatus : 0
          * modifyStep : 啊咯
+         * modifyTime : null
          * saferSign : /localeExamine/2018/7/3/ab992715ce444cb2a38d121f6fe394f1.png
          * updateBy : 988422934076903425
-         * updateTime : 2018-07-03 16:37:52
+         * updateTime : 2018-07-04 14:52:29
          * witherSign : /localeExamine/2018/7/3/e976639e49e74f8c85d0f6ced92655c6.png
          */
 
@@ -84,7 +87,10 @@ public class QiYeCheckListModel {
         private int isDel;
         private String lawReason;
         private String localeImg;
+        private String modifyImg;
+        private int modifyStatus;
         private String modifyStep;
+        private String modifyTime;
         private String saferSign;
         private String updateBy;
         private String updateTime;
@@ -178,12 +184,36 @@ public class QiYeCheckListModel {
             this.localeImg = localeImg;
         }
 
+        public String getModifyImg() {
+            return modifyImg;
+        }
+
+        public void setModifyImg(String modifyImg) {
+            this.modifyImg = modifyImg;
+        }
+
+        public int getModifyStatus() {
+            return modifyStatus;
+        }
+
+        public void setModifyStatus(int modifyStatus) {
+            this.modifyStatus = modifyStatus;
+        }
+
         public String getModifyStep() {
             return modifyStep;
         }
 
         public void setModifyStep(String modifyStep) {
             this.modifyStep = modifyStep;
+        }
+
+        public String getModifyTime() {
+            return modifyTime;
+        }
+
+        public void setModifyTime(String modifyTime) {
+            this.modifyTime = modifyTime;
         }
 
         public String getSaferSign() {
