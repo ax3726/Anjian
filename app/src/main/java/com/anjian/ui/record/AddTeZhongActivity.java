@@ -9,6 +9,7 @@ import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
+import com.anjian.databinding.ActivityAddTeZhongBinding;
 import com.anjian.databinding.ActivityAddWeiHuaBinding;
 import com.anjian.model.BaseBean;
 import com.anjian.model.record.TeZhongListModel;
@@ -17,16 +18,21 @@ import com.anjian.ui.common.PhotoActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
+import com.jzxiang.pickerview.TimePickerDialog;
+import com.jzxiang.pickerview.data.Type;
+import com.jzxiang.pickerview.listener.OnDateSetListener;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
-public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAddWeiHuaBinding> {
+public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAddTeZhongBinding> {
 
     private String mImgPath = "";
     private TeZhongListModel.DataBean mDataBean = null;
     private String mId = "";
+    private long mStartTime = 0;
+    private long mEndTime = 0;
 
     @Override
     protected boolean isPrestener() {
@@ -35,7 +41,7 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_add_wei_hua;
+        return R.layout.activity_add_te_zhong;
     }
 
     @Override
@@ -139,7 +145,44 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
 
             }
         });
+        mBinding.llyTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTimeType = 1;
+                selectTime();
+            }
+        });
     }
+
+    /**
+     * 选择时间
+     */
+    private void selectTime() {
+        TimePickerDialog dialogYearMonthDay = new TimePickerDialog.Builder()
+                .setTitleStringId(mTimeType == 1 ? "开始时间" : "结束时间")
+                .setThemeColor(getResources().getColor(R.color.colorTheme))
+                .setType(Type.YEAR_MONTH_DAY)
+
+                .setCallBack(new OnDateSetListener() {
+                    @Override
+                    public void onDateSet(TimePickerDialog timePickerDialog, long time) {
+                        if (mTimeType == 1) {
+                            mStartTime = time;
+                            mTimeType = 2;
+                            selectTime();
+                        } else {
+                            mTimeType = 0;
+                            mEndTime = time;
+                            mBinding.tvStartTime.setText(DemoUtils.getTimeFormat(mStartTime, "yyyy-MM-dd"));
+                            mBinding.tvEndTime.setText(DemoUtils.getTimeFormat(mEndTime, "yyyy-MM-dd"));
+                        }
+                    }
+                })
+                .build();
+        dialogYearMonthDay.show(getSupportFragmentManager(), "YEAR_MONTH_DAY");
+    }
+
+    private int mTimeType = 0;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

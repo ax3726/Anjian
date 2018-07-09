@@ -20,6 +20,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import ml.gsy.com.library.utils.runtimepermission.PermissionsManager;
 import ml.gsy.com.library.utils.runtimepermission.PermissionsResultAction;
@@ -81,13 +84,13 @@ public class DemoUtils {
     }
 
     //计算图片的缩放值
-    public static int calculateInSampleSize(BitmapFactory.Options options,int reqWidth, int reqHeight) {
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
 
         if (height > reqHeight || width > reqWidth) {
-            final int heightRatio = Math.round((float) height/ (float) reqHeight);
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
             final int widthRatio = Math.round((float) width / (float) reqWidth);
             inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
         }
@@ -118,6 +121,7 @@ public class DemoUtils {
         byte[] b = baos.toByteArray();
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
+
     /**
      * 获取经纬度
      *
@@ -191,5 +195,10 @@ public class DemoUtils {
             localIntent.putExtra("com.android.settings.ApplicationPkgName", activity.getPackageName());
         }
         activity.startActivityForResult(localIntent, 1001);
+    }
+
+    public static String getTimeFormat(long time, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(new Date(time));
     }
 }

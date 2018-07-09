@@ -50,9 +50,7 @@ public class LoginActivity extends BaseActivity<BasePresenter, ActivityLoginBind
                 checkLogin();
             }
         });
-
     }
-
     private void checkLogin() {
         String phone = mBinding.etPhone.getText().toString().trim();
         String password = mBinding.etPassword.getText().toString().trim();
@@ -80,9 +78,6 @@ public class LoginActivity extends BaseActivity<BasePresenter, ActivityLoginBind
             }
         });
     }
-
-
-
 }
 
 

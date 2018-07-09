@@ -124,9 +124,11 @@ public class ChooseMapPopuwindow implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.lly_gaode://唤起高德地图
                 initGaode();
+                dismiss();
                 break;
             case R.id.lly_baidu://唤起百度地图
                 initBaidu();
+                dismiss();
                 break;
             case R.id.btn_cancel:
                 dismiss();
