@@ -14,6 +14,7 @@ import com.anjian.model.BaseBean;
 import com.anjian.model.record.FengXianListModel;
 import com.anjian.model.request.AddFengXianRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
@@ -90,6 +91,15 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
         mBinding.tvShigu.setText(mDataBean.getEasyHappenCaseType());
         mBinding.tvSuoshi.setText(mDataBean.getLossPrediction());
         mBinding.tvZhengai.setText(mDataBean.getModifyStep());
+
+
+        mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleImg()));
+            }
+        });
     }
 
     @Override

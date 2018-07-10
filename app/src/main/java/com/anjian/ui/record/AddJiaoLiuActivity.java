@@ -16,6 +16,7 @@ import com.anjian.model.BaseBean;
 import com.anjian.model.record.JiaoLiuListModel;
 import com.anjian.model.request.AddJiaoLiuRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
@@ -114,6 +115,15 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
 
         mBinding.tvPeople.setText(mDataBean.getMeetingUser());
         mBinding.tvContent.setText(mDataBean.getMeetingContent());
+
+
+        mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleImg()));
+            }
+        });
     }
 
     @Override

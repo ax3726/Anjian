@@ -10,11 +10,11 @@ import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddTeZhongBinding;
-import com.anjian.databinding.ActivityAddWeiHuaBinding;
 import com.anjian.model.BaseBean;
 import com.anjian.model.record.TeZhongListModel;
 import com.anjian.model.request.AddTeZhongRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
@@ -93,6 +93,22 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mBinding.tvAddTimg1.setVisibility(View.GONE);
         mBinding.img1.setVisibility(View.VISIBLE);
         Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getUsePms())).into(mBinding.img1);
+
+        mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleImg()));
+            }
+        });
+        mBinding.flyImg1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getUsePms()));
+            }
+        });
+
 
         mBinding.tvName.setText(mDataBean.getSpecialDeviceName());
         mBinding.tvNum.setText(String.valueOf(mDataBean.getSpecialDeviceNum()));

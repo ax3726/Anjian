@@ -12,10 +12,9 @@ import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddWeiHuaBinding;
 import com.anjian.model.BaseBean;
 import com.anjian.model.record.FenChengListModel;
-import com.anjian.model.record.WeiHuaListModel;
 import com.anjian.model.request.AddFenChengRequest;
-import com.anjian.model.request.AddYouXianRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
@@ -85,6 +84,13 @@ public class AddFenChengActivity extends PhotoActivity<BasePresenter, ActivityAd
         mBinding.tvNum.setText(String.valueOf(mDataBean.getDustNum()));
         mBinding.tvAddress.setText(mDataBean.getWorkPosition());
 
+        mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleImg()));
+            }
+        });
     }
 
     @Override

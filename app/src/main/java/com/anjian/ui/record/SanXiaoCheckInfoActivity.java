@@ -3,25 +3,20 @@ package com.anjian.ui.record;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.anjian.R;
-import com.anjian.base.BaseActivity;
 import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityQiyeCheckInfoBinding;
-import com.anjian.databinding.ActivityWeiHuaBinding;
 import com.anjian.model.BaseBean;
-import com.anjian.model.record.QiYeCheckListModel;
 import com.anjian.model.record.SanXiaoCheckListModel;
-import com.anjian.model.request.UpdateQiYeCheckRequest;
 import com.anjian.model.request.UpdateSanXiaoCheckRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
@@ -29,11 +24,6 @@ import com.bumptech.glide.Glide;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import ml.gsy.com.library.adapters.recyclerview.CommonAdapter;
-import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
 
 public class SanXiaoCheckInfoActivity extends PhotoActivity<BasePresenter, ActivityQiyeCheckInfoBinding> {
 
@@ -118,6 +108,14 @@ public class SanXiaoCheckInfoActivity extends PhotoActivity<BasePresenter, Activ
             mBinding.imgZheng.setVisibility(View.VISIBLE);
             Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getModifyImg())).into(mBinding.imgZheng);
             mBinding.flyZhengImg.setEnabled(false);
+
+            mBinding.imgZheng.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getModifyImg()));
+                }
+            });
         }
 
     }

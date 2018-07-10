@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.anjian.R;
-import com.anjian.base.BaseActivity;
 import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
@@ -16,8 +15,8 @@ import com.anjian.databinding.ActivityAddQiyeCheckBinding;
 import com.anjian.model.BaseBean;
 import com.anjian.model.record.QiYeCheckListModel;
 import com.anjian.model.request.AddQiYeCheckRequest;
-import com.anjian.model.request.AddTeZhongRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
@@ -75,6 +74,15 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
         mBinding.tvYinhuan.setText(mDataBean.getDangerDesc());
         mBinding.tvCuoshi.setText(mDataBean.getModifyStep());
         mBinding.tvFalv.setText(mDataBean.getLawReason());
+
+
+        mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleImg()));
+            }
+        });
 
     }
 

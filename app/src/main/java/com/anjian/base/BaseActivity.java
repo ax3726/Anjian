@@ -145,6 +145,11 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
         startActivity(intent);
     }
 
+    protected void startActivityUrl(Class<?> cls,String url) {
+        Intent intent = new Intent(aty, cls);
+        intent.putExtra("url",url);
+        startActivity(intent);
+    }
     protected void startActivityForResult(Class<?> cls,int requestCode) {
         startActivityForResult(new Intent(aty, cls),requestCode);
     }
