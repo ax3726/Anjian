@@ -137,7 +137,7 @@
                 android:layout_marginBottom="24px"
                 android:layout_marginTop="15px"
                 android:orientation="horizontal"
-                android:paddingLeft="7.5px"
+                android:paddingLeft="15px"
                 android:paddingRight="15px"
                 android:weightSum="3">
 
@@ -149,6 +149,21 @@
                     android:layout_weight="1"
                     android:src="@drawable/record_xiaofang_icon" />
 
+                <ImageView
+                    android:id="@+id/img_youxian"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15px"
+                    android:layout_marginRight="15px"
+                    android:layout_weight="1"
+                    android:src="@drawable/record_youxian_icon" />
+
+                <ImageView
+                    android:id="@+id/img_fencheng"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/record_fencheng_icon" />
 
             </com.zhy.autolayout.AutoLinearLayout>
 

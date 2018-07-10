@@ -22,6 +22,15 @@ public class UpdateQiYeRequset {
     String floorArea;
     String employeeNum;
     String position;
+    String referType;
+
+    public String getReferType() {
+        return referType;
+    }
+
+    public void setReferType(String referType) {
+        this.referType = referType;
+    }
 
     public String getId() {
         return id;

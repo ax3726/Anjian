@@ -114,5 +114,6 @@ configurations.all {
                 details.useVersion '25.3.1'
             }
         }
+
     }
 }

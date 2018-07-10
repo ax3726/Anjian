@@ -30,12 +30,12 @@ import cn.qqtheme.framework.picker.OptionPicker;
 
 public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAddSanXiaoBinding> implements View.OnClickListener {
     private String[] mTypeList = new String[]{
-            "人员密集场所", "三小场所", "出租屋", "其他"
+            "小档口", "小作坊", "小娱乐场所"
     };
     private String mImgHead = "";//门头照片
     private String mImgZhi = "";//执照照片
     private int type = 0;
-    private int mTypeIndex = 0;//1:"人员密集场所",2:"三小场所",3:"出租屋"0:"其他"）
+    private int mTypeIndex = 0;//1:"小档口",2:"小作坊",3:"小娱乐场所）
     private SanXiaoInfoModel.DataBean mDataBean = null;
 
     @Override
@@ -105,7 +105,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mBinding.etMail.setText(mDataBean.getEmail());
 
         mTypeIndex = mDataBean.getIndustry();
-        mBinding.tvType.setText(mTypeList[mTypeIndex == 0 ? 3 : mTypeIndex--]);
+        mBinding.tvType.setText(mTypeList[mTypeIndex == 0 ? 2 : mTypeIndex--]);
 
 
         mBinding.etNum.setText(mDataBean.getEmployeeNum() + "");
@@ -138,7 +138,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
                 picker1.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
                     @Override
                     public void onOptionPicked(int i, String s) {
-                        if (i < 3) {
+                        if (i < 2) {
                             i++;
                         } else {
                             i = 0;
@@ -346,7 +346,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
                             getAreadata();
                         } else if (index == 3) {
                             index = 0;
-                            mBinding.tvJiedao.setText( fourName);
+                            mBinding.tvJiedao.setText(fourName);
                         }
 
                     }

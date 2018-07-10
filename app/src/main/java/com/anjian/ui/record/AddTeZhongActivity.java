@@ -29,10 +29,12 @@ import java.io.File;
 public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAddTeZhongBinding> {
 
     private String mImgPath = "";
+    private String mImgUsePmsPath = "";
     private TeZhongListModel.DataBean mDataBean = null;
     private String mId = "";
     private long mStartTime = 0;
     private long mEndTime = 0;
+    private int mType = 0;//
 
     @Override
     protected boolean isPrestener() {
@@ -57,7 +59,7 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
     @Override
     protected void initData() {
         super.initData();
-        mBinding.tvAddTimg.setText("点击添加特种设备照片");
+
         mDataBean = (TeZhongListModel.DataBean) getIntent().getSerializableExtra("data");
         mId = getIntent().getStringExtra("id");
         initView();
@@ -88,10 +90,35 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mBinding.img.setVisibility(View.VISIBLE);
         Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
 
+        mBinding.tvAddTimg1.setVisibility(View.GONE);
+        mBinding.img1.setVisibility(View.VISIBLE);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getUsePms())).into(mBinding.img1);
 
         mBinding.tvName.setText(mDataBean.getSpecialDeviceName());
         mBinding.tvNum.setText(String.valueOf(mDataBean.getSpecialDeviceNum()));
         mBinding.tvAddress.setText(mDataBean.getWorkPosition());
+
+        if (!TextUtils.isEmpty(mDataBean.getExamineBeginDate())) {
+            String[] split = mDataBean.getExamineBeginDate().split(" ");
+            if (split.length>0) {
+                mBinding.tvStartTime.setText(split[0]);
+            }
+        }
+        if (!TextUtils.isEmpty(mDataBean.getExamineEndDate())) {
+            String[] split = mDataBean.getExamineEndDate().split(" ");
+            if (split.length>0) {
+                mBinding.tvEndTime.setText(split[0]);
+            }
+
+        }
+
+        int licensedWork = mDataBean.getLicensedWork();
+
+        if (licensedWork == 0) {
+            mBinding.rbYou.setChecked(true);
+        } else {
+            mBinding.rbNo.setChecked(true);
+        }
 
     }
 
@@ -129,6 +156,27 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mType = 1;
+                SelectPhotopopuwindow selectPhotopopuwindow = new SelectPhotopopuwindow(aty);
+                selectPhotopopuwindow.setSelectPhotoListener(new SelectPhotopopuwindow.SelectPhotoListener() {
+                    @Override
+                    public void onAlbum() {
+                        pickphoto();
+                    }
+
+                    @Override
+                    public void onCamera() {
+                        doPhoto();
+                    }
+                });
+                selectPhotopopuwindow.showPopupWindow();
+
+            }
+        });
+        mBinding.flyImg1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mType = 2;
                 SelectPhotopopuwindow selectPhotopopuwindow = new SelectPhotopopuwindow(aty);
                 selectPhotopopuwindow.setSelectPhotoListener(new SelectPhotopopuwindow.SelectPhotoListener() {
                     @Override
@@ -208,10 +256,19 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
     @Override
     public void photoSuccess(String path, File file, int... queue) {
         if (!TextUtils.isEmpty(path)) {
-            mImgPath = path;
-            mBinding.tvAddTimg.setVisibility(View.GONE);
-            mBinding.img.setVisibility(View.VISIBLE);
-            Glide.with(aty).load(file).into(mBinding.img);
+            if (mType == 1) {
+                mImgPath = path;
+                mBinding.tvAddTimg.setVisibility(View.GONE);
+                mBinding.img.setVisibility(View.VISIBLE);
+                Glide.with(aty).load(file).into(mBinding.img);
+            } else {
+                mImgUsePmsPath = path;
+                mBinding.tvAddTimg1.setVisibility(View.GONE);
+                mBinding.img1.setVisibility(View.VISIBLE);
+                Glide.with(aty).load(file).into(mBinding.img1);
+            }
+
+
         }
     }
 
@@ -225,8 +282,14 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
         String Name = mBinding.tvName.getText().toString().trim();
         String Num = mBinding.tvNum.getText().toString().trim();
         String Address = mBinding.tvAddress.getText().toString().trim();
+        String starttime = mBinding.tvStartTime.getText().toString().trim();
+        String endtime = mBinding.tvEndTime.getText().toString().trim();
         if (TextUtils.isEmpty(mImgPath)) {
-            showToast("请添加现场图片!");
+            showToast("请添加设备图片!");
+            return;
+        }
+        if (TextUtils.isEmpty(mImgUsePmsPath)) {
+            showToast("请添加设备许可证图片!");
             return;
         }
         if (TextUtils.isEmpty(Name)) {
@@ -241,6 +304,29 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
             showToast("车间位置不能为空!");
             return;
         }
+        if (TextUtils.isEmpty(Address)) {
+            showToast("车间位置不能为空!");
+            return;
+        }
+
+        int chi = -1;
+        if (mBinding.rbYou.isChecked()) {
+            chi = 0;
+        } else if (mBinding.rbNo.isChecked()) {
+            chi = 1;
+        }
+        if (chi == -1) {
+            showToast("请选择是否持证上岗!");
+            return;
+        }
+        if (mStartTime == 0) {
+            showToast("请选择开始时间!");
+            return;
+        }
+        if (mEndTime == 0) {
+            showToast("请选择结束时间!");
+            return;
+        }
 
         AddTeZhongRequest addTeZhongRequest = new AddTeZhongRequest();
         addTeZhongRequest.setEnterpriseId(mId);
@@ -248,6 +334,11 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
         addTeZhongRequest.setSpecialDeviceNum(Num);
         addTeZhongRequest.setWorkPosition(Address);
         addTeZhongRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));
+        addTeZhongRequest.setUsePms(DemoUtils.imageToBase64(mImgUsePmsPath));
+        addTeZhongRequest.setLicensedWork(chi);
+        addTeZhongRequest.setExamineBeginDate(starttime);
+        addTeZhongRequest.setExamineEndDate(endtime);
+
         Api.getApi().addTeZhong(getRequestBody(addTeZhongRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
             @Override
             public void onSuccess(BaseBean baseBean) {

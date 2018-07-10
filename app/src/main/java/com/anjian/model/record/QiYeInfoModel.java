@@ -8,10 +8,11 @@ import java.io.Serializable;
 
 public class QiYeInfoModel {
 
+
     /**
      * code : 200
      * count : 0
-     * data : {"areaId":"1012255152452616193","areaName":null,"areaRelation":"988374448447025153","businessLicenceCode":"5568","businessLicenceImg":"/enterpriseInfo/2018/7/2/f4e6861138e344aba873a3c02bc65809.png","contactName":"来来来","contactPhone":"15170193726","createBy":"988422934076903425","createName":null,"createTime":"2018-07-02 19:03:43","dangerChemicalDesc":null,"delFlag":0,"detailAddress":"福建省泉州市丰泽区测试村","email":"ax3726@163.com","employeeNum":100,"enterpriseDoorHeadImg":"/enterpriseInfo/2018/7/2/c6b614f6077641b5b98ccd4036f5f99f.png","enterpriseName":"这个是企业信息","enterpriseScale":1,"examineTime":null,"examineUser":null,"fireDevice":null,"floorArea":500,"id":"1013739992192516097","industry":2,"position":"30.236669,120.240344","specialDevice":null,"updateBy":"988422934076903425","updateTime":"2018-07-02 19:03:43"}
+     * data : {"areaId":"1012255152452616193","areaName":null,"areaRelation":"988374448447025153","businessLicenceCode":"5568","businessLicenceImg":"/enterpriseInfo/2018/7/2/f4e6861138e344aba873a3c02bc65809.png","contactName":"来来来","contactPhone":"15170193726","controlStandBook":null,"controlStep":null,"createBy":"988422934076903425","createName":null,"createTime":"2018-07-02 19:03:43","dangerChemicalDesc":null,"dangerDistributeImg":null,"delFlag":0,"detailAddress":"福建省泉州市丰泽区测试村","email":"ax3726@163.com","employeeNum":100,"enterpriseDoorHeadImg":"/enterpriseInfo/2018/7/2/c6b614f6077641b5b98ccd4036f5f99f.png","enterpriseName":"这个是修改后的企业信息","enterpriseScale":1,"examineTime":"2018-07-03 14:14:40","examineUser":null,"existProblem":null,"fireDevice":null,"floorArea":500,"id":"1013739992192516097","industry":3,"position":"30.241596,120.241595","referType":null,"specialDevice":null,"updateBy":"988422934076903425","updateTime":"2018-07-03 14:14:40","urgentDevice":null}
      * message : 成功
      */
 
@@ -61,27 +62,33 @@ public class QiYeInfoModel {
          * businessLicenceImg : /enterpriseInfo/2018/7/2/f4e6861138e344aba873a3c02bc65809.png
          * contactName : 来来来
          * contactPhone : 15170193726
+         * controlStandBook : null
+         * controlStep : null
          * createBy : 988422934076903425
          * createName : null
          * createTime : 2018-07-02 19:03:43
          * dangerChemicalDesc : null
+         * dangerDistributeImg : null
          * delFlag : 0
          * detailAddress : 福建省泉州市丰泽区测试村
          * email : ax3726@163.com
          * employeeNum : 100
          * enterpriseDoorHeadImg : /enterpriseInfo/2018/7/2/c6b614f6077641b5b98ccd4036f5f99f.png
-         * enterpriseName : 这个是企业信息
+         * enterpriseName : 这个是修改后的企业信息
          * enterpriseScale : 1
-         * examineTime : null
+         * examineTime : 2018-07-03 14:14:40
          * examineUser : null
+         * existProblem : null
          * fireDevice : null
          * floorArea : 500.0
          * id : 1013739992192516097
-         * industry : 2
-         * position : 30.236669,120.240344
+         * industry : 3
+         * position : 30.241596,120.241595
+         * referType : null
          * specialDevice : null
          * updateBy : 988422934076903425
-         * updateTime : 2018-07-02 19:03:43
+         * updateTime : 2018-07-03 14:14:40
+         * urgentDevice : null
          */
 
         private String areaId;
@@ -91,10 +98,13 @@ public class QiYeInfoModel {
         private String businessLicenceImg;
         private String contactName;
         private String contactPhone;
+        private int controlStandBook=-1;
+        private int controlStep=-1;
         private String createBy;
         private String createName;
         private String createTime;
         private String dangerChemicalDesc;
+        private String dangerDistributeImg;
         private int delFlag;
         private String detailAddress;
         private String email;
@@ -104,14 +114,17 @@ public class QiYeInfoModel {
         private int enterpriseScale;
         private String examineTime;
         private String examineUser;
+        private String existProblem;
         private String fireDevice;
         private double floorArea;
         private String id;
         private int industry;
         private String position;
+        private String referType;
         private String specialDevice;
         private String updateBy;
         private String updateTime;
+        private int urgentDevice=-1;
 
         public String getAreaId() {
             return areaId;
@@ -169,6 +182,22 @@ public class QiYeInfoModel {
             this.contactPhone = contactPhone;
         }
 
+        public int getControlStandBook() {
+            return controlStandBook;
+        }
+
+        public void setControlStandBook(int controlStandBook) {
+            this.controlStandBook = controlStandBook;
+        }
+
+        public int getControlStep() {
+            return controlStep;
+        }
+
+        public void setControlStep(int controlStep) {
+            this.controlStep = controlStep;
+        }
+
         public String getCreateBy() {
             return createBy;
         }
@@ -199,6 +228,14 @@ public class QiYeInfoModel {
 
         public void setDangerChemicalDesc(String dangerChemicalDesc) {
             this.dangerChemicalDesc = dangerChemicalDesc;
+        }
+
+        public String getDangerDistributeImg() {
+            return dangerDistributeImg;
+        }
+
+        public void setDangerDistributeImg(String dangerDistributeImg) {
+            this.dangerDistributeImg = dangerDistributeImg;
         }
 
         public int getDelFlag() {
@@ -273,6 +310,14 @@ public class QiYeInfoModel {
             this.examineUser = examineUser;
         }
 
+        public String getExistProblem() {
+            return existProblem;
+        }
+
+        public void setExistProblem(String existProblem) {
+            this.existProblem = existProblem;
+        }
+
         public String getFireDevice() {
             return fireDevice;
         }
@@ -313,6 +358,14 @@ public class QiYeInfoModel {
             this.position = position;
         }
 
+        public String getReferType() {
+            return referType;
+        }
+
+        public void setReferType(String referType) {
+            this.referType = referType;
+        }
+
         public String getSpecialDevice() {
             return specialDevice;
         }
@@ -335,6 +388,14 @@ public class QiYeInfoModel {
 
         public void setUpdateTime(String updateTime) {
             this.updateTime = updateTime;
+        }
+
+        public int getUrgentDevice() {
+            return urgentDevice;
+        }
+
+        public void setUrgentDevice(int urgentDevice) {
+            this.urgentDevice = urgentDevice;
         }
     }
 }

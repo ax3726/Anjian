@@ -4,15 +4,15 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by LiMing on 2018/7/1.
+ * Created by Administrator on 2018/7/10.
  */
 
-public class TeZhongListModel {
+public class YouXianListModel {
 
     /**
      * code : 200
      * count : 1
-     * data : [{"createBy":"988422934076903425","createName":null,"createTime":"2018-07-10 16:45:57","delFlag":0,"enterpriseId":"1013739992192516097","enterpriseName":null,"examineBeginDate":"2018-07-10 00:00:00","examineEndDate":"2018-07-15 00:00:00","id":"1016604425369559041","licensedWork":0,"localeImg":"/specialDevice/2018/7/10/a2413e32273f495fa721f91071474089.png","remark":null,"specialDeviceName":"来来来","specialDeviceNum":12,"specialDeviceUnit":null,"updateBy":"988422934076903425","updateTime":"2018-07-10 16:45:57","usePms":"/specialDevice/2018/7/10/9cfc4ee92f5a418cbd14f7840346de85.png","workPosition":"聊啦别"}]
+     * data : [{"createBy":"988422934076903425","createName":null,"createTime":"2018-07-10 11:13:31","delFlag":0,"enterpriseId":"1013739992192516097","enterpriseName":null,"id":"1016520766654390274","localeImg":"/limitSpace/2018/7/10/056a0fed0c3440048d380d1810f1f9b8.png","remark":null,"spaceName":"来来来","spaceNum":12,"spaceUnit":null,"updateBy":"988422934076903425","updateTime":"2018-07-10 11:13:31","workPosition":"啦啦啦啦啦啦啦"}]
      * message : 成功
      */
 
@@ -53,27 +53,23 @@ public class TeZhongListModel {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean implements Serializable {
         /**
          * createBy : 988422934076903425
          * createName : null
-         * createTime : 2018-07-10 16:45:57
+         * createTime : 2018-07-10 11:13:31
          * delFlag : 0
          * enterpriseId : 1013739992192516097
          * enterpriseName : null
-         * examineBeginDate : 2018-07-10 00:00:00
-         * examineEndDate : 2018-07-15 00:00:00
-         * id : 1016604425369559041
-         * licensedWork : 0
-         * localeImg : /specialDevice/2018/7/10/a2413e32273f495fa721f91071474089.png
+         * id : 1016520766654390274
+         * localeImg : /limitSpace/2018/7/10/056a0fed0c3440048d380d1810f1f9b8.png
          * remark : null
-         * specialDeviceName : 来来来
-         * specialDeviceNum : 12.0
-         * specialDeviceUnit : null
+         * spaceName : 来来来
+         * spaceNum : 12.0
+         * spaceUnit : null
          * updateBy : 988422934076903425
-         * updateTime : 2018-07-10 16:45:57
-         * usePms : /specialDevice/2018/7/10/9cfc4ee92f5a418cbd14f7840346de85.png
-         * workPosition : 聊啦别
+         * updateTime : 2018-07-10 11:13:31
+         * workPosition : 啦啦啦啦啦啦啦
          */
 
         private String createBy;
@@ -82,18 +78,14 @@ public class TeZhongListModel {
         private int delFlag;
         private String enterpriseId;
         private String enterpriseName;
-        private String examineBeginDate;
-        private String examineEndDate;
         private String id;
-        private int licensedWork;
         private String localeImg;
         private String remark;
-        private String specialDeviceName;
-        private double specialDeviceNum;
-        private String specialDeviceUnit;
+        private String spaceName;
+        private double spaceNum;
+        private String spaceUnit;
         private String updateBy;
         private String updateTime;
-        private String usePms;
         private String workPosition;
 
         public String getCreateBy() {
@@ -144,36 +136,12 @@ public class TeZhongListModel {
             this.enterpriseName = enterpriseName;
         }
 
-        public String getExamineBeginDate() {
-            return examineBeginDate;
-        }
-
-        public void setExamineBeginDate(String examineBeginDate) {
-            this.examineBeginDate = examineBeginDate;
-        }
-
-        public String getExamineEndDate() {
-            return examineEndDate;
-        }
-
-        public void setExamineEndDate(String examineEndDate) {
-            this.examineEndDate = examineEndDate;
-        }
-
         public String getId() {
             return id;
         }
 
         public void setId(String id) {
             this.id = id;
-        }
-
-        public int getLicensedWork() {
-            return licensedWork;
-        }
-
-        public void setLicensedWork(int licensedWork) {
-            this.licensedWork = licensedWork;
         }
 
         public String getLocaleImg() {
@@ -192,28 +160,28 @@ public class TeZhongListModel {
             this.remark = remark;
         }
 
-        public String getSpecialDeviceName() {
-            return specialDeviceName;
+        public String getSpaceName() {
+            return spaceName;
         }
 
-        public void setSpecialDeviceName(String specialDeviceName) {
-            this.specialDeviceName = specialDeviceName;
+        public void setSpaceName(String spaceName) {
+            this.spaceName = spaceName;
         }
 
-        public double getSpecialDeviceNum() {
-            return specialDeviceNum;
+        public double getSpaceNum() {
+            return spaceNum;
         }
 
-        public void setSpecialDeviceNum(double specialDeviceNum) {
-            this.specialDeviceNum = specialDeviceNum;
+        public void setSpaceNum(double spaceNum) {
+            this.spaceNum = spaceNum;
         }
 
-        public String getSpecialDeviceUnit() {
-            return specialDeviceUnit;
+        public String getSpaceUnit() {
+            return spaceUnit;
         }
 
-        public void setSpecialDeviceUnit(String specialDeviceUnit) {
-            this.specialDeviceUnit = specialDeviceUnit;
+        public void setSpaceUnit(String spaceUnit) {
+            this.spaceUnit = spaceUnit;
         }
 
         public String getUpdateBy() {
@@ -230,14 +198,6 @@ public class TeZhongListModel {
 
         public void setUpdateTime(String updateTime) {
             this.updateTime = updateTime;
-        }
-
-        public String getUsePms() {
-            return usePms;
-        }
-
-        public void setUsePms(String usePms) {
-            this.usePms = usePms;
         }
 
         public String getWorkPosition() {

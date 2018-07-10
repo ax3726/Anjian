@@ -1,7 +1,11 @@
 package com.anjian.ui.record;
 
+
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.anjian.R;
 import com.anjian.base.BaseNetListener;
@@ -15,6 +19,7 @@ import com.anjian.model.record.SysAreaModel;
 import com.anjian.model.request.AddQiYeRequset;
 import com.anjian.model.request.UpdateQiYeRequset;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.ui.main.MainActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
@@ -31,12 +36,14 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
     private String[] mHangye = new String[]{
             "冶金", "有色金属", "机械", "纺织", "轻工", "化工", "医药", "建材", "烟草", "烟草爆竹", "其他"
     };
+    private String items[] = {"粉尘涉爆", "有限空间", "特种设备", "涉氨"};
     private String mImgHead = "";//门头照片
     private String mImgZhi = "";//执照照片
     private int type = 0;
     private int mTypeIndex = 1;//企业规模(1规上企业 2小微企业 3三小场所)
     private int mHnagyeindex = 0;
     private QiYeInfoModel.DataBean mDataBean = null;
+    private String mTypeShe = "";//涉及类型
 
     @Override
     protected boolean isPrestener() {
@@ -131,6 +138,27 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         threeId = mDataBean.getAreaRelation();
         fourName = mDataBean.getAreaName();
 
+
+
+        if (!TextUtils.isEmpty(mDataBean.getReferType())) {
+            mTypeShe = mDataBean.getReferType();
+            String[] split = mTypeShe.split(",");
+
+            if (split.length > 0) {
+                String txt = "";
+                for (int i = 0; i < split.length; i++) {
+                    if (TextUtils.isEmpty(txt)) {
+                        txt = items[i];
+                    } else {
+                        txt = txt + "、" + items[i];
+                    }
+                }
+                mBinding.tvSheType.setText(txt);
+
+            }
+        }
+
+
     }
 
     @Override
@@ -141,6 +169,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         mBinding.tvHangye.setOnClickListener(this);
         mBinding.flyImgTou.setOnClickListener(this);
         mBinding.flyImgZhi.setOnClickListener(this);
+        mBinding.tvSheType.setOnClickListener(this);
     }
 
     @Override
@@ -220,7 +249,51 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
                 });
                 selectPhotopopuwindow1.showPopupWindow();
                 break;
+            case R.id.tv_she_type://涉及类别
+                dialogMoreChoice();
+                break;
         }
+    }
+
+    /**
+     * 多选
+     */
+    private void dialogMoreChoice() {
+
+        final boolean selected[] = {false, false, false, false};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("选择涉及类别");
+
+        builder.setMultiChoiceItems(items, selected,
+                new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which,
+                                        boolean isChecked) {
+                    }
+                });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                String txt = "";
+                mTypeShe = "";
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+
+                        if (TextUtils.isEmpty(txt)) {//
+                            txt = items[i];
+                            mTypeShe = String.valueOf(i + 1);
+                        } else {
+                            txt = txt + "、" + items[i];
+                            mTypeShe = mTypeShe + "," + String.valueOf(i + 1);
+                        }
+                    }
+                }
+
+                mBinding.tvSheType.setText(txt);
+            }
+        });
+        builder.create().show();
     }
 
     private void submitMessage() {
@@ -252,6 +325,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         addQiYeRequset.setEnterpriseDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
         addQiYeRequset.setBusinessLicenceImg(DemoUtils.imageToBase64(mImgZhi));
         addQiYeRequset.setIndustry(String.valueOf(mHnagyeindex));
+        addQiYeRequset.setReferType(String.valueOf(mTypeShe));
 
         Api.getApi().addQiYe(getRequestBody(addQiYeRequset), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
             @Override
@@ -306,6 +380,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         addQiYeRequset.setFloorArea(Mianji);
         addQiYeRequset.setEmployeeNum(Num);
         addQiYeRequset.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
+        addQiYeRequset.setReferType(String.valueOf(mTypeShe));
         if (!TextUtils.isEmpty(mImgHead)) {
             addQiYeRequset.setEnterpriseDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
         }
@@ -395,7 +470,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
                             getAreadata();
                         } else if (index == 3) {
                             index = 0;
-                            mBinding.tvJiedao.setText(oneName + twoName + threeName + fourName);
+                            mBinding.tvJiedao.setText(fourName);
                         }
 
                     }

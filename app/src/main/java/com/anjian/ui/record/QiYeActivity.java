@@ -60,6 +60,10 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
         mBinding.imgWeihua.setOnClickListener(this);
         mBinding.imgTezhong.setOnClickListener(this);
         mBinding.imgXiaofang.setOnClickListener(this);
+        mBinding.imgYouxian.setOnClickListener(this);
+        mBinding.imgFencheng.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -88,7 +92,7 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
                 startActivity(intent);
                 break;
             case R.id.img_xianchang:
-                startActivity(QiYeCheckActivity.class, mId);
+                startActivity(QiYeSelectActivity.class, mId);
                 break;
             case R.id.img_jiaoliu:
                 startActivity(JiaoLiuActivity.class, mId);
@@ -103,7 +107,15 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
                 startActivity(TeZhongActivity.class, mId);
                 break;
             case R.id.img_xiaofang:
-                startActivity(XiaoFangActivity.class, mId);
+                Intent intent1 = new Intent(aty, AddXiaoFangActivity.class);
+                intent1.putExtra("data", mDataBean);
+                startActivity(intent1);
+                break;
+            case R.id.img_youxian:
+                startActivity(YouXianActivity.class, mId);
+                break;
+            case R.id.img_fencheng:
+                startActivity(FenChengActivity.class, mId);
                 break;
         }
     }

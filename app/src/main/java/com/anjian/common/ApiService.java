@@ -4,10 +4,12 @@ package com.anjian.common;
 import com.anjian.model.BaseBean;
 import com.anjian.model.main.LoginModel;
 import com.anjian.model.record.CompanyLisyModel;
+import com.anjian.model.record.FenChengListModel;
 import com.anjian.model.record.FengXianListModel;
 import com.anjian.model.record.JiaoLiuListModel;
 import com.anjian.model.record.QiYeCheckListModel;
 import com.anjian.model.record.QiYeInfoModel;
+import com.anjian.model.record.QiyeSelectListModel;
 import com.anjian.model.record.SanXiaoCheckListModel;
 import com.anjian.model.record.SanXiaoInfoModel;
 import com.anjian.model.record.SanXiaoSelectModel;
@@ -17,6 +19,7 @@ import com.anjian.model.record.TeZhongListModel;
 import com.anjian.model.record.WeiHuaListModel;
 import com.anjian.model.record.XiaoFangListModel;
 import com.anjian.model.record.YanLianListModel;
+import com.anjian.model.record.YouXianListModel;
 
 import io.reactivex.Flowable;
 import okhttp3.RequestBody;
@@ -113,6 +116,31 @@ public interface ApiService {
     @POST("security-monitor/app/dangerChemical/list")
     Flowable<WeiHuaListModel> getWeiHuaList(@Body RequestBody body, @Query("token") String token);
 
+
+    //新增有限空间
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/limitSpace/add")
+    Flowable<BaseBean> addYouXian(@Body RequestBody body, @Query("token") String token);
+
+
+    //有限空间列表信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/limitSpace/list")
+    Flowable<YouXianListModel> getYouXianList(@Body RequestBody body, @Query("token") String token);
+
+
+    //新增粉尘涉爆
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/dustExplosion/add")
+    Flowable<BaseBean> addFenCheng(@Body RequestBody body, @Query("token") String token);
+
+
+    //粉尘涉爆列表信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/dustExplosion/list")
+    Flowable<FenChengListModel> getFenChengList(@Body RequestBody body, @Query("token") String token);
+
+
     //新增特种设备信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/specialDevice/add")
@@ -125,7 +153,7 @@ public interface ApiService {
 
     //新增消防设施信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("security-monitor/app/fireDevice/add")
+    @POST("security-monitor/app/enterpriseInfo/update")
     Flowable<BaseBean> addXiaoFang(@Body RequestBody body, @Query("token") String token);
 
     //消防设施列表信息
@@ -190,5 +218,16 @@ public interface ApiService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/tspLocaleExamine/update")
     Flowable<BaseBean> updateSanXiaoCheck(@Body RequestBody body, @Query("token") String token);
+
+
+    //添加企业选项列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/enterpriseOption/update")
+    Flowable<BaseBean> updateQiYeSelectList(@Body RequestBody body, @Query("token") String token);
+
+    //企业选项列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/enterpriseOption/list")
+    Flowable<QiyeSelectListModel> getQiYeSelectList(@Body RequestBody body, @Query("token") String token);
 
 }

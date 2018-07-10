@@ -12,6 +12,42 @@ public class AddTeZhongRequest {
     private String workPosition;
     private String localeImg;
     private String remark;
+    private String usePms;
+    private int licensedWork;
+    private String examineBeginDate;
+    private String examineEndDate;
+
+    public String getUsePms() {
+        return usePms;
+    }
+
+    public void setUsePms(String usePms) {
+        this.usePms = usePms;
+    }
+
+    public int getLicensedWork() {
+        return licensedWork;
+    }
+
+    public void setLicensedWork(int licensedWork) {
+        this.licensedWork = licensedWork;
+    }
+
+    public String getExamineBeginDate() {
+        return examineBeginDate;
+    }
+
+    public void setExamineBeginDate(String examineBeginDate) {
+        this.examineBeginDate = examineBeginDate;
+    }
+
+    public String getExamineEndDate() {
+        return examineEndDate;
+    }
+
+    public void setExamineEndDate(String examineEndDate) {
+        this.examineEndDate = examineEndDate;
+    }
 
     public String getEnterpriseId() {
         return enterpriseId;

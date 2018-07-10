@@ -12,7 +12,8 @@ import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityWeiHuaBinding;
-import com.anjian.model.record.XiaoFangListModel;
+import com.anjian.model.record.FenChengListModel;
+import com.anjian.model.record.FenChengListModel;
 import com.anjian.model.request.AddListRequest;
 import com.anjian.utils.DemoUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -30,9 +31,11 @@ import java.util.List;
 import ml.gsy.com.library.adapters.recyclerview.CommonAdapter;
 import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
 
-public class XiaoFangActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBinding> {
-    private List<XiaoFangListModel.DataBean> mDataList = new ArrayList<>();
-    private CommonAdapter<XiaoFangListModel.DataBean> mCommonAdapter;
+public class FenChengActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBinding> {
+
+
+    private List<FenChengListModel.DataBean> mDataList = new ArrayList<>();
+    private CommonAdapter<FenChengListModel.DataBean> mCommonAdapter;
 
     private int mPosition = 1;
     private int mSize = 10;
@@ -60,13 +63,13 @@ public class XiaoFangActivity extends BaseActivity<BasePresenter, ActivityWeiHua
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
-        mTitleBarLayout.setTitle("风险管控");
+        mTitleBarLayout.setTitle("粉尘涉爆");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightImg(R.drawable.record_add_icon);
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(AddXiaoFangActivity.class,mId);
+                startActivity(AddFenChengActivity.class,mId);
             }
         });
     }
@@ -75,18 +78,18 @@ public class XiaoFangActivity extends BaseActivity<BasePresenter, ActivityWeiHua
     protected void initData() {
         super.initData();
         EventBus.getDefault().register(aty);
-        mId= getIntent().getStringExtra("id");
-        mCommonAdapter = new CommonAdapter<XiaoFangListModel.DataBean>(aty, R.layout.item_wei_hua, mDataList) {
+        mId=getIntent().getStringExtra("id");
+        mCommonAdapter = new CommonAdapter<FenChengListModel.DataBean>(aty, R.layout.item_wei_hua, mDataList) {
             @Override
-            protected void convert(ViewHolder holder, XiaoFangListModel.DataBean item, int position) {
+            protected void convert(ViewHolder holder, FenChengListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
-                holder.setText(R.id.tv_name, item.getFireDeviceName());
-                holder.setText(R.id.tv_num, "数量:" + item.getFireDeviceNum());
+                holder.setText(R.id.tv_name, item.getDustName());
+                holder.setText(R.id.tv_num, "数量:" + item.getDustNum());
                 holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getLocaleImg()),0);
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(aty, AddXiaoFangActivity.class);
+                        Intent intent = new Intent(aty, AddFenChengActivity.class);
                         intent.putExtra("data",item);
                         startActivity(intent);
                     }
@@ -121,15 +124,15 @@ public class XiaoFangActivity extends BaseActivity<BasePresenter, ActivityWeiHua
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
         addListRequest.getCondition().setId(mId);
-        Api.getApi().getXiaoFangList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<XiaoFangListModel>(this, true) {
+        Api.getApi().getFenChengList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<FenChengListModel>(this, true) {
             @Override
-            public void onSuccess(XiaoFangListModel baseBean) {
+            public void onSuccess(FenChengListModel baseBean) {
 
-            finishRefersh();
+                finishRefersh();
                 if (mPosition == 1) {
                     mDataList.clear();
                 }
-                List<XiaoFangListModel.DataBean> data = baseBean.getData();
+                List<FenChengListModel.DataBean> data = baseBean.getData();
                 if (data != null & data.size() > 0) {
                     mDataList.addAll(data);
                     if (data.size() < mSize) {

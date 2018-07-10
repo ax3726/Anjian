@@ -5,12 +5,15 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.anjian.R;
+import com.anjian.base.BaseActivity;
 import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddWeiHuaBinding;
+import com.anjian.databinding.ActivityAddXiaoFangBinding;
 import com.anjian.model.BaseBean;
+import com.anjian.model.record.QiYeInfoModel;
 import com.anjian.model.record.XiaoFangListModel;
 import com.anjian.model.request.AddXiaoFangRequest;
 import com.anjian.ui.common.PhotoActivity;
@@ -22,11 +25,11 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
-public class AddXiaoFangActivity extends PhotoActivity<BasePresenter, ActivityAddWeiHuaBinding> {
+public class AddXiaoFangActivity extends BaseActivity<BasePresenter, ActivityAddXiaoFangBinding> {
 
-    private String mImgPath = "";
-    private XiaoFangListModel.DataBean mDataBean=null;
-    private String mId="";
+
+    private QiYeInfoModel.DataBean mDataBean=null;
+
     @Override
     protected boolean isPrestener() {
         return false;
@@ -34,7 +37,7 @@ public class AddXiaoFangActivity extends PhotoActivity<BasePresenter, ActivityAd
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_add_wei_hua;
+        return R.layout.activity_add_xiao_fang;
     }
 
     @Override
@@ -50,9 +53,9 @@ public class AddXiaoFangActivity extends PhotoActivity<BasePresenter, ActivityAd
     @Override
     protected void initData() {
         super.initData();
-        mBinding.tvAddTimg.setText("点击添加消防设施照片");
-        mDataBean = (XiaoFangListModel.DataBean) getIntent().getSerializableExtra("data");
-        mId= getIntent().getStringExtra("id");
+
+        mDataBean = (QiYeInfoModel.DataBean) getIntent().getSerializableExtra("data");
+
         initView();
     }
 
@@ -60,21 +63,40 @@ public class AddXiaoFangActivity extends PhotoActivity<BasePresenter, ActivityAd
         if (mDataBean == null) {
             return;
         }
-        mTitleBarLayout.setRightTxt("");
 
-        mBinding.tvAddTimg.setVisibility(View.GONE);
+
+       mBinding.flyImg.setVisibility(View.VISIBLE);
         mBinding.img.setVisibility(View.VISIBLE);
-        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
-        mBinding.tvName.setText(mDataBean.getFireDeviceName());
-        mBinding.tvNum.setText(String.valueOf(mDataBean.getFireDeviceNum()));
-        mBinding.tvAddress.setText(mDataBean.getWorkPosition());
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getDangerDistributeImg())).into(mBinding.img);
 
+        int ControlStep = mDataBean.getControlStep();
+        if (ControlStep == 0) {
+            mBinding.rbGuanYou.setChecked(true);
+        } else if (ControlStep==1){
+            mBinding.rbGuanNo.setChecked(true);
+        }
+
+        int UrgentDevice = mDataBean.getUrgentDevice();
+        if (UrgentDevice == 0) {
+            mBinding.rbYingYou.setChecked(true);
+        } else if (ControlStep==1){
+            mBinding.rbYingNo.setChecked(true);
+        }
+
+        int ControlStandBook = mDataBean.getControlStandBook();
+        if (ControlStandBook == 0) {
+            mBinding.rbZhangYou.setChecked(true);
+        } else if (ControlStep==1){
+            mBinding.rbZhangNo.setChecked(true);
+        }
+
+        mBinding.tvQuestion.setText(mDataBean.getExistProblem());
     }
 
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
-        mTitleBarLayout.setTitle("消防设施情况");
+        mTitleBarLayout.setTitle("风险管控情况");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightTxt("保存");
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
@@ -88,52 +110,17 @@ public class AddXiaoFangActivity extends PhotoActivity<BasePresenter, ActivityAd
     @Override
     protected void initEvent() {
         super.initEvent();
-        if (mDataBean != null) {
-            return;
-        }
-        mBinding.tvName.setOnClickListener(new View.OnClickListener() {
+
+        mBinding.tvQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(aty, EditActivity.class);
-                intent.putExtra("txt", "名称");
+                intent.putExtra("txt", "存在问题");
                 startActivityForResult(intent, 1001);
             }
         });
-        mBinding.tvNum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(aty, EditActivity.class);
-                intent.putExtra("txt", "数量");
-                startActivityForResult(intent, 1002);
-            }
-        });
-        mBinding.tvAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(aty, EditActivity.class);
-                intent.putExtra("txt", "车间位置");
-                startActivityForResult(intent, 1003);
-            }
-        });
-        mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectPhotopopuwindow selectPhotopopuwindow = new SelectPhotopopuwindow(aty);
-                selectPhotopopuwindow.setSelectPhotoListener(new SelectPhotopopuwindow.SelectPhotoListener() {
-                    @Override
-                    public void onAlbum() {
-                        pickphoto();
-                    }
 
-                    @Override
-                    public void onCamera() {
-                        doPhoto();
-                    }
-                });
-                selectPhotopopuwindow.showPopupWindow();
 
-            }
-        });
     }
 
     @Override
@@ -143,68 +130,55 @@ public class AddXiaoFangActivity extends PhotoActivity<BasePresenter, ActivityAd
         if (data != null && resultCode == RESULT_OK) {
             String result = data.getStringExtra("result");
             switch (requestCode) {
-                case 1001://名称
-                    mBinding.tvName.setText(result);
-                    break;
-                case 1002://数量
-                    mBinding.tvNum.setText(result);
-                    break;
-                case 1003://车间位置
-                    mBinding.tvAddress.setText(result);
+                case 1001://存在问题
+                    mBinding.tvQuestion.setText(result);
                     break;
             }
 
         }
     }
 
-    @Override
-    public void photoSuccess(String path, File file, int... queue) {
-        if (!TextUtils.isEmpty(path)) {
-            mImgPath = path;
-            mBinding.tvAddTimg.setVisibility(View.GONE);
-            mBinding.img.setVisibility(View.VISIBLE);
-            Glide.with(aty).load(file).into(mBinding.img);
-        }
-    }
-
-    @Override
-    public void photoFaild() {
-        showToast("图片加载失败!");
-    }
 
 
     private void submitMessage() {
-        String Name = mBinding.tvName.getText().toString().trim();
-        String Num = mBinding.tvNum.getText().toString().trim();
-        String Address = mBinding.tvAddress.getText().toString().trim();
-        if (TextUtils.isEmpty(mImgPath)) {
-            showToast("请添加现场图片!");
-            return;
+        String question = mBinding.tvQuestion.getText().toString().trim();
+        int guan=0;
+        if (mBinding.rbGuanYou.isChecked()) {
+            guan=0;
+        } else {
+            guan=1;
         }
-        if (TextUtils.isEmpty(Name)) {
-            showToast("名称不能为空!");
-            return;
-        }
-        if (TextUtils.isEmpty(Num)) {
-            showToast("数量不能为空!");
-            return;
-        }
-        if (TextUtils.isEmpty(Address)) {
-            showToast("车间位置不能为空!");
-            return;
-        }
-        AddXiaoFangRequest addXiaoFangRequest=new AddXiaoFangRequest();
 
-        addXiaoFangRequest.setEnterpriseId(mId);
-        addXiaoFangRequest.setFireDeviceName(Name);
-        addXiaoFangRequest.setFireDeviceNum(Num);
-        addXiaoFangRequest.setWorkPosition(Address);
-        addXiaoFangRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));
+
+        int ying=0;
+        if (mBinding.rbYingYou.isChecked()) {
+            ying=0;
+        } else {
+            ying=1;
+        }
+
+        int zhang=0;
+        if (mBinding.rbZhangYou.isChecked()) {
+            zhang=0;
+        } else {
+            zhang=1;
+        }
+
+
+
+        AddXiaoFangRequest addXiaoFangRequest=new AddXiaoFangRequest();
+        addXiaoFangRequest.setEnterpriseName(mDataBean.getEnterpriseName());
+        addXiaoFangRequest.setId(mDataBean.getId());
+        addXiaoFangRequest.setControlStep(guan);
+        addXiaoFangRequest.setUrgentDevice(ying);
+        addXiaoFangRequest.setControlStandBook(zhang);
+        addXiaoFangRequest.setExistProblem(question);
+
         Api.getApi().addXiaoFang(getRequestBody(addXiaoFangRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
             @Override
             public void onSuccess(BaseBean baseBean) {
                 showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新");
+                EventBus.getDefault().post("刷新企业");
                 new Thread() {
                     @Override
                     public void run() {

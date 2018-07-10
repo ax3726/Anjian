@@ -69,6 +69,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         SanXiaoSelectListModel model = new SanXiaoSelectListModel();
         model.setTitle("三合一问题");
         model.getOptions().add(new SanXiaoSelectListModel.DataBean("人员住宿与经营、存储场所合用"));
+        model.getOptions().add(new SanXiaoSelectListModel.DataBean("其他"));
 
         SanXiaoSelectListModel model1 = new SanXiaoSelectListModel();
         model1.setTitle("电器线路安全隐患");
@@ -80,6 +81,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         model1.getOptions().add(new SanXiaoSelectListModel.DataBean("电气线路敷设在可燃材料上"));
         model1.getOptions().add(new SanXiaoSelectListModel.DataBean("采用闸刀开关"));
         model1.getOptions().add(new SanXiaoSelectListModel.DataBean("线路乱拉乱接"));
+        model1.getOptions().add(new SanXiaoSelectListModel.DataBean("其他"));
 
         SanXiaoSelectListModel model2 = new SanXiaoSelectListModel();
         model2.setTitle("消防隐患");
@@ -88,21 +90,34 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         model2.getOptions().add(new SanXiaoSelectListModel.DataBean("通道堵塞"));
         model2.getOptions().add(new SanXiaoSelectListModel.DataBean("灭火器前堆放障碍物"));
         model2.getOptions().add(new SanXiaoSelectListModel.DataBean("5.灭火器材配置不足"));
+        model2.getOptions().add(new SanXiaoSelectListModel.DataBean("其他"));
 
 
         SanXiaoSelectListModel model3 = new SanXiaoSelectListModel();
         model3.setTitle("火灾隐患");
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("液化气_KG_瓶"));
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("天然气"));
-        model3.getOptions().add(new SanXiaoSelectListModel.DataBean("柴油"));
-        model3.getOptions().add(new SanXiaoSelectListModel.DataBean("环保油"));
-        model3.getOptions().add(new SanXiaoSelectListModel.DataBean("其他燃料燃具"));
+        model3.getOptions().add(new SanXiaoSelectListModel.DataBean("危险化学品"));
+        model3.getOptions().add(new SanXiaoSelectListModel.DataBean("危险物品"));
+        model3.getOptions().add(new SanXiaoSelectListModel.DataBean("其他燃料"));
+        model3.getOptions().add(new SanXiaoSelectListModel.DataBean("其他"));
+
+
+        SanXiaoSelectListModel model4 = new SanXiaoSelectListModel();
+        model4.setTitle("其他");
+        model4.getOptions().add(new SanXiaoSelectListModel.DataBean("特种设备"));
+        model4.getOptions().add(new SanXiaoSelectListModel.DataBean("有限空间"));
+        model4.getOptions().add(new SanXiaoSelectListModel.DataBean("粉尘涉爆"));
+        model4.getOptions().add(new SanXiaoSelectListModel.DataBean("危险作业"));
+        model4.getOptions().add(new SanXiaoSelectListModel.DataBean("其他"));
+
 
 
         mDataList.add(model);
         mDataList.add(model1);
         mDataList.add(model2);
         mDataList.add(model3);
+        mDataList.add(model4);
 
         mAdapter = new Adapter();
         mBinding.elvBody.setAdapter(mAdapter);

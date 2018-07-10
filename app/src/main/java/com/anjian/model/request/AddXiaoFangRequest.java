@@ -5,67 +5,58 @@ package com.anjian.model.request;
  */
 
 public class AddXiaoFangRequest {
-    private String enterpriseId;
-    private String fireDeviceName;
-    private String fireDeviceNum;
-    private String fireDeviceUnit;
-    private String workPosition;
-    private String localeImg;
-    private String remark;
+    private String id;
+    private String enterpriseName;
+    private int controlStep;
+    private int urgentDevice;
+    private int controlStandBook;
+    private String existProblem;
 
-    public String getEnterpriseId() {
-        return enterpriseId;
+    public String getEnterpriseName() {
+        return enterpriseName;
     }
 
-    public void setEnterpriseId(String enterpriseId) {
-        this.enterpriseId = enterpriseId;
+    public void setEnterpriseName(String enterpriseName) {
+        this.enterpriseName = enterpriseName;
     }
 
-    public String getFireDeviceName() {
-        return fireDeviceName;
+    public String getId() {
+        return id;
     }
 
-    public void setFireDeviceName(String fireDeviceName) {
-        this.fireDeviceName = fireDeviceName;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getFireDeviceNum() {
-        return fireDeviceNum;
+    public int getControlStep() {
+        return controlStep;
     }
 
-    public void setFireDeviceNum(String fireDeviceNum) {
-        this.fireDeviceNum = fireDeviceNum;
+    public void setControlStep(int controlStep) {
+        this.controlStep = controlStep;
     }
 
-    public String getFireDeviceUnit() {
-        return fireDeviceUnit;
+    public int getUrgentDevice() {
+        return urgentDevice;
     }
 
-    public void setFireDeviceUnit(String fireDeviceUnit) {
-        this.fireDeviceUnit = fireDeviceUnit;
+    public void setUrgentDevice(int urgentDevice) {
+        this.urgentDevice = urgentDevice;
     }
 
-    public String getWorkPosition() {
-        return workPosition;
+    public int getControlStandBook() {
+        return controlStandBook;
     }
 
-    public void setWorkPosition(String workPosition) {
-        this.workPosition = workPosition;
+    public void setControlStandBook(int controlStandBook) {
+        this.controlStandBook = controlStandBook;
     }
 
-    public String getLocaleImg() {
-        return localeImg;
+    public String getExistProblem() {
+        return existProblem;
     }
 
-    public void setLocaleImg(String localeImg) {
-        this.localeImg = localeImg;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setExistProblem(String existProblem) {
+        this.existProblem = existProblem;
     }
 }

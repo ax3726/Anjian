@@ -5,6 +5,7 @@ import com.anjian.model.ResponseCodeEnum;
 import com.anjian.net.ex.ApiException;
 import com.anjian.net.ex.ResultException;
 
+
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
@@ -12,6 +13,8 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
 import retrofit2.HttpException;
+
+
 
 /**
  * Created by Administrator on 2018/4/20.
