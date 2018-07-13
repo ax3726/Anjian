@@ -42,8 +42,8 @@
 
         <activity
             android:name=".ui.main.MainActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation" />
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.main.WelcomeActivity"
             android:screenOrientation="portrait"
@@ -160,7 +160,6 @@
             android:name=".ui.record.SanxiaoSelectActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.record.AddYouXianActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -181,6 +180,7 @@
             android:name=".ui.record.QiYeSelectActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.common.PhotoPreviewActivity"></activity>
     </application>
 
 </manifest>

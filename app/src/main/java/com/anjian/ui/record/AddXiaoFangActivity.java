@@ -1,7 +1,6 @@
 package com.anjian.ui.record;
 
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.anjian.R;
@@ -10,20 +9,15 @@ import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
-import com.anjian.databinding.ActivityAddWeiHuaBinding;
 import com.anjian.databinding.ActivityAddXiaoFangBinding;
 import com.anjian.model.BaseBean;
 import com.anjian.model.record.QiYeInfoModel;
-import com.anjian.model.record.XiaoFangListModel;
 import com.anjian.model.request.AddXiaoFangRequest;
-import com.anjian.ui.common.PhotoActivity;
+import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
-import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.io.File;
 
 public class AddXiaoFangActivity extends BaseActivity<BasePresenter, ActivityAddXiaoFangBinding> {
 
@@ -119,7 +113,15 @@ public class AddXiaoFangActivity extends BaseActivity<BasePresenter, ActivityAdd
                 startActivityForResult(intent, 1001);
             }
         });
-
+        mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDataBean == null) {
+                    return;
+                }
+                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getDangerDistributeImg()));
+            }
+        });
 
     }
 

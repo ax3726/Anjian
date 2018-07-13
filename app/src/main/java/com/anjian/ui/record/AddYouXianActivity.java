@@ -11,11 +11,10 @@ import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddWeiHuaBinding;
 import com.anjian.model.BaseBean;
-import com.anjian.model.record.WeiHuaListModel;
 import com.anjian.model.record.YouXianListModel;
-import com.anjian.model.request.AddWeiHuaRequest;
 import com.anjian.model.request.AddYouXianRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
@@ -85,6 +84,13 @@ public class AddYouXianActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mBinding.tvNum.setText(String.valueOf(mDataBean.getSpaceNum()));
         mBinding.tvAddress.setText(mDataBean.getWorkPosition());
 
+        mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleImg()));
+            }
+        });
     }
 
     @Override

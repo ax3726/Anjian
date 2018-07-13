@@ -16,6 +16,7 @@ import com.anjian.model.BaseBean;
 import com.anjian.model.record.YanLianListModel;
 import com.anjian.model.request.AddYanLianRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
@@ -107,7 +108,22 @@ public class AddYanLianActivity extends PhotoActivity<BasePresenter, ActivityAdd
         Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleActImg())).into(mBinding.img1);
         mBinding.etName.setText(mDataBean.getTitle());
 
+        mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleTeachImg()));
+            }
+        });
+
+
+        mBinding.flyImg1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleActImg()));
+            }
+        });
     }
     @Override
     protected void initEvent() {

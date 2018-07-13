@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import com.anjian.R;
 import com.anjian.base.BaseNetListener;
@@ -19,7 +18,7 @@ import com.anjian.model.record.SysAreaModel;
 import com.anjian.model.request.AddQiYeRequset;
 import com.anjian.model.request.UpdateQiYeRequset;
 import com.anjian.ui.common.PhotoActivity;
-import com.anjian.ui.main.MainActivity;
+import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
@@ -104,6 +103,10 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         mBinding.tvAddZhi.setVisibility(View.GONE);
         mBinding.imgZhi.setVisibility(View.VISIBLE);
         Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getBusinessLicenceImg())).into(mBinding.imgZhi);
+
+
+
+
 
 
         mBinding.etName.setText(mDataBean.getEnterpriseName());

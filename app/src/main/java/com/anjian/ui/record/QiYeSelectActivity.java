@@ -1,15 +1,10 @@
 package com.anjian.ui.record;
 
-import android.content.Intent;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -24,20 +19,14 @@ import com.anjian.databinding.ActivitySanxiaoSelectBinding;
 import com.anjian.model.BaseBean;
 import com.anjian.model.record.OptionItemsModel;
 import com.anjian.model.record.QiyeSelectListModel;
-import com.anjian.model.record.SanXiaoSelectListModel;
-import com.anjian.model.record.SanXiaoSelectModel;
-import com.anjian.model.record.TeZhongListModel;
-import com.anjian.model.request.AddListRequest;
 import com.anjian.model.request.AddListSelectRequest;
 import com.anjian.model.request.AddQiyeSelectRequest;
-import com.anjian.model.request.AddSanXiaoSelectRequest;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ml.gsy.com.library.adapters.recyclerview.CommonAdapter;
-import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
 import ml.gsy.com.library.utils.ParseJsonUtils;
 
 public class QiYeSelectActivity extends BaseActivity<BasePresenter, ActivitySanxiaoSelectBinding> {
@@ -217,7 +206,7 @@ public class QiYeSelectActivity extends BaseActivity<BasePresenter, ActivitySanx
         }
 
         AddQiyeSelectRequest addQiyeSelectRequest = new AddQiyeSelectRequest();
-        addQiyeSelectRequest.setId(mDataBean.getEnterpriseId());
+        addQiyeSelectRequest.setId(mDataBean.getId());
         addQiyeSelectRequest.setOptionItems(ParseJsonUtils.getjsonStr(mDataList));
 
         Api.getApi().updateQiYeSelectList(getRequestBody(addQiyeSelectRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {

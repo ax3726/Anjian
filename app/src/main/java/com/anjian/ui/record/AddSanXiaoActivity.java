@@ -10,12 +10,12 @@ import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddSanXiaoBinding;
 import com.anjian.model.BaseBean;
-import com.anjian.model.record.QiYeInfoModel;
 import com.anjian.model.record.SanXiaoInfoModel;
 import com.anjian.model.record.SysAreaModel;
 import com.anjian.model.request.AddSanXiaoRequest;
 import com.anjian.model.request.UpdateSanXiaoRequest;
 import com.anjian.ui.common.PhotoActivity;
+import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.bumptech.glide.Glide;
@@ -95,6 +95,8 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mBinding.tvAddZhi.setVisibility(View.GONE);
         mBinding.imgZhi.setVisibility(View.VISIBLE);
         Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getBusinessLicenceImg())).into(mBinding.imgZhi);
+
+
 
 
         mBinding.etName.setText(mDataBean.getTspName());
