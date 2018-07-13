@@ -103,6 +103,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("其他"));
 
 
+
         SanXiaoSelectListModel model4 = new SanXiaoSelectListModel();
         model4.setTitle("其他");
         model4.getOptions().add(new SanXiaoSelectListModel.DataBean("特种设备"));
@@ -111,12 +112,34 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         model4.getOptions().add(new SanXiaoSelectListModel.DataBean("危险作业"));
         model4.getOptions().add(new SanXiaoSelectListModel.DataBean("其他"));
 
-
+        SanXiaoSelectListModel model5 = new SanXiaoSelectListModel();
+        model5.setTitle("生产现场");
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("危险化学品生产、经营单位主要负责人和安全生产管理人员依法经考核合格。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("依据法规标准设定外部安全防护距离作为缓冲距离，防止危险化学品生产装置、储存设施在发生火灾、爆炸、毒气泄漏事故时造成重大人员伤亡和财产损失。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("涉及重点监管危险化工工艺的装置实现自动化控制，系统实现紧急停车功能，装备的自动化控制系统、紧急停车系统正常投入使用。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("构成一级、二级重大危险源的危险化学品罐区实现紧急切断功能；涉及毒性气体、液化气体、剧毒液体的一级、二级重大危险源的危险化学品罐区配备独立的安全仪表系统。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("全压力式液化烃储罐按照国家标准设置注水措施。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("液化烃、液氨、液氯等易燃易爆、有毒有害液化气体的充装使用万向管道充装系统。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean(" 光气、氯气等剧毒气体及硫化氢气体管道未穿越除厂区(包括化工园区、工业园区）外的公共区域。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("在役化工装置应经正规设计，且进行安全设计诊断。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("地区架空电力线路未穿越生产区，应符合国家标准要求。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("未使用淘汰落后安全技术工艺、设备目录列出的工艺、设备。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean(" 涉及可燃和有毒有害气体泄漏的场所，应按国家标准设置检测报警装置，爆炸危险场所按国家标准安装使用防爆电气设备。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("控制室或机柜间不得面向具有火灾、爆炸危险性装置一侧，应满足国家标准关于防火防爆的要求。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("化工生产装置应按照国家标准要求设置双重电源供电，自动化控制系统应设置不间断电源。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("安全阀、爆破片等安全附件处于正常投用。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("应建立与岗位相匹配的全员安全生产责任制，制定实施生产安全事故隐患排查治理制度。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("各生产岗位应制定操作规程和工艺控制指标"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("按照国家标准制定动火、进入受限空间等特殊作业管理制度，并有效执行。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("涉及重点监管危险化工工艺和金属有机物合成反应（包括格氏反应）的间歇和半间歇反应，要开展安全风险评估"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("按照国家标准分区分类储存危险化学品，不得超量、超品种储存危险化学品及相互禁配物质混放混存。"));
+        model5.getOptions().add(new SanXiaoSelectListModel.DataBean("其他"));
 
         mDataList.add(model);
         mDataList.add(model1);
         mDataList.add(model2);
         mDataList.add(model3);
+        mDataList.add(model5);
         mDataList.add(model4);
 
         mAdapter = new Adapter();

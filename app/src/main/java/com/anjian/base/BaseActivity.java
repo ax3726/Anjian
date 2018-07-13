@@ -22,6 +22,7 @@ import com.anjian.ui.main.LoginActivity;
 import com.anjian.widget.TitleBarLayout;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.zhy.autolayout.AutoFrameLayout;
 import com.zhy.autolayout.AutoLinearLayout;
 
@@ -38,7 +39,7 @@ import okhttp3.RequestBody;
  * Description:
  */
 
-public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBinding> extends SlideBackActivity implements BaseView,BaseHttpListener {
+public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBinding> extends RxAppCompatActivity implements BaseView,BaseHttpListener {
 
     protected P mPresenter;
     protected B mBinding;

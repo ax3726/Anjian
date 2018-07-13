@@ -101,7 +101,7 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
             return;
         }
         mTitleBarLayout.setRightTxt("");
-        mBinding.tvQiye.setText(mDataBean.getEnterpriseName());
+      //  mBinding.tvQiye.setText(mDataBean.getEnterpriseName());
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);
         Glide.with(aty).load( DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);

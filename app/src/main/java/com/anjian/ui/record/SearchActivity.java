@@ -14,7 +14,9 @@ import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivitySearchBinding;
+import com.anjian.model.BaseBean;
 import com.anjian.model.record.SearchModel;
+import com.anjian.model.record.SearchSanXiaoModel;
 import com.anjian.utils.DemoUtils;
 
 import java.util.ArrayList;
@@ -26,6 +28,9 @@ import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
 public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBinding> {
     private List<SearchModel.DataBean> mDataList = new ArrayList<>();
     private CommonAdapter<SearchModel.DataBean> mCommonAdapter;
+
+    private List<SearchSanXiaoModel.DataBean> mDataList1 = new ArrayList<>();
+    private CommonAdapter<SearchSanXiaoModel.DataBean> mCommonAdapter1;
 
     @Override
     public int getLayoutId() {
@@ -61,12 +66,22 @@ public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBi
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == event.KEYCODE_ENTER) {
-                    seatch();
+                    if (mBinding.rbQiye.isChecked()) {
+                        seatchQiye();
+                    } else if (mBinding.rbSanxiao.isChecked()) {
+                        seatchSanxiao();
+                    }
+
                 }
                 return false;
             }
         });
 
+
+    }
+
+    private void setQiyeAdapter()
+    {
         mCommonAdapter = new CommonAdapter<SearchModel.DataBean>(aty, R.layout.item_company_list, mDataList) {
             @Override
             protected void convert(ViewHolder holder, SearchModel.DataBean item, int position) {
@@ -85,22 +100,63 @@ public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBi
         mBinding.rcBody.setLayoutManager(new LinearLayoutManager(aty));
         mBinding.rcBody.setAdapter(mCommonAdapter);
     }
+    private void setSanXiaoAdapter()
+    {
+        mCommonAdapter1 = new CommonAdapter<SearchSanXiaoModel.DataBean>(aty, R.layout.item_company_list, mDataList1) {
+            @Override
+            protected void convert(ViewHolder holder, SearchSanXiaoModel.DataBean item, int position) {
+                LinearLayout lly_item = holder.getView(R.id.lly_item);
+                holder.setText(R.id.tv_name, item.getTspName());
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getTspDoorHeadImg()), 0);
+                lly_item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(SanXiaoActivity.class, item.getId());
+                    }
+                });
 
+            }
+        };
+        mBinding.rcBody.setLayoutManager(new LinearLayoutManager(aty));
+        mBinding.rcBody.setAdapter(mCommonAdapter1);
+    }
 
-    private void seatch() {
+    private void seatchQiye() {
         String content = mBinding.etSearch.getText().toString().trim();
         if (TextUtils.isEmpty(content)) {
             showToast("请输入关键字");
             return;
         }
-        Api.getApi().search(MyApplication.getInstance().getToken(), content).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SearchModel>(this, true) {
+        Api.getApi().qiYeSearch(MyApplication.getInstance().getToken(), content).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SearchModel>(this, true) {
             @Override
             public void onSuccess(SearchModel baseBean) {
                 mDataList.clear();
                 if (baseBean.getData() != null && baseBean.getData().size() > 0) {
                     mDataList.addAll(baseBean.getData());
                 }
-                mCommonAdapter.notifyDataSetChanged();
+                setQiyeAdapter();
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
+    }
+    private void seatchSanxiao() {
+        String content = mBinding.etSearch.getText().toString().trim();
+        if (TextUtils.isEmpty(content)) {
+            showToast("请输入关键字");
+            return;
+        }
+        Api.getApi().sanXiaoSearch(MyApplication.getInstance().getToken(), content).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SearchSanXiaoModel>(this, true) {
+            @Override
+            public void onSuccess(SearchSanXiaoModel baseBean) {
+                mDataList1.clear();
+                if (baseBean.getData() != null && baseBean.getData().size() > 0) {
+                    mDataList1.addAll(baseBean.getData());
+                }
+                setSanXiaoAdapter();
             }
 
             @Override

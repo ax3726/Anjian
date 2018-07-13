@@ -8,6 +8,8 @@
         android:background="@color/colorBackground"
         android:orientation="vertical">
 
+
+
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="44px"
@@ -34,21 +36,61 @@
             <EditText
                 android:id="@+id/et_search"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_height="30px"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5px"
                 android:layout_marginRight="15px"
-                android:textColorHint="@color/colord9d9d9"
-                android:hint="请输入要搜索企业的名称"
-                android:textSize="14px"
-                android:paddingLeft="38px"
-                android:imeOptions="actionSearch"
-                android:singleLine="true"
+                android:layout_weight="1"
                 android:background="@drawable/record_search_bg_icon"
-                android:layout_gravity="center_vertical"
-                android:layout_height="30px" />
+                android:hint="请输入要搜索企业的名称"
+                android:imeOptions="actionSearch"
+                android:paddingLeft="38px"
+                android:singleLine="true"
+                android:textColorHint="@color/colord9d9d9"
+                android:textSize="14px" />
 
 
         </com.zhy.autolayout.AutoLinearLayout>
+        <RadioGroup
+            android:id="@+id/rg_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp">
+
+            <RadioButton
+                android:id="@+id/rb_qiye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:checked="true"
+                android:drawableLeft="@drawable/selector_radio_button"
+                android:drawablePadding="4dp"
+                android:text="企业"
+                android:textColor="@color/color4a4a4a"
+                android:textSize="14dp" />
+
+            <RadioButton
+                android:id="@+id/rb_sanxiao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:button="@null"
+                android:drawableLeft="@drawable/selector_radio_button"
+                android:drawablePadding="4dp"
+                android:text="三小场所"
+                android:textColor="@color/color4a4a4a"
+                android:textSize="14dp" />
+
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorLine" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rc_body"
             android:layout_width="match_parent"

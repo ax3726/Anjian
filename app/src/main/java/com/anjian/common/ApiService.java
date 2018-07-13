@@ -14,6 +14,7 @@ import com.anjian.model.record.SanXiaoCheckListModel;
 import com.anjian.model.record.SanXiaoInfoModel;
 import com.anjian.model.record.SanXiaoSelectModel;
 import com.anjian.model.record.SearchModel;
+import com.anjian.model.record.SearchSanXiaoModel;
 import com.anjian.model.record.SysAreaModel;
 import com.anjian.model.record.TeZhongListModel;
 import com.anjian.model.record.WeiHuaListModel;
@@ -49,7 +50,11 @@ public interface ApiService {
     //搜索
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("security-monitor/app/enterpriseInfo/vagueSearch")
-    Flowable<SearchModel> search(@Query("token") String token, @Query("keyWord") String keyWord);
+    Flowable<SearchModel> qiYeSearch(@Query("token") String token, @Query("keyWord") String keyWord);
+    //三小搜索
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("security-monitor/app/tspInfo/vagueSearch")
+    Flowable<SearchSanXiaoModel> sanXiaoSearch(@Query("token") String token, @Query("keyWord") String keyWord);
 
     //新增企业信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
