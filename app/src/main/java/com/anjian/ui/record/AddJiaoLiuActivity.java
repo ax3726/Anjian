@@ -59,6 +59,9 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mDataBean == null) {
+                    return;
+                }
                 new AlertDialog.Builder(aty)
                         .setTitle("提示")
                         .setMessage("是否添加签名？")

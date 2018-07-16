@@ -25,6 +25,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
+import cn.qqtheme.framework.picker.OptionPicker;
+
 public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityAddQiyeCheckBinding> {
     private String mImgPath = "";
     private String mId = "";
@@ -33,6 +35,7 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
     private String mImgPath2 = "";
     private String mImgPath3 = "";
     private QiYeCheckListModel.DataBean mDataBean = null;
+    private int mDay = -1;
 
     @Override
     protected boolean isPrestener() {
@@ -72,15 +75,16 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
         mBinding.img.setVisibility(View.VISIBLE);
         Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
         mBinding.tvYinhuan.setText(mDataBean.getDangerDesc());
-        mBinding.tvCuoshi.setText(mDataBean.getModifyStep());
-        mBinding.tvFalv.setText(mDataBean.getLawReason());
+        mBinding.tvZhenggai.setText(mDataBean.getModifyExpire()+"天");
+      /*  mBinding.tvCuoshi.setText(mDataBean.getModifyStep());
+        mBinding.tvFalv.setText(mDataBean.getLawReason());*/
 
 
         mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleImg()));
+                startActivityUrl(PhotoPreviewActivity.class, DemoUtils.getUrl(mDataBean.getLocaleImg()));
             }
         });
 
@@ -93,12 +97,15 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
-        mTitleBarLayout.setTitle("企业隐患检查");
+        mTitleBarLayout.setTitle("隐患排查");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightTxt("新增");
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mDataBean == null) {
+                    return;
+                }
                 new AlertDialog.Builder(aty)
                         .setTitle("提示")
                         .setMessage("是否添加签名？")
@@ -137,7 +144,7 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
                 startActivityForResult(intent, 1001);
             }
         });
-        mBinding.tvCuoshi.setOnClickListener(new View.OnClickListener() {
+        /*mBinding.tvCuoshi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(aty, EditActivity.class);
@@ -152,7 +159,7 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
                 intent.putExtra("txt", "法律依据");
                 startActivityForResult(intent, 1003);
             }
-        });
+        });*/
         mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,6 +179,30 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
 
             }
         });
+        mBinding.tvZhenggai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] strings = new String[15];
+                for (int i = 0; i < 15; i++) {
+                    strings[i] = (i + 1) + "天";
+                }
+
+                OptionPicker picker = new OptionPicker(aty, strings);
+
+                picker.setOffset(2);
+                picker.setSelectedIndex(1);
+                picker.setTextSize(16);
+                picker.setCycleDisable(true); //选项不循环滚动
+                picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+                    @Override
+                    public void onOptionPicked(int i, String s) {
+                        mDay = i + 1;
+                        mBinding.tvZhenggai.setText(s);
+                    }
+                });
+                picker.show();
+            }
+        });
     }
 
     @Override
@@ -184,12 +215,12 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
                 case 1001://名称
                     mBinding.tvYinhuan.setText(result);
                     break;
-                case 1002://数量
+      /*          case 1002://数量
                     mBinding.tvCuoshi.setText(result);
                     break;
                 case 1003://车间位置
                     mBinding.tvFalv.setText(result);
-                    break;
+                    break;*/
             }
 
         }
@@ -218,8 +249,8 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
 
     private void submitMessage() {
         String Yinhuan = mBinding.tvYinhuan.getText().toString().trim();
-        String Cuoshi = mBinding.tvCuoshi.getText().toString().trim();
-        String Falv = mBinding.tvFalv.getText().toString().trim();
+      /*  String Cuoshi = mBinding.tvCuoshi.getText().toString().trim();
+        String Falv = mBinding.tvFalv.getText().toString().trim();*/
         if (TextUtils.isEmpty(mImgPath)) {
             showToast("请添加隐患图片!");
             return;
@@ -228,20 +259,25 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
             showToast("隐患描述不能为空!");
             return;
         }
-        if (TextUtils.isEmpty(Cuoshi)) {
+        if (mDay == -1) {
+            showToast("请选择期限!");
+            return;
+        }
+        /*   if (TextUtils.isEmpty(Cuoshi)) {
             showToast("整改措施不能为空!");
             return;
         }
         if (TextUtils.isEmpty(Falv)) {
             showToast("法律依据不能为空!");
             return;
-        }
+        }*/
 
         AddQiYeCheckRequest addQiYeCheckRequest = new AddQiYeCheckRequest();
         addQiYeCheckRequest.setEnterpriseId(mId);
         addQiYeCheckRequest.setDangerDesc(Yinhuan);
-        addQiYeCheckRequest.setModifyStep(Cuoshi);
-        addQiYeCheckRequest.setLawReason(Falv);
+        addQiYeCheckRequest.setModifyExpire(mDay);
+       /* addQiYeCheckRequest.setModifyStep(Cuoshi);
+        addQiYeCheckRequest.setLawReason(Falv);*/
         addQiYeCheckRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));
         if (!TextUtils.isEmpty(mImgPath1)) {
             addQiYeCheckRequest.setSaferSign(DemoUtils.imageToBase64(mImgPath1));

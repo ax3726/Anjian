@@ -6,15 +6,23 @@ package com.anjian.model.request;
 
 public class AddSanXiaoCheckRequest {
     private String tspId;
-    private String optionId;
     private String dangerDesc;
     private String localeImg;
     private String modifyStep;
+    private int modifyExpire;
     private String lawReason;
     private String saferSign;
     private String businesserSign;
     private String witherSign;
     private String modifyImg;
+
+    public int getModifyExpire() {
+        return modifyExpire;
+    }
+
+    public void setModifyExpire(int modifyExpire) {
+        this.modifyExpire = modifyExpire;
+    }
 
     public String getTspId() {
         return tspId;
@@ -24,13 +32,7 @@ public class AddSanXiaoCheckRequest {
         this.tspId = tspId;
     }
 
-    public String getOptionId() {
-        return optionId;
-    }
 
-    public void setOptionId(String optionId) {
-        this.optionId = optionId;
-    }
 
     public String getDangerDesc() {
         return dangerDesc;

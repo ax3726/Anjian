@@ -93,7 +93,27 @@
 
 
         </com.zhy.autolayout.AutoLinearLayout>
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25px"
+            android:orientation="horizontal"
+            android:paddingLeft="7.5px"
+            android:weightSum="3"
+            android:paddingRight="15px">
 
+            <ImageView
+                android:id="@+id/img_paicha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+                android:src="@drawable/record_paicha_icon" />
+
+
+
+
+        </com.zhy.autolayout.AutoLinearLayout>
 
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

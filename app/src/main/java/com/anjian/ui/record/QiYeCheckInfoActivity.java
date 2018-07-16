@@ -56,7 +56,7 @@ public class QiYeCheckInfoActivity extends PhotoActivity<BasePresenter, Activity
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
-        mTitleBarLayout.setTitle("企业隐患检查");
+        mTitleBarLayout.setTitle("隐患排查");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightTxt("保存");
         mTitleBarLayout.setRightListener(new View.OnClickListener() {

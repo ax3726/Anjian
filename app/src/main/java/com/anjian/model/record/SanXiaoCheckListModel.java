@@ -88,6 +88,7 @@ public class SanXiaoCheckListModel {
         private String localeImg;
         private String modifyImg;
         private int modifyStatus;
+        private int modifyExpire;
         private String modifyStep;
         private String modifyTime;
         private String optionId;
@@ -97,6 +98,14 @@ public class SanXiaoCheckListModel {
         private String updateBy;
         private String updateTime;
         private String witherSign;
+
+        public int getModifyExpire() {
+            return modifyExpire;
+        }
+
+        public void setModifyExpire(int modifyExpire) {
+            this.modifyExpire = modifyExpire;
+        }
 
         public String getBusinesserSign() {
             return businesserSign;

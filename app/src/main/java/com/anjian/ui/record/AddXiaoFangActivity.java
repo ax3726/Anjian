@@ -122,6 +122,12 @@ public class AddXiaoFangActivity extends BaseActivity<BasePresenter, ActivityAdd
                 startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getDangerDistributeImg()));
             }
         });
+        mBinding.tvFengxian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(FengXianActivity.class, mDataBean.getId());
+            }
+        });
 
     }
 

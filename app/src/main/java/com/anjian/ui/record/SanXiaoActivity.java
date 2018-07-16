@@ -50,6 +50,7 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
         mBinding.imgXiugai.setOnClickListener(this);
         mBinding.imgXianchang.setOnClickListener(this);
         mBinding.imgYanlian.setOnClickListener(this);
+        mBinding.imgPaicha.setOnClickListener(this);
 
     }
 
@@ -71,7 +72,7 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
                 if (mDataBean != null) {
                     JingWeiRequest jingWeiRequest = new JingWeiRequest();
                     String[] split = mDataBean.getPosition().split(",");
-                    if (split.length>0) {
+                    if (split.length > 0) {
                         jingWeiRequest.setLatitude(split[0]);
                         jingWeiRequest.setLongitude(split[1]);
                     }
@@ -92,6 +93,10 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
                 break;
             case R.id.img_yanlian:
                 startActivity(YanLianActivity.class, mId);
+                break;
+            case R.id.img_paicha:
+                startActivity(SanXiaoCheckActivity.class, mId);
+
                 break;
 
         }

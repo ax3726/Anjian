@@ -68,7 +68,7 @@ public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityQiyeC
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
-        mTitleBarLayout.setTitle("企业隐患检查");
+        mTitleBarLayout.setTitle("隐患排查");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightImg(R.drawable.record_add_icon);
         mTitleBarLayout.setRightListener(new View.OnClickListener() {

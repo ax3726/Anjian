@@ -90,11 +90,20 @@ public class QiYeCheckListModel {
         private String modifyImg;
         private int modifyStatus;
         private String modifyStep;
+        private int modifyExpire;
         private String modifyTime;
         private String saferSign;
         private String updateBy;
         private String updateTime;
         private String witherSign;
+
+        public int getModifyExpire() {
+            return modifyExpire;
+        }
+
+        public void setModifyExpire(int modifyExpire) {
+            this.modifyExpire = modifyExpire;
+        }
 
         public String getBusinesserSign() {
             return businesserSign;

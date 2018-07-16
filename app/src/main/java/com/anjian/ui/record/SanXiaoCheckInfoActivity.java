@@ -58,7 +58,7 @@ public class SanXiaoCheckInfoActivity extends PhotoActivity<BasePresenter, Activ
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
-        mTitleBarLayout.setTitle("三小场所隐患检查");
+        mTitleBarLayout.setTitle("隐患排查");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightTxt("保存");
         mTitleBarLayout.setRightListener(new View.OnClickListener() {

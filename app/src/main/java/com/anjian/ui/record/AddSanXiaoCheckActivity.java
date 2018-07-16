@@ -25,14 +25,17 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
+import cn.qqtheme.framework.picker.OptionPicker;
+
 public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, ActivityAddQiyeCheckBinding> {
     private String mImgPath = "";
     private String mId = "";
-    private String mOptionId = "";
+
     private String mImgPath1 = "";
     private String mImgPath2 = "";
     private String mImgPath3 = "";
     private SanXiaoCheckListModel.DataBean mDataBean = null;
+    private int mDay = -1;
 
     @Override
     protected boolean isPrestener() {
@@ -58,7 +61,7 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
     protected void initData() {
         super.initData();
         mId = getIntent().getStringExtra("id");
-        mOptionId = getIntent().getStringExtra("optionId");
+
         mDataBean = (SanXiaoCheckListModel.DataBean) getIntent().getSerializableExtra("data");
         initView();
     }
@@ -72,14 +75,15 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
         mBinding.img.setVisibility(View.VISIBLE);
         Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
         mBinding.tvYinhuan.setText(mDataBean.getDangerDesc());
-        mBinding.tvCuoshi.setText(mDataBean.getModifyStep());
-        mBinding.tvFalv.setText(mDataBean.getLawReason());
+        mBinding.tvZhenggai.setText(mDataBean.getModifyExpire()+"天");
+      /*  mBinding.tvCuoshi.setText(mDataBean.getModifyStep());
+        mBinding.tvFalv.setText(mDataBean.getLawReason());*/
 
         mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleImg()));
+                startActivityUrl(PhotoPreviewActivity.class, DemoUtils.getUrl(mDataBean.getLocaleImg()));
             }
         });
 
@@ -92,12 +96,15 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
-        mTitleBarLayout.setTitle("三小场所隐患检查");
+        mTitleBarLayout.setTitle("隐患排查");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightTxt("新增");
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mDataBean == null) {
+                    return;
+                }
                 new AlertDialog.Builder(aty)
                         .setTitle("提示")
                         .setMessage("是否添加签名？")
@@ -136,7 +143,7 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
                 startActivityForResult(intent, 1001);
             }
         });
-        mBinding.tvCuoshi.setOnClickListener(new View.OnClickListener() {
+     /*   mBinding.tvCuoshi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(aty, EditActivity.class);
@@ -151,7 +158,7 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
                 intent.putExtra("txt", "法律依据");
                 startActivityForResult(intent, 1003);
             }
-        });
+        });*/
         mBinding.flyImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +178,30 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
 
             }
         });
+        mBinding.tvZhenggai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] strings = new String[15];
+                for (int i = 0; i < 15; i++) {
+                    strings[i] = (i + 1) + "天";
+                }
+
+                OptionPicker picker = new OptionPicker(aty, strings);
+
+                picker.setOffset(2);
+                picker.setSelectedIndex(1);
+                picker.setTextSize(16);
+                picker.setCycleDisable(true); //选项不循环滚动
+                picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+                    @Override
+                    public void onOptionPicked(int i, String s) {
+                        mDay = i + 1;
+                        mBinding.tvZhenggai.setText(s);
+                    }
+                });
+                picker.show();
+            }
+        });
     }
 
     @Override
@@ -183,12 +214,12 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
                 case 1001://名称
                     mBinding.tvYinhuan.setText(result);
                     break;
-                case 1002://数量
+             /*   case 1002://数量
                     mBinding.tvCuoshi.setText(result);
                     break;
                 case 1003://车间位置
                     mBinding.tvFalv.setText(result);
-                    break;
+                    break;*/
             }
 
         }
@@ -217,8 +248,8 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
 
     private void submitMessage() {
         String Yinhuan = mBinding.tvYinhuan.getText().toString().trim();
-        String Cuoshi = mBinding.tvCuoshi.getText().toString().trim();
-        String Falv = mBinding.tvFalv.getText().toString().trim();
+   /*     String Cuoshi = mBinding.tvCuoshi.getText().toString().trim();
+        String Falv = mBinding.tvFalv.getText().toString().trim();*/
         if (TextUtils.isEmpty(mImgPath)) {
             showToast("请添加隐患图片!");
             return;
@@ -227,21 +258,25 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
             showToast("隐患描述不能为空!");
             return;
         }
-        if (TextUtils.isEmpty(Cuoshi)) {
+        if (mDay == -1) {
+            showToast("请选择期限!");
+            return;
+        }
+      /*  if (TextUtils.isEmpty(Cuoshi)) {
             showToast("整改措施不能为空!");
             return;
         }
         if (TextUtils.isEmpty(Falv)) {
             showToast("法律依据不能为空!");
             return;
-        }
+        }*/
 
         AddSanXiaoCheckRequest addSanXiaoCheckRequest = new AddSanXiaoCheckRequest();
         addSanXiaoCheckRequest.setTspId(mId);
-        addSanXiaoCheckRequest.setOptionId(mOptionId);
         addSanXiaoCheckRequest.setDangerDesc(Yinhuan);
-        addSanXiaoCheckRequest.setModifyStep(Cuoshi);
-        addSanXiaoCheckRequest.setLawReason(Falv);
+        addSanXiaoCheckRequest.setModifyExpire(mDay);
+     /*   addSanXiaoCheckRequest.setModifyStep(Cuoshi);
+        addSanXiaoCheckRequest.setLawReason(Falv);*/
         addSanXiaoCheckRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));
         if (!TextUtils.isEmpty(mImgPath1)) {
             addSanXiaoCheckRequest.setSaferSign(DemoUtils.imageToBase64(mImgPath1));

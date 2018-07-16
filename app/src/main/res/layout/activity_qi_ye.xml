@@ -105,12 +105,12 @@
                 android:paddingRight="15px">
 
                 <ImageView
-                    android:id="@+id/img_fengxian"
+                    android:id="@+id/img_paicha"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
 
                     android:layout_weight="1"
-                    android:src="@drawable/record_fengxian_icon" />
+                    android:src="@drawable/record_paicha_icon" />
 
                 <ImageView
                     android:id="@+id/img_weihua"

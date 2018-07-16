@@ -9,11 +9,20 @@ public class AddQiYeCheckRequest {
     private String dangerDesc;
     private String localeImg;
     private String modifyStep;
+    private int modifyExpire;
     private String lawReason;
     private String saferSign;
     private String businesserSign;
     private String witherSign;
     private String modifyImg;
+
+    public int getModifyExpire() {
+        return modifyExpire;
+    }
+
+    public void setModifyExpire(int modifyExpire) {
+        this.modifyExpire = modifyExpire;
+    }
 
     public String getEnterpriseId() {
         return enterpriseId;

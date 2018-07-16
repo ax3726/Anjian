@@ -1,5 +1,6 @@
 package com.anjian.model.record;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +8,10 @@ import java.util.List;
  * Created by LiMing on 2018/7/1.
  */
 
-public class SanXiaoSelectListModel {
+public class SanXiaoSelectListModel implements Serializable {
     private String title;
     private List<DataBean> options=new ArrayList<>();
-    public static class DataBean  {
+    public static class DataBean  implements Serializable{
         private String content;
         private boolean isselect;
 

@@ -14,6 +14,7 @@ import com.anjian.base.BaseActivity;
 import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
+import com.anjian.common.Constant;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivitySanxiaoSelectBinding;
 import com.anjian.model.BaseBean;
@@ -26,6 +27,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ml.gsy.com.library.utils.CacheUtils;
 
 public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivitySanxiaoSelectBinding> {
     private String mId = "";
@@ -66,6 +69,18 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
     protected void initData() {
         super.initData();
         mId = getIntent().getStringExtra("id");
+        List<SanXiaoSelectListModel> list = (List<SanXiaoSelectListModel>) CacheUtils.getInstance().loadCache(Constant.SANXIAO_SELECT);
+        if (list == null) {
+            loadData();
+        } else {
+            mDataList.addAll(list);
+        }
+        mAdapter = new Adapter();
+        mBinding.elvBody.setAdapter(mAdapter);
+
+    }
+
+    private void loadData() {
         SanXiaoSelectListModel model = new SanXiaoSelectListModel();
         model.setTitle("三合一问题");
         model.getOptions().add(new SanXiaoSelectListModel.DataBean("人员住宿与经营、存储场所合用"));
@@ -101,7 +116,6 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("危险物品"));
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("其他燃料"));
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("其他"));
-
 
 
         SanXiaoSelectListModel model4 = new SanXiaoSelectListModel();
@@ -141,10 +155,6 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         mDataList.add(model3);
         mDataList.add(model5);
         mDataList.add(model4);
-
-        mAdapter = new Adapter();
-        mBinding.elvBody.setAdapter(mAdapter);
-
     }
 
     class Adapter extends BaseExpandableListAdapter {
@@ -240,17 +250,14 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
             @Override
             public void onSuccess(SanXiaoSelectModel baseBean) {
                 showToast(baseBean.getMessage());
-
+                CacheUtils.getInstance().saveCache(Constant.SANXIAO_SELECT, mDataList);//保存数据
                 new Thread() {
                     @Override
                     public void run() {
                         super.run();
                         try {
                             sleep(1500);
-                            Intent intent = new Intent(aty, SanXiaoCheckActivity.class);
-                            intent.putExtra("id",mId);
-                            intent.putExtra("optionId",baseBean.getData().getId());
-                            startActivity(intent);
+
                             finish();
 
                         } catch (InterruptedException e) {

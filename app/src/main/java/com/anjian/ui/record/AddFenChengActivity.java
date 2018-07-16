@@ -58,6 +58,9 @@ public class AddFenChengActivity extends PhotoActivity<BasePresenter, ActivityAd
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mDataBean == null) {
+                    return;
+                }
                 submitMessage();
             }
         });

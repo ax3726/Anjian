@@ -220,7 +220,7 @@ public class QiYeSelectActivity extends BaseActivity<BasePresenter, ActivitySanx
                         super.run();
                         try {
                             sleep(1500);
-                            startActivity(QiYeCheckActivity.class, mId);
+
                             finish();
 
                         } catch (InterruptedException e) {

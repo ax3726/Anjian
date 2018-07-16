@@ -42,7 +42,7 @@ public class SanXiaoCheckActivity extends BaseActivity<BasePresenter, ActivityQi
     private int mSize = 10;
 
     private String mId = "";
-    private String mOptionId = "";
+
 
     @Override
     protected boolean isPrestener() {
@@ -67,7 +67,7 @@ public class SanXiaoCheckActivity extends BaseActivity<BasePresenter, ActivityQi
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
-        mTitleBarLayout.setTitle("三小场所隐患检查");
+        mTitleBarLayout.setTitle("隐患排查");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightImg(R.drawable.record_add_icon);
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
@@ -75,7 +75,7 @@ public class SanXiaoCheckActivity extends BaseActivity<BasePresenter, ActivityQi
             public void onClick(View v) {
                 Intent intent = new Intent(aty, AddSanXiaoCheckActivity.class);
                 intent.putExtra("id",mId);
-                intent.putExtra("optionId",mOptionId);
+
                 startActivity(intent);
 
             }
@@ -87,7 +87,7 @@ public class SanXiaoCheckActivity extends BaseActivity<BasePresenter, ActivityQi
         super.initData();
         EventBus.getDefault().register(aty);
         mId = getIntent().getStringExtra("id");
-        mOptionId = getIntent().getStringExtra("optionId");
+
         mCommonAdapter = new CommonAdapter<SanXiaoCheckListModel.DataBean>(aty, R.layout.item_qiye_check, mDataList) {
             @Override
             protected void convert(ViewHolder holder, SanXiaoCheckListModel.DataBean item, int position) {
