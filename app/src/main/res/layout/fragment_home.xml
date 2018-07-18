@@ -352,6 +352,8 @@
 
                 <ImageView
                     android:layout_width="93px"
+                    android:layout_marginLeft="23px"
+                    android:src="@drawable/home_shi1_icon"
                     android:layout_height="70px" />
 
 
@@ -397,6 +399,8 @@
 
                 <ImageView
                     android:layout_width="93px"
+                    android:layout_marginLeft="23px"
+                    android:src="@drawable/home_shi2_icon"
                     android:layout_height="70px" />
 
 
@@ -404,7 +408,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1px"
+                android:layout_height="50px"
                 android:background="@color/colorLine" />
         </com.zhy.autolayout.AutoLinearLayout>
     </ScrollView>

@@ -1,10 +1,11 @@
 package com.anjian.ui.home;
 
+import android.view.View;
+
 import com.anjian.R;
 import com.anjian.base.BaseFragment;
 import com.anjian.base.BaseFragmentPresenter;
 import com.anjian.databinding.FragmentHomeBinding;
-import com.anjian.databinding.FragmentManageBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,17 +44,22 @@ public class HomeFragment extends BaseFragment<BaseFragmentPresenter, FragmentHo
         mTitleBarLayout.setLeftImg(R.drawable.record_search_icon);
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightImg(R.drawable.home_message_icon);
+        mTitleBarLayout.setRightListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(MessageActivity.class);
+            }
+        });
     }
 
     @Override
     protected void initData() {
         super.initData();
         List<Integer> list = new ArrayList<>();
-        list.add(R.drawable.home);
-        list.add(R.drawable.home);
-        list.add(R.drawable.home);
-        list.add(R.drawable.home);
-        list.add(R.drawable.home);
+        list.add(R.drawable.home1);
+        list.add(R.drawable.home2);
+        list.add(R.drawable.home3);
+        list.add(R.drawable.home4);
         mBinding.fbHead.setImages(list);
 
     }

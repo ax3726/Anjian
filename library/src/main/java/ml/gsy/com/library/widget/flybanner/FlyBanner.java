@@ -335,7 +335,11 @@ public class FlyBanner extends RelativeLayout {
                         .error(R.drawable.photo_error_icon)
                         .into(imageView);
             } else {
-                imageView.setImageResource(mImages.get(toRealPosition(position)));
+                Glide.with(getContext())
+                        .load(mImages.get(toRealPosition(position)))
+                        .error(R.drawable.photo_error_icon)
+                        .into(imageView);
+              //  imageView.setImageResource(mImages.get(toRealPosition(position)));
             }
             container.addView(imageView);
 

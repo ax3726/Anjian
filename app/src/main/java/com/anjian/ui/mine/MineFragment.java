@@ -11,9 +11,12 @@ import com.anjian.common.Api;
 import com.anjian.common.CacheService;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.FragmentMineBinding;
-import com.anjian.model.BaseBean;
 import com.anjian.model.main.UserInfoModel;
 import com.anjian.ui.main.LoginActivity;
+import com.anjian.utils.DemoUtils;
+import com.bumptech.glide.Glide;
+
+import ml.gsy.com.library.utils.glide.GlideCircleTransform;
 
 /**
  * Created by LiMing on 2018/6/25.
@@ -75,7 +78,7 @@ public class MineFragment extends BaseFragment<BaseFragmentPresenter, FragmentMi
         if (dataBean == null) {
             return;
         }
-
+        Glide.with(aty).load(DemoUtils.getUrl(dataBean.getAvatar())).transform(new GlideCircleTransform(aty)).placeholder(R.drawable.mine_head_icon).into(mBinding.imgHead);
         mBinding.tvName.setText(dataBean.getUserName());
 
     }
