@@ -6,8 +6,13 @@ import android.view.View;
 import com.anjian.R;
 import com.anjian.base.BaseFragment;
 import com.anjian.base.BaseFragmentPresenter;
+import com.anjian.base.BaseNetListener;
+import com.anjian.common.Api;
 import com.anjian.common.CacheService;
+import com.anjian.common.MyApplication;
 import com.anjian.databinding.FragmentMineBinding;
+import com.anjian.model.BaseBean;
+import com.anjian.model.main.UserInfoModel;
 import com.anjian.ui.main.LoginActivity;
 
 /**
@@ -42,5 +47,36 @@ public class MineFragment extends BaseFragment<BaseFragmentPresenter, FragmentMi
                 aty.finish();
             }
         });
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        getUserInfo();
+    }
+
+    private void getUserInfo() {
+        Api.getApi().getUserInfo(MyApplication.getInstance().getToken())
+                .compose(callbackOnIOToMainThread())
+                .subscribe(new BaseNetListener<UserInfoModel>(this, true) {
+                    @Override
+                    public void onSuccess(UserInfoModel baseBean) {
+                        setView(baseBean.getData());
+                    }
+
+                    @Override
+                    public void onFail(String errMsg) {
+
+                    }
+                });
+    }
+
+    private void setView(UserInfoModel.DataBean dataBean) {
+        if (dataBean == null) {
+            return;
+        }
+
+        mBinding.tvName.setText(dataBean.getUserName());
+
     }
 }

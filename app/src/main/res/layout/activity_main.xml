@@ -3,99 +3,117 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-        <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorBackground"
-            android:orientation="vertical">
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-            <com.zhy.autolayout.AutoFrameLayout
-                android:id="@+id/fly_contain"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoFrameLayout
+            android:id="@+id/fly_contain"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/colorBackground"
+            android:layout_weight="1" />
+
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
+                android:layout_above="@+id/rg_buttom"
                 android:background="@color/colorLine" />
 
-            <com.zhy.autolayout.AutoFrameLayout
+            <RadioGroup
+                android:id="@+id/rg_buttom"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_record"
+                android:background="@color/colorWhite"
+                android:orientation="horizontal"
+                android:paddingBottom="1dp"
+                android:paddingTop="5dp">
 
-
-                <RadioGroup
-                    android:id="@+id/rg_buttom"
-                    android:layout_width="match_parent"
+                <RadioButton
+                    android:id="@+id/rb_message"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorWhite"
-                    android:orientation="horizontal"
-                    android:paddingBottom="1dp"
-                    android:paddingTop="5dp">
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@drawable/selector_home"
+                    android:gravity="center"
+                    android:text="首页"
+                    android:textColor="@color/color999999"
+                    android:textSize="7sp" />
 
-                    <RadioButton
-                        android:id="@+id/rb_message"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:button="@null"
-                        android:checked="true"
-                        android:drawablePadding="4dp"
-                        android:drawableTop="@drawable/selector_message"
-                        android:gravity="center"
-                        android:text="消息"
-                        android:textColor="@color/color999999"
-                        android:textSize="7sp" />
-                    <RadioButton
-                        android:id="@+id/rb_record"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:button="@null"
-                        android:checked="false"
-                        android:drawablePadding="4dp"
-                        android:drawableTop="@drawable/selector_record"
-                        android:gravity="center"
-                        android:text="记录"
-                        android:textColor="@color/color999999"
-                        android:textSize="7sp" />
-                    <RadioButton
-                        android:id="@+id/rb_manage"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:button="@null"
-                        android:checked="false"
-                        android:drawablePadding="4dp"
-                        android:drawableTop="@drawable/selector_manage"
-                        android:gravity="center"
-                        android:text="管理"
-                        android:textColor="@color/color999999"
-                        android:textSize="7sp" />
-                    <RadioButton
-                        android:id="@+id/rb_mine"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:button="@null"
-                        android:checked="false"
-                        android:drawablePadding="4dp"
-                        android:drawableTop="@drawable/selector_mine"
-                        android:gravity="center"
-                        android:text="我的"
-                        android:textColor="@color/color999999"
-                        android:textSize="7sp" />
+                <RadioButton
+                    android:id="@+id/rb_record"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:checked="false"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@drawable/selector_record"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/color999999"
+                    android:textSize="7sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_manage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:checked="false"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@drawable/selector_manage"
+                    android:gravity="center"
+                    android:text="管理"
+                    android:textColor="@color/color999999"
+                    android:textSize="7sp"
+                    android:visibility="gone" />
+
+                <RadioButton
+                    android:id="@+id/rb_mine"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:checked="false"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@drawable/selector_mine"
+                    android:gravity="center"
+                    android:text="我的"
+                    android:textColor="@color/color999999"
+                    android:textSize="7sp" />
 
 
-                </RadioGroup>
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/record_icon"
+                android:gravity="center"
+                android:text="记录"
+                android:layout_marginBottom="1dp"
+                android:textColor="@color/color999999"
+                android:textSize="7sp" />
 
 
+        </com.zhy.autolayout.AutoRelativeLayout>
 
-            </com.zhy.autolayout.AutoFrameLayout>
-
-        </com.zhy.autolayout.AutoLinearLayout>
-
+    </com.zhy.autolayout.AutoLinearLayout>
 
 
 </layout>

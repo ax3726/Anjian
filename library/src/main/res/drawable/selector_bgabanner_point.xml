@@ -3,15 +3,15 @@
 
 
     <item android:state_enabled="true">
-        <shape android:shape="oval">
-            <size android:width="6dp" android:height="6dp" />
-            <solid android:color="#A9092B" />
+        <shape >
+            <size android:width="12dp" android:height="2dp" />
+            <solid android:color="#2580BB" />
         </shape>
     </item>
     <item>
-        <shape android:shape="oval">
-            <size android:width="6dp" android:height="6dp" />
-            <solid android:color="#ddd" />
+        <shape >
+            <size android:width="12dp" android:height="2dp" />
+            <solid android:color="#ffffff" />
         </shape>
     </item>
 </selector>

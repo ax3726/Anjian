@@ -1,21 +1,18 @@
 package com.anjian.ui.main;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.anjian.R;
 import com.anjian.base.BaseActivity;
-import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityMainBinding;
 import com.anjian.prestener.main.MainPrestener;
 import com.anjian.ui.manage.ManageFragment;
-import com.anjian.ui.message.MessageFragment;
+import com.anjian.ui.home.HomeFragment;
 import com.anjian.ui.mine.MineFragment;
 import com.anjian.ui.record.RecordFragment;
 import com.anjian.utils.DemoUtils;
@@ -23,12 +20,9 @@ import com.anjian.utils.DemoUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import ml.gsy.com.library.utils.runtimepermission.PermissionsManager;
-import ml.gsy.com.library.utils.runtimepermission.PermissionsResultAction;
-
 public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBinding> {
 
-    private MessageFragment mMessageFragment;
+    private HomeFragment mHomeFragment;
     private RecordFragment mRecordFragment;
     private ManageFragment mManageFragment;
     private MineFragment mMineFragment;
@@ -88,19 +82,19 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
     }
 
     private void initFragment() {
-        mMessageFragment = new MessageFragment();
+        mHomeFragment = new HomeFragment();
         mRecordFragment = new RecordFragment();
-        mManageFragment = new ManageFragment();
+       // mManageFragment = new ManageFragment();
         mMineFragment = new MineFragment();
 
-        mFragments.add(mMessageFragment);
+        mFragments.add(mHomeFragment);
         mFragments.add(mRecordFragment);
         mFragments.add(mManageFragment);
         mFragments.add(mMineFragment);
 
         mFm = getSupportFragmentManager();
         mTransaction = mFm.beginTransaction();
-        mTransaction.add(R.id.fly_contain, mMessageFragment);
+        mTransaction.add(R.id.fly_contain, mHomeFragment);
         mTransaction.show(mFragments.get(0));
         mTransaction.commitAllowingStateLoss();
     }

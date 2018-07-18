@@ -3,6 +3,7 @@ package com.anjian.common;
 
 import com.anjian.model.BaseBean;
 import com.anjian.model.main.LoginModel;
+import com.anjian.model.main.UserInfoModel;
 import com.anjian.model.record.CompanyLisyModel;
 import com.anjian.model.record.FenChengListModel;
 import com.anjian.model.record.FengXianListModel;
@@ -47,10 +48,16 @@ public interface ApiService {
     @GET("security-monitor/app/sysArea/parent/{id}")
     Flowable<SysAreaModel> sysArea(@Path("id") String id, @Query("token") String token);
 
+    //获取用户信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("security-monitor/app/user/info")
+    Flowable<UserInfoModel> getUserInfo(@Query("token") String token);
+
     //搜索
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("security-monitor/app/enterpriseInfo/vagueSearch")
     Flowable<SearchModel> qiYeSearch(@Query("token") String token, @Query("keyWord") String keyWord);
+
     //三小搜索
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("security-monitor/app/tspInfo/vagueSearch")
@@ -70,6 +77,7 @@ public interface ApiService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/geo/enterprise")
     Flowable<CompanyLisyModel> qiYeList(@Body RequestBody body, @Query("token") String token);
+
     //企业信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("security-monitor/app/enterpriseInfo/info/{id}")
@@ -164,7 +172,7 @@ public interface ApiService {
     //消防设施列表信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/fireDevice/list")
-    Flowable<XiaoFangListModel>getXiaoFangList(@Body RequestBody body, @Query("token") String token);
+    Flowable<XiaoFangListModel> getXiaoFangList(@Body RequestBody body, @Query("token") String token);
 
     //新增安全生产风险辨识信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
