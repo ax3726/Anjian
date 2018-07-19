@@ -104,7 +104,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         model2.getOptions().add(new SanXiaoSelectListModel.DataBean("夹层未设置独立的直通室外的疏散通道"));
         model2.getOptions().add(new SanXiaoSelectListModel.DataBean("通道堵塞"));
         model2.getOptions().add(new SanXiaoSelectListModel.DataBean("灭火器前堆放障碍物"));
-        model2.getOptions().add(new SanXiaoSelectListModel.DataBean("5.灭火器材配置不足"));
+        model2.getOptions().add(new SanXiaoSelectListModel.DataBean("灭火器材配置不足"));
         model2.getOptions().add(new SanXiaoSelectListModel.DataBean("其他"));
 
 

@@ -93,7 +93,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="企业名称"
+                    android:text="场所名称"
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
@@ -128,7 +128,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="所属街道"
+                    android:text="所属区域"
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
@@ -168,7 +168,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="所属类别"
+                    android:text="场所属性"
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
@@ -208,7 +208,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="营业执照号"
+                    android:text="所在地址"
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
@@ -314,7 +314,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="电子邮件"
+                    android:text="风险等级"
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
@@ -350,7 +350,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="职工人数"
+                    android:text="从业人员"
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 

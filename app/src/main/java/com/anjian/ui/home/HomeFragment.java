@@ -42,6 +42,12 @@ public class HomeFragment extends BaseFragment<BaseFragmentPresenter, FragmentHo
         super.initTitleBar();
         mTitleBarLayout.setTitle("安评信息");
         mTitleBarLayout.setLeftImg(R.drawable.record_search_icon);
+        mTitleBarLayout.setLeftListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightImg(R.drawable.home_message_icon);
         mTitleBarLayout.setRightListener(new View.OnClickListener() {

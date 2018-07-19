@@ -119,11 +119,11 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         mTypeIndex = mDataBean.getEnterpriseScale();
         String guimo = "";
         if (mTypeIndex == 1) {
-            guimo = "规上企业";
+            guimo = "规模企业";
         } else if (mTypeIndex == 2) {
-            guimo = "小微企业";
+            guimo = "一般企业";
         } else {
-            guimo = "三小场所";
+            guimo = "小微企业";
         }
         mBinding.tvGuimo.setText(guimo);
 
@@ -184,7 +184,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
                 break;
             case R.id.tv_guimo://企业规模
                 OptionPicker picker = new OptionPicker(this, new String[]{
-                        "上规企业", "小微企业", "三小场所"
+                        "规模企业", "一般企业", "小微企业"
                 });
 
                 picker.setOffset(2);

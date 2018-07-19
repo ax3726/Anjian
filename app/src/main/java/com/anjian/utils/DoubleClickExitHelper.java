@@ -40,7 +40,7 @@ public class DoubleClickExitHelper {
         } else {
             isOnKeyBacking = true;
             if (mBackToast == null) {
-                mBackToast = Toast.makeText(mActivity, "再次点击退出蚂蚁便利商城！", Toast.LENGTH_LONG);
+                mBackToast = Toast.makeText(mActivity, "再次点击退出应用！", Toast.LENGTH_LONG);
             }
             mBackToast.show();
             mHandler.postDelayed(onBackTimeRunnable, 2000);

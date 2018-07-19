@@ -5,6 +5,8 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.RadioGroup;
 
 import com.anjian.R;
@@ -16,6 +18,7 @@ import com.anjian.ui.home.HomeFragment;
 import com.anjian.ui.mine.MineFragment;
 import com.anjian.ui.record.RecordFragment;
 import com.anjian.utils.DemoUtils;
+import com.anjian.utils.DoubleClickExitHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
     private FragmentManager mFm;
     private FragmentTransaction mTransaction;
     private List<Fragment> mFragments = new ArrayList<>();
-
+    private DoubleClickExitHelper mDoubleClickExit;//
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -39,6 +42,7 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
     @Override
     protected void initData() {
         super.initData();
+
         mBinding.rgButtom.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
@@ -66,6 +70,14 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
                 }
             }
         });
+        mBinding.tvRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentFragmentPosition != 1) {
+                    changeFragment(1);
+                }
+            }
+        });
         initFragment();
        DemoUtils.getLocation(aty);
     }
@@ -78,7 +90,7 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
     @Override
     protected void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-
+        mDoubleClickExit = new DoubleClickExitHelper(this);
     }
 
     private void initFragment() {
@@ -114,5 +126,11 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
         }
         currentFragmentPosition = position;
     }
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return mDoubleClickExit.onKeyDown(keyCode, event);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }
