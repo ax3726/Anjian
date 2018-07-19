@@ -109,11 +109,11 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
 
 
         SanXiaoSelectListModel model3 = new SanXiaoSelectListModel();
-        model3.setTitle("火灾隐患");
+        model3.setTitle("危险物品");
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("液化气_KG_瓶"));
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("天然气"));
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("危险化学品"));
-        model3.getOptions().add(new SanXiaoSelectListModel.DataBean("危险物品"));
+        model3.getOptions().add(new SanXiaoSelectListModel.DataBean("危险物料"));
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("其他燃料"));
         model3.getOptions().add(new SanXiaoSelectListModel.DataBean("其他"));
 
@@ -153,7 +153,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         mDataList.add(model1);
         mDataList.add(model2);
         mDataList.add(model3);
-        mDataList.add(model5);
+       // mDataList.add(model5);
         mDataList.add(model4);
     }
 

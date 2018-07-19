@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:drawablePadding="8dp"
+                android:drawablePadding="6dp"
                 android:drawableTop="@drawable/record_icon"
                 android:gravity="center"
                 android:text="记录"

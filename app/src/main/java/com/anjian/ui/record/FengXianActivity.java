@@ -62,7 +62,7 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
-        mTitleBarLayout.setTitle("安全生产风险辨识");
+        mTitleBarLayout.setTitle("风险档案");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightImg(R.drawable.record_add_icon);
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
