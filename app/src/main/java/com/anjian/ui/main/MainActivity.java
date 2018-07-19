@@ -33,6 +33,7 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
     private FragmentTransaction mTransaction;
     private List<Fragment> mFragments = new ArrayList<>();
     private DoubleClickExitHelper mDoubleClickExit;//
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -73,13 +74,14 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
         mBinding.tvRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mBinding.rbRecord.setChecked(true);
                 if (currentFragmentPosition != 1) {
                     changeFragment(1);
                 }
             }
         });
         initFragment();
-       DemoUtils.getLocation(aty);
+        DemoUtils.getLocation(aty);
     }
 
     @Override
@@ -96,7 +98,7 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
     private void initFragment() {
         mHomeFragment = new HomeFragment();
         mRecordFragment = new RecordFragment();
-       // mManageFragment = new ManageFragment();
+        // mManageFragment = new ManageFragment();
         mMineFragment = new MineFragment();
 
         mFragments.add(mHomeFragment);
@@ -126,6 +128,7 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
         }
         currentFragmentPosition = position;
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

@@ -37,7 +37,7 @@
                 android:background="@color/colorWhite"
                 android:orientation="horizontal"
                 android:paddingBottom="1dp"
-                android:paddingTop="3dp">
+                android:paddingTop="2dp">
 
                 <RadioButton
                     android:id="@+id/rb_message"
@@ -51,7 +51,7 @@
                     android:gravity="center"
                     android:text="首页"
                     android:textColor="@color/color999999"
-                    android:textSize="7sp" />
+                    android:textSize="10dp" />
 
                 <RadioButton
                     android:id="@+id/rb_record"
@@ -65,7 +65,7 @@
                     android:gravity="center"
                     android:text=""
                     android:textColor="@color/color999999"
-                    android:textSize="7sp" />
+                    android:textSize="10dp" />
 
                 <RadioButton
                     android:id="@+id/rb_manage"
@@ -79,7 +79,7 @@
                     android:gravity="center"
                     android:text="管理"
                     android:textColor="@color/color999999"
-                    android:textSize="7sp"
+                    android:textSize="10dp"
                     android:visibility="gone" />
 
                 <RadioButton
@@ -94,7 +94,7 @@
                     android:gravity="center"
                     android:text="我的"
                     android:textColor="@color/color999999"
-                    android:textSize="7sp" />
+                    android:textSize="10dp" />
 
 
             </RadioGroup>
@@ -104,13 +104,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:drawablePadding="10dp"
+                android:drawablePadding="8dp"
                 android:drawableTop="@drawable/record_icon"
                 android:gravity="center"
                 android:text="记录"
                 android:paddingBottom="1dp"
                 android:textColor="@color/color999999"
-                android:textSize="7sp" />
+                android:textSize="10dp" />
 
 
         </com.zhy.autolayout.AutoRelativeLayout>
