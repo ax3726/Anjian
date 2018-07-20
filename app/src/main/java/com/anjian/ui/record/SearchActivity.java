@@ -32,6 +32,15 @@ public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBi
     private List<SearchSanXiaoModel.DataBean> mDataList1 = new ArrayList<>();
     private CommonAdapter<SearchSanXiaoModel.DataBean> mCommonAdapter1;
 
+    private List<SearchSanXiaoModel.DataBean> mDataList2 = new ArrayList<>();
+    private CommonAdapter<SearchSanXiaoModel.DataBean> mCommonAdapter2;
+
+    private List<SearchSanXiaoModel.DataBean> mDataList3= new ArrayList<>();
+    private CommonAdapter<SearchSanXiaoModel.DataBean> mCommonAdapter3;
+
+    private List<SearchSanXiaoModel.DataBean> mDataList4 = new ArrayList<>();
+    private CommonAdapter<SearchSanXiaoModel.DataBean> mCommonAdapter4;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_search;
@@ -70,6 +79,12 @@ public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBi
                         seatchQiye();
                     } else if (mBinding.rbSanxiao.isChecked()) {
                         seatchSanxiao();
+                    }else if (mBinding.rbRenkou.isChecked()) {
+                        seatchRenKou();
+                    }else if (mBinding.rbChuzu.isChecked()) {
+                        seatchChuZu();
+                    }else if (mBinding.rbRenkou.isChecked()) {
+                        seatchOther();
                     }
 
                 }
@@ -121,6 +136,72 @@ public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBi
         mBinding.rcBody.setAdapter(mCommonAdapter1);
     }
 
+    private void setRenkouAdapter()
+    {
+        mCommonAdapter2 = new CommonAdapter<SearchSanXiaoModel.DataBean>(aty, R.layout.item_company_list, mDataList2) {
+            @Override
+            protected void convert(ViewHolder holder, SearchSanXiaoModel.DataBean item, int position) {
+                LinearLayout lly_item = holder.getView(R.id.lly_item);
+                holder.setText(R.id.tv_name, item.getTspName());
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getTspDoorHeadImg()), 0);
+                lly_item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(SanXiaoActivity.class, item.getId());
+                    }
+                });
+
+            }
+        };
+        mBinding.rcBody.setLayoutManager(new LinearLayoutManager(aty));
+        mBinding.rcBody.setAdapter(mCommonAdapter2);
+    }
+
+
+    private void setChuZuAdapter()
+    {
+        mCommonAdapter3 = new CommonAdapter<SearchSanXiaoModel.DataBean>(aty, R.layout.item_company_list, mDataList3) {
+            @Override
+            protected void convert(ViewHolder holder, SearchSanXiaoModel.DataBean item, int position) {
+                LinearLayout lly_item = holder.getView(R.id.lly_item);
+                holder.setText(R.id.tv_name, item.getTspName());
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getTspDoorHeadImg()), 0);
+                lly_item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(SanXiaoActivity.class, item.getId());
+                    }
+                });
+
+            }
+        };
+        mBinding.rcBody.setLayoutManager(new LinearLayoutManager(aty));
+        mBinding.rcBody.setAdapter(mCommonAdapter3);
+    }
+
+
+    private void setOtherAdapter()
+    {
+        mCommonAdapter4 = new CommonAdapter<SearchSanXiaoModel.DataBean>(aty, R.layout.item_company_list, mDataList4) {
+            @Override
+            protected void convert(ViewHolder holder, SearchSanXiaoModel.DataBean item, int position) {
+                LinearLayout lly_item = holder.getView(R.id.lly_item);
+                holder.setText(R.id.tv_name, item.getTspName());
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getTspDoorHeadImg()), 0);
+                lly_item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(SanXiaoActivity.class, item.getId());
+                    }
+                });
+
+            }
+        };
+        mBinding.rcBody.setLayoutManager(new LinearLayoutManager(aty));
+        mBinding.rcBody.setAdapter(mCommonAdapter4);
+    }
+
+
     private void seatchQiye() {
         String content = mBinding.etSearch.getText().toString().trim();
         if (TextUtils.isEmpty(content)) {
@@ -165,4 +246,72 @@ public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBi
             }
         });
     }
+    private void seatchRenKou() {
+        String content = mBinding.etSearch.getText().toString().trim();
+        if (TextUtils.isEmpty(content)) {
+            showToast("请输入关键字");
+            return;
+        }
+        Api.getApi().renKouSearch(MyApplication.getInstance().getToken(), content).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SearchSanXiaoModel>(this, true) {
+            @Override
+            public void onSuccess(SearchSanXiaoModel baseBean) {
+                mDataList2.clear();
+                if (baseBean.getData() != null && baseBean.getData().size() > 0) {
+                    mDataList2.addAll(baseBean.getData());
+                }
+                setRenkouAdapter();
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
+    }
+
+    private void seatchChuZu() {
+        String content = mBinding.etSearch.getText().toString().trim();
+        if (TextUtils.isEmpty(content)) {
+            showToast("请输入关键字");
+            return;
+        }
+        Api.getApi().chuZuSearch(MyApplication.getInstance().getToken(), content).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SearchSanXiaoModel>(this, true) {
+            @Override
+            public void onSuccess(SearchSanXiaoModel baseBean) {
+                mDataList3.clear();
+                if (baseBean.getData() != null && baseBean.getData().size() > 0) {
+                    mDataList3.addAll(baseBean.getData());
+                }
+                setChuZuAdapter();
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
+    }
+    private void seatchOther() {
+        String content = mBinding.etSearch.getText().toString().trim();
+        if (TextUtils.isEmpty(content)) {
+            showToast("请输入关键字");
+            return;
+        }
+        Api.getApi().otherSearch(MyApplication.getInstance().getToken(), content).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SearchSanXiaoModel>(this, true) {
+            @Override
+            public void onSuccess(SearchSanXiaoModel baseBean) {
+                mDataList4.clear();
+                if (baseBean.getData() != null && baseBean.getData().size() > 0) {
+                    mDataList4.addAll(baseBean.getData());
+                }
+                setOtherAdapter();
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
+    }
+
 }

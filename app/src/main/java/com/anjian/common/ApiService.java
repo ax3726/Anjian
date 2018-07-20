@@ -63,6 +63,21 @@ public interface ApiService {
     @GET("security-monitor/app/tspInfo/vagueSearch")
     Flowable<SearchSanXiaoModel> sanXiaoSearch(@Query("token") String token, @Query("keyWord") String keyWord);
 
+    //人口密集场所
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("security-monitor/app/pdpInfo/vagueSearch")
+    Flowable<SearchSanXiaoModel> renKouSearch(@Query("token") String token, @Query("keyWord") String keyWord);
+
+    //出租屋
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("security-monitor/app/letInfo/vagueSearch")
+    Flowable<SearchSanXiaoModel> chuZuSearch(@Query("token") String token, @Query("keyWord") String keyWord);
+
+    //其他
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("security-monitor/app/otpInfo/vagueSearch")
+    Flowable<SearchSanXiaoModel> otherSearch(@Query("token") String token, @Query("keyWord") String keyWord);
+
     //新增企业信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/enterpriseInfo/add")

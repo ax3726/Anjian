@@ -11,8 +11,8 @@ import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
-import com.anjian.databinding.ActivityFengXianBinding;
-import com.anjian.model.record.FengXianListModel;
+import com.anjian.databinding.ActivityWeiHuaBinding;
+import com.anjian.model.record.XiaoFangListModel;
 import com.anjian.model.request.AddListRequest;
 import com.anjian.utils.DemoUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -30,11 +30,9 @@ import java.util.List;
 import ml.gsy.com.library.adapters.recyclerview.CommonAdapter;
 import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
 
-public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXianBinding> {
-
-
-    private List<FengXianListModel.DataBean> mDataList = new ArrayList<>();
-    private CommonAdapter<FengXianListModel.DataBean> mCommonAdapter;
+public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBinding> {
+    private List<XiaoFangListModel.DataBean> mDataList = new ArrayList<>();
+    private CommonAdapter<XiaoFangListModel.DataBean> mCommonAdapter;
 
     private int mPosition = 1;
     private int mSize = 10;
@@ -46,7 +44,7 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_feng_xian;
+        return R.layout.activity_wei_hua;
     }
 
     @Override
@@ -62,7 +60,7 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
-        mTitleBarLayout.setTitle("风险档案");
+        mTitleBarLayout.setTitle("风险管控");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightImg(R.drawable.record_add_icon);
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
@@ -77,13 +75,14 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
     protected void initData() {
         super.initData();
         EventBus.getDefault().register(aty);
-        mId=getIntent().getStringExtra("id");
-        mCommonAdapter = new CommonAdapter<FengXianListModel.DataBean>(aty, R.layout.item_company_list, mDataList) {
+        mId= getIntent().getStringExtra("id");
+        mCommonAdapter = new CommonAdapter<XiaoFangListModel.DataBean>(aty, R.layout.item_wei_hua, mDataList) {
             @Override
-            protected void convert(ViewHolder holder, FengXianListModel.DataBean item, int position) {
+            protected void convert(ViewHolder holder, XiaoFangListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
+                holder.setText(R.id.tv_name, item.getFireDeviceName());
+                holder.setText(R.id.tv_num, "数量:" + item.getFireDeviceNum());
                 holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getLocaleImg()),0);
-                holder.setText(R.id.tv_name,item.getDangerName());
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -92,6 +91,7 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
                         startActivity(intent);
                     }
                 });
+
             }
         };
         mBinding.rcBody.setLayoutManager(new LinearLayoutManager(aty));
@@ -103,36 +103,36 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 mPosition++;
-                getFengXianList();
+                getWeiHuaList();
             }
 
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 mPosition = 1;
                 mBinding.srlBodyList.resetNoMoreData();
-                getFengXianList();
+                getWeiHuaList();
             }
         });
-        getFengXianList();
+        getWeiHuaList();
     }
 
-    private void getFengXianList() {
+    private void getWeiHuaList() {
         AddListRequest addListRequest = new AddListRequest();
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
         addListRequest.getCondition().setId(mId);
-        Api.getApi().getFengXianList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<FengXianListModel>(this, true) {
+        Api.getApi().getXiaoFangList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<XiaoFangListModel>(this, true) {
             @Override
-            public void onSuccess(FengXianListModel baseBean) {
+            public void onSuccess(XiaoFangListModel baseBean) {
 
-               finishRefersh();
-                if (mPosition==1) {
+            finishRefersh();
+                if (mPosition == 1) {
                     mDataList.clear();
                 }
-                List<FengXianListModel.DataBean> data = baseBean.getData();
-                if (data!=null&data.size()>0) {
+                List<XiaoFangListModel.DataBean> data = baseBean.getData();
+                if (data != null & data.size() > 0) {
                     mDataList.addAll(data);
-                    if (data.size()<mSize) {
+                    if (data.size() < mSize) {
                         mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
                     }
                 }
@@ -141,8 +141,6 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
                 } else {
                     mBinding.rcBody.setBackground(null);
                 }
-
-
                 mCommonAdapter.notifyDataSetChanged();
 
 
@@ -159,13 +157,15 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityFengXi
         mBinding.srlBodyList.finishLoadmore();
         mBinding.srlBodyList.finishRefresh();
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refersh(String messageEvent) {
         if ("刷新".equals(messageEvent)) {
             mPosition = 1;
-            getFengXianList();
+            getWeiHuaList();
         }
     }
+
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(aty);

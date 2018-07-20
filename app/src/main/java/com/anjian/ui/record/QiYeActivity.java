@@ -10,7 +10,6 @@ import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityQiYeBinding;
-import com.anjian.model.BaseBean;
 import com.anjian.model.record.QiYeInfoModel;
 import com.anjian.model.request.JingWeiRequest;
 import com.anjian.utils.DemoUtils;
@@ -59,7 +58,7 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
         mBinding.imgPaicha.setOnClickListener(this);
         mBinding.imgWeihua.setOnClickListener(this);
         mBinding.imgTezhong.setOnClickListener(this);
-        mBinding.imgXiaofang.setOnClickListener(this);
+        mBinding.imgFengxian.setOnClickListener(this);
         mBinding.imgYouxian.setOnClickListener(this);
         mBinding.imgFencheng.setOnClickListener(this);
 
@@ -107,7 +106,7 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
             case R.id.img_tezhong:
                 startActivity(TeZhongActivity.class, mId);
                 break;
-            case R.id.img_xiaofang:
+            case R.id.img_fengxian:
                 Intent intent1 = new Intent(aty, AddXiaoFangActivity.class);
                 intent1.putExtra("data", mDataBean);
                 startActivity(intent1);

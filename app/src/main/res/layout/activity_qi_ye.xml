@@ -142,7 +142,7 @@
                 android:weightSum="3">
 
                 <ImageView
-                    android:id="@+id/img_xiaofang"
+                    android:id="@+id/img_fengxian"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
 
