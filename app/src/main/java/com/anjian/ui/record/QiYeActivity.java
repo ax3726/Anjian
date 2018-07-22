@@ -107,7 +107,7 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
                 startActivity(TeZhongActivity.class, mId);
                 break;
             case R.id.img_fengxian:
-                Intent intent1 = new Intent(aty, AddXiaoFangActivity.class);
+                Intent intent1 = new Intent(aty, AddFengXianActivity.class);
                 intent1.putExtra("data", mDataBean);
                 startActivity(intent1);
                 break;

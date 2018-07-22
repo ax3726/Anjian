@@ -7,6 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.sdk.OnResultListener;
+import com.baidu.ocr.sdk.exception.OCRError;
+import com.baidu.ocr.sdk.model.AccessToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
@@ -30,12 +34,14 @@ import ml.gsy.com.library.utils.Utils;
 public class MyApplication extends Application {
     private static MyApplication instance;
     public static String Base_Path = "";
-    private String token="";//token
+    private String token = "";//token
+
     public static MyApplication getInstance() {
         return instance;
     }
+
     public static List<Activity> mList = new LinkedList<>();
-    public String mEasyId="";//便利架ID
+    public String mEasyId = "";//便利架ID
 
     public String getEasyId() {
         return mEasyId;
@@ -51,7 +57,7 @@ public class MyApplication extends Application {
         instance = this;
         Base_Path = Utils.getCacheDirectory(this, Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
 
-       if (System.currentTimeMillis() >= 1532828843000L) {//大于当前时间退出APP
+        if (System.currentTimeMillis() >= 1532828843000L) {//大于当前时间退出APP
             exit();
             android.os.Process.killProcess(android.os.Process.myPid());    //获取PID
             System.exit(0);   //常规java、c#的标准退出法，返回值为0代表正常退出
@@ -86,9 +92,24 @@ public class MyApplication extends Application {
                 mList.remove(activity);
             }
         });
+        initOcr();
 
     }
 
+    private void initOcr() {
+        OCR.getInstance(this).initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
+            @Override
+            public void onResult(AccessToken result) {
+                // 调用成功，返回AccessToken对象
+                String token = result.getAccessToken();
+            }
+
+            @Override
+            public void onError(OCRError error) {
+                // 调用失败，返回OCRError子类SDKError对象
+            }
+        }, getApplicationContext(), Constant.OCRAK, Constant.OCRSK);
+    }
 
 
     //static 代码段可以防止内存泄露
@@ -97,7 +118,7 @@ public class MyApplication extends Application {
         SmartRefreshLayout.setDefaultRefreshHeaderCreater(new DefaultRefreshHeaderCreater() {
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-            //    layout.setPrimaryColorsId(R.color.colorPrimary, android.R.color.white);//全局设置主题颜色
+                //    layout.setPrimaryColorsId(R.color.colorPrimary, android.R.color.white);//全局设置主题颜色
                 return new ClassicsHeader(context);//指定为经典Header，默认是 贝塞尔雷达Header
             }
         });
@@ -130,6 +151,7 @@ public class MyApplication extends Application {
     public static void setList(List<Activity> mList) {
         MyApplication.mList = mList;
     }
+
     public void exit() {
         try {
             for (Activity activity : mList)
@@ -141,6 +163,7 @@ public class MyApplication extends Application {
         }
 
     }
+
     public static void backToLogin(Context context, Intent intent) {
         context.startActivity(intent);
         try {

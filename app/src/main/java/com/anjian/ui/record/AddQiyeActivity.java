@@ -18,9 +18,13 @@ import com.anjian.model.record.SysAreaModel;
 import com.anjian.model.request.AddQiYeRequset;
 import com.anjian.model.request.UpdateQiYeRequset;
 import com.anjian.ui.common.PhotoActivity;
-import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.sdk.OnResultListener;
+import com.baidu.ocr.sdk.exception.OCRError;
+import com.baidu.ocr.sdk.model.OcrRequestParams;
+import com.baidu.ocr.sdk.model.OcrResponseResult;
 import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
@@ -105,10 +109,6 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getBusinessLicenceImg())).into(mBinding.imgZhi);
 
 
-
-
-
-
         mBinding.etName.setText(mDataBean.getEnterpriseName());
         mBinding.tvJiedao.setText(mDataBean.getDetailAddress());
         mBinding.etZhizhao.setText(mDataBean.getBusinessLicenceCode());
@@ -140,7 +140,6 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
 
         threeId = mDataBean.getAreaRelation();
         fourName = mDataBean.getAreaName();
-
 
 
         if (!TextUtils.isEmpty(mDataBean.getReferType())) {
@@ -498,6 +497,8 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
                 mBinding.imgTou.setVisibility(View.VISIBLE);
                 Glide.with(aty).load(file).into(mBinding.imgTou);
             } else if (type == 2) {
+
+                LoadOcr(path);
                 mImgZhi = path;
                 mBinding.tvAddZhi.setVisibility(View.GONE);
                 mBinding.imgZhi.setVisibility(View.VISIBLE);
@@ -510,5 +511,26 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
     @Override
     public void photoFaild() {
         showToast("图片加载失败!");
+    }
+
+    private void LoadOcr(String path) {
+        // 营业执照识别参数设置
+        OcrRequestParams param = new OcrRequestParams();
+
+        // 设置image参数
+        param.setImageFile(new File(path));
+
+        // 调用营业执照识别服务
+        OCR.getInstance(aty).recognizeBusinessLicense(param, new OnResultListener<OcrResponseResult>() {
+            @Override
+            public void onResult(OcrResponseResult result) {
+                String jsonRes = result.getJsonRes();
+            }
+
+            @Override
+            public void onError(OCRError error) {
+                showToast(error.getMessage());
+            }
+        });
     }
 }

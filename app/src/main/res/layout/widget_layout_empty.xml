@@ -77,7 +77,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/shape_cancel_ok"
-                android:onClick="@{stateModel.onStateClick}"
+                android:onClick="@{stateModel::onStateClick}"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="点击重新加载"
