@@ -58,6 +58,9 @@ public class AddYouXianActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mDataBean != null) {
+                    return;
+                }
                 submitMessage();
             }
         });

@@ -35,7 +35,7 @@ public class YanLianActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
 
     private List<YanLianListModel.DataBean> mDataList = new ArrayList<>();
     private CommonAdapter<YanLianListModel.DataBean> mCommonAdapter;
-    private String mId="";
+    private String mId = "";
 
     private int mPosition = 1;
     private int mSize = 10;
@@ -69,7 +69,7 @@ public class YanLianActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(AddYanLianActivity.class,mId);
+                startActivity(AddYanLianActivity.class, mId,mUType);
             }
         });
     }
@@ -78,19 +78,20 @@ public class YanLianActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
     protected void initData() {
         super.initData();
         EventBus.getDefault().register(aty);
-        mId= getIntent().getStringExtra("id");
+        mId = getIntent().getStringExtra("id");
         mCommonAdapter = new CommonAdapter<YanLianListModel.DataBean>(aty, R.layout.item_yan_lian, mDataList) {
             @Override
             protected void convert(ViewHolder holder, YanLianListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
-                holder.setImageurl(R.id.img,DemoUtils.getUrl(item.getLocaleActImg()),0);
-                holder.setText(R.id.tv_name,item.getTitle());
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getLocaleActImg()), 0);
+                holder.setText(R.id.tv_name, item.getTitle());
                 holder.setText(R.id.tv_time, DemoUtils.getTime(item.getCreateTime()));
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(aty, AddYanLianActivity.class);
-                        intent.putExtra("data",item);
+                        intent.putExtra("data", item);
+                        intent.putExtra("utype", mUType);
                         startActivity(intent);
                     }
                 });
@@ -125,36 +126,69 @@ public class YanLianActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
         addListRequest.getCondition().setId(mId);
-        Api.getApi().getYanLianList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<YanLianListModel>(this, true) {
-            @Override
-            public void onSuccess(YanLianListModel baseBean) {
+        if (mUType == 0) {
+            Api.getApi().getYanLianList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<YanLianListModel>(this, true) {
+                @Override
+                public void onSuccess(YanLianListModel baseBean) {
 
-            finishRefersh();
-                if (mPosition == 1) {
-                    mDataList.clear();
-                }
-                List<YanLianListModel.DataBean> data = baseBean.getData();
-                if (data != null & data.size() > 0) {
-                    mDataList.addAll(data);
-                    if (data.size() < mSize) {
-                        mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                    finishRefersh();
+                    if (mPosition == 1) {
+                        mDataList.clear();
                     }
+                    List<YanLianListModel.DataBean> data = baseBean.getData();
+                    if (data != null & data.size() > 0) {
+                        mDataList.addAll(data);
+                        if (data.size() < mSize) {
+                            mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                        }
+                    }
+                    if (mPosition == 1 && mDataList.size() == 0) {
+                        mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                    } else {
+                        mBinding.rcBody.setBackground(null);
+                    }
+                    mCommonAdapter.notifyDataSetChanged();
                 }
-                if (mPosition == 1 && mDataList.size() == 0) {
-                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
-                } else {
-                    mBinding.rcBody.setBackground(null);
+
+                @Override
+                public void onFail(String errMsg) {
+                    finishRefersh();
                 }
-                mCommonAdapter.notifyDataSetChanged();
+            });
+        } else if (mUType == 1) {
+            Api.getApi().getYanLianList1(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<YanLianListModel>(this, true) {
+                @Override
+                public void onSuccess(YanLianListModel baseBean) {
+
+                    finishRefersh();
+                    if (mPosition == 1) {
+                        mDataList.clear();
+                    }
+                    List<YanLianListModel.DataBean> data = baseBean.getData();
+                    if (data != null & data.size() > 0) {
+                        mDataList.addAll(data);
+                        if (data.size() < mSize) {
+                            mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                        }
+                    }
+                    if (mPosition == 1 && mDataList.size() == 0) {
+                        mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                    } else {
+                        mBinding.rcBody.setBackground(null);
+                    }
+                    mCommonAdapter.notifyDataSetChanged();
 
 
-            }
+                }
 
-            @Override
-            public void onFail(String errMsg) {
-                finishRefersh();
-            }
-        });
+                @Override
+                public void onFail(String errMsg) {
+                    finishRefersh();
+                }
+            });
+        }
+
+
     }
 
     private void finishRefersh() {

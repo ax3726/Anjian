@@ -13,6 +13,7 @@ import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddQiyeBinding;
 import com.anjian.model.BaseBean;
+import com.anjian.model.OcrModel;
 import com.anjian.model.record.QiYeInfoModel;
 import com.anjian.model.record.SysAreaModel;
 import com.anjian.model.request.AddQiYeRequset;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.qqtheme.framework.picker.OptionPicker;
+import ml.gsy.com.library.utils.ParseJsonUtils;
 
 public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiyeBinding> implements View.OnClickListener {
     private String[] mHangye = new String[]{
@@ -71,8 +73,12 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
+        if (mUType == 0) {
+            mTitleBarLayout.setTitle("企业信息");
+        } else if (mUType == 1) {
+            mTitleBarLayout.setTitle("人口密集场所信息");
+        }
 
-        mTitleBarLayout.setTitle("企业信息");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightTxt("保存");
         mTitleBarLayout.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +99,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
     protected void initData() {
         super.initData();
         mDataBean = (QiYeInfoModel.DataBean) getIntent().getSerializableExtra("data");
+
         initView();
     }
 
@@ -311,7 +318,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         String Num = mBinding.etNum.getText().toString().trim();
 
         AddQiYeRequset addQiYeRequset = new AddQiYeRequset();
-        addQiYeRequset.setEnterpriseName(name);
+
         addQiYeRequset.setBusinessLicenceCode(zhizhao);
         addQiYeRequset.setContactName(ContactsName);
         addQiYeRequset.setContactPhone(ContactsPhone);
@@ -324,35 +331,68 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         addQiYeRequset.setFloorArea(Mianji);
         addQiYeRequset.setEmployeeNum(Num);
         addQiYeRequset.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
-        addQiYeRequset.setEnterpriseDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+
         addQiYeRequset.setBusinessLicenceImg(DemoUtils.imageToBase64(mImgZhi));
         addQiYeRequset.setIndustry(String.valueOf(mHnagyeindex));
         addQiYeRequset.setReferType(String.valueOf(mTypeShe));
 
-        Api.getApi().addQiYe(getRequestBody(addQiYeRequset), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新企业");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+        if (mUType == 0) {
+            addQiYeRequset.setEnterpriseName(name);
+            addQiYeRequset.setEnterpriseDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+            Api.getApi().addQiYe(getRequestBody(addQiYeRequset), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新企业");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
-            }
-        });
+                }
+            });
+        } else if (mUType == 1) {
+            addQiYeRequset.setPdpName(name);
+            addQiYeRequset.setPdpDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+            Api.getApi().addPdp(getRequestBody(addQiYeRequset), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新人口密集");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+        }
+
+
     }
 
     private void updateMessage() {
@@ -369,7 +409,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
 
         UpdateQiYeRequset addQiYeRequset = new UpdateQiYeRequset();
         addQiYeRequset.setId(mDataBean.getId());
-        addQiYeRequset.setEnterpriseName(name);
+
         addQiYeRequset.setBusinessLicenceCode(zhizhao);
         addQiYeRequset.setContactName(ContactsName);
         addQiYeRequset.setContactPhone(ContactsPhone);
@@ -383,9 +423,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         addQiYeRequset.setEmployeeNum(Num);
         addQiYeRequset.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
         addQiYeRequset.setReferType(String.valueOf(mTypeShe));
-        if (!TextUtils.isEmpty(mImgHead)) {
-            addQiYeRequset.setEnterpriseDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
-        }
+
 
         if (!TextUtils.isEmpty(mImgZhi)) {
             addQiYeRequset.setBusinessLicenceImg(DemoUtils.imageToBase64(mImgZhi));
@@ -393,31 +431,65 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
 
 
         addQiYeRequset.setIndustry(String.valueOf(mHnagyeindex));
-
-        Api.getApi().updateQiYe(getRequestBody(addQiYeRequset), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新企业");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+        if (mUType == 0) {
+            addQiYeRequset.setEnterpriseName(name);
+            if (!TextUtils.isEmpty(mImgHead)) {
+                addQiYeRequset.setEnterpriseDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+            }
+            Api.getApi().updateQiYe(getRequestBody(addQiYeRequset), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新企业");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
+                }
+            });
+        } else if (mUType == 1) {
+            addQiYeRequset.setPdpName(name);
+            if (!TextUtils.isEmpty(mImgHead)) {
+                addQiYeRequset.setPdpDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
             }
-        });
+            Api.getApi().updatePdp(getRequestBody(addQiYeRequset), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新人口密集");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+        }
     }
 
     private void selectJieDao() {
@@ -524,7 +596,16 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         OCR.getInstance(aty).recognizeBusinessLicense(param, new OnResultListener<OcrResponseResult>() {
             @Override
             public void onResult(OcrResponseResult result) {
-                String jsonRes = result.getJsonRes();
+                OcrModel model = null;
+                try {
+                    model = ParseJsonUtils.getBean(result.getJsonRes(), OcrModel.class);
+                    mBinding.etName.setText(model.getWords_result().get单位名称().getWords());
+                    mBinding.etContactsName.setText(model.getWords_result().get法人().getWords());
+
+                } catch (Exception ex) {
+
+                }
+
             }
 
             @Override

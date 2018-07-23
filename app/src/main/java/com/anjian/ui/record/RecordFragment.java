@@ -1,6 +1,7 @@
 package com.anjian.ui.record;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +29,9 @@ public class RecordFragment extends BaseFragment<BaseFragmentPresenter, Fragment
     private List<Fragment> fragments = new ArrayList<>();
     private CompanyListFragment mQiYeFragment;//企业
     private CompanyListFragment mSanXiaoFragment;//三小
+    private CompanyListFragment mRenKouFragment;//人口
+    private CompanyListFragment mLetFragment;//出租屋
+    private CompanyListFragment mOtherFragment;//其他
     private CommonPagerAdapter mMyPagerAdapter;
 
     @Override
@@ -68,6 +72,26 @@ public class RecordFragment extends BaseFragment<BaseFragmentPresenter, Fragment
                     public void onSanXiao() {
                         startActivity(AddSanXiaoActivity.class);
                     }
+
+                    @Override
+                    public void onPhp() {
+                        Intent intent = new Intent(aty, AddQiyeActivity.class);
+                        intent.putExtra("utype", 1);
+                        startActivity(intent);
+
+                    }
+
+                    @Override
+                    public void onLet() {
+                        Intent intent = new Intent(aty, AddSanXiaoActivity.class);
+                        intent.putExtra("utype", 1);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onOther() {
+
+                    }
                 });
                 selectCompanywindow.showPopupWindow();
 
@@ -89,6 +113,9 @@ public class RecordFragment extends BaseFragment<BaseFragmentPresenter, Fragment
         super.initData();
         title.add("看企业");
         title.add("三小场所");
+        title.add("人口密集场所");
+        title.add("出租屋");
+        title.add("其他场所");
 
         mQiYeFragment = new CompanyListFragment();
         Bundle bundle = new Bundle();
@@ -100,8 +127,28 @@ public class RecordFragment extends BaseFragment<BaseFragmentPresenter, Fragment
         bundle1.putInt("type", 1);
         mSanXiaoFragment.setArguments(bundle1);
 
+
+        mRenKouFragment = new CompanyListFragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putInt("type", 2);
+        mRenKouFragment.setArguments(bundle2);
+
+
+        mLetFragment = new CompanyListFragment();
+        Bundle bundle3 = new Bundle();
+        bundle3.putInt("type", 3);
+        mLetFragment.setArguments(bundle3);
+
+        mOtherFragment = new CompanyListFragment();
+        Bundle bundle4 = new Bundle();
+        bundle4.putInt("type", 4);
+        mOtherFragment.setArguments(bundle4);
+
         fragments.add(mQiYeFragment);
         fragments.add(mSanXiaoFragment);
+        fragments.add(mRenKouFragment);
+        fragments.add(mLetFragment);
+        fragments.add(mOtherFragment);
         initTablayout();
         checkLocation();
 
@@ -111,6 +158,7 @@ public class RecordFragment extends BaseFragment<BaseFragmentPresenter, Fragment
         mMyPagerAdapter = new CommonPagerAdapter(getFragmentManager(), title, fragments);
 
         mBinding.viewPager.setAdapter(mMyPagerAdapter);
+        mBinding.viewPager.setOffscreenPageLimit(5);
         mBinding.tabLayout.setupWithViewPager(mBinding.viewPager);
     }
 

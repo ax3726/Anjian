@@ -59,7 +59,7 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mDataBean == null) {
+                if (mDataBean != null) {
                     return;
                 }
                 new AlertDialog.Builder(aty)

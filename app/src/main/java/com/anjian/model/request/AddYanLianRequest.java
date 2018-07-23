@@ -7,10 +7,19 @@ package com.anjian.model.request;
 public class AddYanLianRequest {
 
     private String tspId;
+    private String letId;
     private String title;
     private String localeTeachImg;
     private String locale_act_img;
     private String selfer_sign;
+
+    public String getLetId() {
+        return letId;
+    }
+
+    public void setLetId(String letId) {
+        this.letId = letId;
+    }
 
     public String getTspId() {
         return tspId;

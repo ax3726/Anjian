@@ -9,6 +9,7 @@ public class Constant {
     public static  final String USER_INFO="user_info";
     public static  final String NO_SIGN="no_sign";
     public static  final String SANXIAO_SELECT="sanxiao_select";
+    public static  final String LET_SELECT="let_select";
     public static  final String API_NO_SIGN=NO_SIGN+":";
 
     public static final String WEXAPPID ="wxfb354855bec653ed" ;

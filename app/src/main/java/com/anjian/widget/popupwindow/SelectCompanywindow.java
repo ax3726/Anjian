@@ -80,6 +80,33 @@ public class SelectCompanywindow extends PopupWindow {
                 dismiss();
             }
         });
+        mBinding.tvPhp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mSelectCompanyListener != null) {
+                    mSelectCompanyListener.onPhp();
+                }
+                dismiss();
+            }
+        });
+        mBinding.tvLet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mSelectCompanyListener != null) {
+                    mSelectCompanyListener.onLet();
+                }
+                dismiss();
+            }
+        });
+        mBinding.tvOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mSelectCompanyListener != null) {
+                    mSelectCompanyListener.onOther();
+                }
+                dismiss();
+            }
+        });
     }
 
     /**
@@ -119,6 +146,9 @@ public class SelectCompanywindow extends PopupWindow {
         void onQiye();
 
         void onSanXiao();
+        void onPhp();
+        void onLet();
+        void onOther();
     }
 
 }

@@ -69,7 +69,13 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
     protected void initData() {
         super.initData();
         mId = getIntent().getStringExtra("id");
-        List<SanXiaoSelectListModel> list = (List<SanXiaoSelectListModel>) CacheUtils.getInstance().loadCache(Constant.SANXIAO_SELECT);
+        List<SanXiaoSelectListModel> list = null;
+        if (mUType == 0) {
+            list = (List<SanXiaoSelectListModel>) CacheUtils.getInstance().loadCache(Constant.SANXIAO_SELECT);
+        } else if (mUType == 1) {
+            list = (List<SanXiaoSelectListModel>) CacheUtils.getInstance().loadCache(Constant.LET_SELECT);
+        }
+
         if (list == null) {
             loadData();
         } else {
@@ -153,7 +159,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         mDataList.add(model1);
         mDataList.add(model2);
         mDataList.add(model3);
-       // mDataList.add(model5);
+        // mDataList.add(model5);
         mDataList.add(model4);
     }
 
@@ -245,33 +251,64 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
             return;
         }
         selectRequest.setOptionItems(dataList);
-        selectRequest.setTspId(mId);
-        Api.getApi().addSanXiaoSelectList(getRequestBody(selectRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SanXiaoSelectModel>(this, true) {
-            @Override
-            public void onSuccess(SanXiaoSelectModel baseBean) {
-                showToast(baseBean.getMessage());
-                CacheUtils.getInstance().saveCache(Constant.SANXIAO_SELECT, mDataList);//保存数据
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
+        if (mUType == 0) {
+            selectRequest.setTspId(mId);
+            Api.getApi().addSanXiaoSelectList(getRequestBody(selectRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SanXiaoSelectModel>(this, true) {
+                @Override
+                public void onSuccess(SanXiaoSelectModel baseBean) {
+                    showToast(baseBean.getMessage());
+                    CacheUtils.getInstance().saveCache(Constant.SANXIAO_SELECT, mDataList);//保存数据
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
 
-                            finish();
+                                finish();
 
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
-            }
-        });
+                }
+            });
+        } else if (mUType == 1) {
+            selectRequest.setLetId(mId);
+            Api.getApi().addLetSelectList(getRequestBody(selectRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SanXiaoSelectModel>(this, true) {
+                @Override
+                public void onSuccess(SanXiaoSelectModel baseBean) {
+                    showToast(baseBean.getMessage());
+                    CacheUtils.getInstance().saveCache(Constant.LET_SELECT, mDataList);//保存数据
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+
+                                finish();
+
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+        }
+
 
     }
 }

@@ -73,10 +73,9 @@ public class SanXiaoCheckActivity extends BaseActivity<BasePresenter, ActivityQi
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(aty, AddSanXiaoCheckActivity.class);
-                intent.putExtra("id",mId);
 
-                startActivity(intent);
+                startActivity(AddSanXiaoCheckActivity.class, mId,mUType);
+
 
             }
         });
@@ -100,6 +99,7 @@ public class SanXiaoCheckActivity extends BaseActivity<BasePresenter, ActivityQi
                     public void onClick(View v) {
                         Intent intent = new Intent(aty, SanXiaoCheckInfoActivity.class);
                         intent.putExtra("data", item);
+                        intent.putExtra("utype", mUType);
                         startActivity(intent);
                     }
                 });
@@ -133,37 +133,77 @@ public class SanXiaoCheckActivity extends BaseActivity<BasePresenter, ActivityQi
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
         addListRequest.getCondition().setId(mId);
-        Api.getApi().getSanXiaoCheckList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SanXiaoCheckListModel>(this, true) {
-            @Override
-            public void onSuccess(SanXiaoCheckListModel baseBean) {
+        if (mUType == 0) {
+            Api.getApi().getSanXiaoCheckList(getRequestBody(addListRequest), MyApplication.getInstance().getToken())
+                    .compose(callbackOnIOToMainThread())
+                    .subscribe(new BaseNetListener<SanXiaoCheckListModel>(this, true) {
+                        @Override
+                        public void onSuccess(SanXiaoCheckListModel baseBean) {
 
-                finishRefersh();
-             if (mPosition == 1) {
-                    mDataList.clear();
-                }
-                List<SanXiaoCheckListModel.DataBean> data = baseBean.getData();
-                if (data != null & data.size() > 0) {
-                    mDataList.addAll(data);
-                    if (data.size() < mSize) {
-                        mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
-                    }
-                }
-                if (mPosition == 1 && mDataList.size() == 0) {
-                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
-                } else {
-                    mBinding.rcBody.setBackground(null);
-                }
-                mCommonAdapter.notifyDataSetChanged();
+                            finishRefersh();
+                            if (mPosition == 1) {
+                                mDataList.clear();
+                            }
+                            List<SanXiaoCheckListModel.DataBean> data = baseBean.getData();
+                            if (data != null & data.size() > 0) {
+                                mDataList.addAll(data);
+                                if (data.size() < mSize) {
+                                    mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                                }
+                            }
+                            if (mPosition == 1 && mDataList.size() == 0) {
+                                mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                            } else {
+                                mBinding.rcBody.setBackground(null);
+                            }
+                            mCommonAdapter.notifyDataSetChanged();
 
-                mBinding.tvHint.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
-                mBinding.tvHint.setText(mDataList.size() + "条待整改：");
-            }
+                            mBinding.tvHint.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
+                            mBinding.tvHint.setText(mDataList.size() + "条待整改：");
+                        }
 
-            @Override
-            public void onFail(String errMsg) {
-                finishRefersh();
-            }
-        });
+                        @Override
+                        public void onFail(String errMsg) {
+                            finishRefersh();
+                        }
+                    });
+        } else {
+            Api.getApi().getSanXiaoCheckList1(getRequestBody(addListRequest), MyApplication.getInstance().getToken())
+                    .compose(callbackOnIOToMainThread())
+                    .subscribe(new BaseNetListener<SanXiaoCheckListModel>(this, true) {
+                        @Override
+                        public void onSuccess(SanXiaoCheckListModel baseBean) {
+
+                            finishRefersh();
+                            if (mPosition == 1) {
+                                mDataList.clear();
+                            }
+                            List<SanXiaoCheckListModel.DataBean> data = baseBean.getData();
+                            if (data != null & data.size() > 0) {
+                                mDataList.addAll(data);
+                                if (data.size() < mSize) {
+                                    mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                                }
+                            }
+                            if (mPosition == 1 && mDataList.size() == 0) {
+                                mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                            } else {
+                                mBinding.rcBody.setBackground(null);
+                            }
+                            mCommonAdapter.notifyDataSetChanged();
+
+                            mBinding.tvHint.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
+                            mBinding.tvHint.setText(mDataList.size() + "条待整改：");
+                        }
+
+                        @Override
+                        public void onFail(String errMsg) {
+                            finishRefersh();
+                        }
+                    });
+        }
+
+
     }
 
     private void finishRefersh() {

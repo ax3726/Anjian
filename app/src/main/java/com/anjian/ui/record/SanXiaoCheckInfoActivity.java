@@ -99,6 +99,7 @@ public class SanXiaoCheckInfoActivity extends PhotoActivity<BasePresenter, Activ
         if (mDataBean == null) {
             return;
         }
+
         Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
         mBinding.tvName.setText(mDataBean.getDangerDesc());
         mBinding.tvNum.setText(DemoUtils.getTime(mDataBean.getCreateTime()));
@@ -113,7 +114,7 @@ public class SanXiaoCheckInfoActivity extends PhotoActivity<BasePresenter, Activ
                 @Override
                 public void onClick(View v) {
 
-                    startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getModifyImg()));
+                    startActivityUrl(PhotoPreviewActivity.class, DemoUtils.getUrl(mDataBean.getModifyImg()));
                 }
             });
         }
@@ -184,7 +185,7 @@ public class SanXiaoCheckInfoActivity extends PhotoActivity<BasePresenter, Activ
 
         UpdateSanXiaoCheckRequest updateSanXiaoCheckRequest = new UpdateSanXiaoCheckRequest();
         updateSanXiaoCheckRequest.setId(mDataBean.getId());
-        updateSanXiaoCheckRequest.setTspId(mDataBean.getTspId());
+
         updateSanXiaoCheckRequest.setOptionId(mDataBean.getOptionId());
 
         updateSanXiaoCheckRequest.setModifyImg(DemoUtils.imageToBase64(mImgPath));
@@ -198,29 +199,61 @@ public class SanXiaoCheckInfoActivity extends PhotoActivity<BasePresenter, Activ
         if (!TextUtils.isEmpty(mImgPath3)) {
             updateSanXiaoCheckRequest.setWitherSign(DemoUtils.imageToBase64(mImgPath3));
         }
-        Api.getApi().updateSanXiaoCheck(getRequestBody(updateSanXiaoCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+
+        if (mUType == 0) {
+            updateSanXiaoCheckRequest.setTspId(mDataBean.getTspId());
+            Api.getApi().updateSanXiaoCheck(getRequestBody(updateSanXiaoCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
-            }
-        });
+                }
+            });
+        } else if (mUType == 1) {
+            updateSanXiaoCheckRequest.setLetId(mDataBean.getLetId());
+            Api.getApi().updateSanXiaoCheck1(getRequestBody(updateSanXiaoCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+        }
+
+
     }
 }

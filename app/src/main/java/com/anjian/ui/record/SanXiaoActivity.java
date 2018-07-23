@@ -59,7 +59,8 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
         super.initData();
         EventBus.getDefault().register(this);
         mId = getIntent().getStringExtra("id");
-        getSanXiaoInfo();
+
+        loadData();
     }
 
     @Override
@@ -86,24 +87,45 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
             case R.id.img_xiugai:
                 Intent intent = new Intent(aty, AddSanXiaoActivity.class);
                 intent.putExtra("data", mDataBean);
+                intent.putExtra("utype", mUType);
                 startActivity(intent);
                 break;
             case R.id.img_xianchang:
-                startActivity(SanxiaoSelectActivity.class, mId);
+                startActivity(SanxiaoSelectActivity.class, mId,mUType);
                 break;
             case R.id.img_yanlian:
-                startActivity(YanLianActivity.class, mId);
+                startActivity(YanLianActivity.class, mId,mUType);
                 break;
             case R.id.img_paicha:
-                startActivity(SanXiaoCheckActivity.class, mId);
+                startActivity(SanXiaoCheckActivity.class, mId,mUType);
 
                 break;
 
         }
     }
-
+    private void loadData()
+    {
+        if (mUType == 0) {
+            getSanXiaoInfo();
+        } else if(mUType==1) {
+            getLetInfo();
+        }
+    }
     private void getSanXiaoInfo() {
         Api.getApi().sanXiaoInfo(mId, MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SanXiaoInfoModel>(this, true) {
+            @Override
+            public void onSuccess(SanXiaoInfoModel baseBean) {
+                initView(baseBean.getData());
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
+    }
+    private void getLetInfo() {
+        Api.getApi().letInfo(mId, MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SanXiaoInfoModel>(this, true) {
             @Override
             public void onSuccess(SanXiaoInfoModel baseBean) {
                 initView(baseBean.getData());
@@ -121,14 +143,22 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
             return;
         }
         mDataBean = dataBean;
-        mBinding.tvName.setText(dataBean.getTspName());
-        Glide.with(aty).load(DemoUtils.getUrl(dataBean.getTspDoorHeadImg())).into(mBinding.img);
+        if (mUType == 0) {
+            mBinding.tvName.setText(dataBean.getTspName());
+            Glide.with(aty).load(DemoUtils.getUrl(dataBean.getTspDoorHeadImg())).into(mBinding.img);
+        } else if(mUType==1) {
+            mBinding.tvName.setText(dataBean.getLetName());
+            Glide.with(aty).load(DemoUtils.getUrl(dataBean.getLetDoorHeadImg())).into(mBinding.img);
+        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refersh(String messageEvent) {
         if ("刷新三小".equals(messageEvent)) {
-            getSanXiaoInfo();
+            loadData();
+        }else  if ("刷新人口密集".equals(messageEvent)) {
+            loadData();
         }
     }
 

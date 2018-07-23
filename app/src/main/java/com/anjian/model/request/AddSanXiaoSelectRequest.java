@@ -9,7 +9,16 @@ import java.util.List;
 
 public class AddSanXiaoSelectRequest {
     private String tspId;
+    private String letId;
     private List<DataBean> optionItems;
+
+    public String getLetId() {
+        return letId;
+    }
+
+    public void setLetId(String letId) {
+        this.letId = letId;
+    }
 
     public static class DataBean {
 

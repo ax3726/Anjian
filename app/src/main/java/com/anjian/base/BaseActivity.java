@@ -39,11 +39,12 @@ import okhttp3.RequestBody;
  * Description:
  */
 
-public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBinding> extends RxAppCompatActivity implements BaseView,BaseHttpListener {
+public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBinding> extends RxAppCompatActivity implements BaseView, BaseHttpListener {
 
     protected P mPresenter;
     protected B mBinding;
     protected AppCompatActivity aty;
+    protected int mUType = 0;//默认
     /**
      * 加载进度
      */
@@ -75,6 +76,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
         }
         aty = this;
         setActivityView();
+        getActivityType();
         initTitleBar();
         initView(savedInstanceState);
         initData();
@@ -96,7 +98,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
             WidgetLayoutEmptyBinding emptyBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.widget_layout_empty, null, false);
             emptyBinding.setStateModel(mStateModel);
             fly.addView(emptyBinding.getRoot());
-            lly.addView(fly,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            lly.addView(fly, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             setContentView(lly);
             mTitleBarLayout.setLeftListener(new View.OnClickListener() {
                 @Override
@@ -135,25 +137,38 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
         load.into(img);
     }
 
+    protected void getActivityType() {
+        mUType = getIntent().getIntExtra("utype", 0);
+    }
 
     protected void startActivity(Class<?> cls) {
         startActivity(new Intent(aty, cls));
     }
 
-    protected void startActivity(Class<?> cls,String id) {
+    protected void startActivity(Class<?> cls, String id) {
         Intent intent = new Intent(aty, cls);
-        intent.putExtra("id",id);
+        intent.putExtra("id", id);
         startActivity(intent);
     }
 
-    protected void startActivityUrl(Class<?> cls,String url) {
+    protected void startActivity(Class<?> cls, String id, int type) {
         Intent intent = new Intent(aty, cls);
-        intent.putExtra("url",url);
+        intent.putExtra("id", id);
+        intent.putExtra("utype", type);
         startActivity(intent);
     }
-    protected void startActivityForResult(Class<?> cls,int requestCode) {
-        startActivityForResult(new Intent(aty, cls),requestCode);
+
+
+    protected void startActivityUrl(Class<?> cls, String url) {
+        Intent intent = new Intent(aty, cls);
+        intent.putExtra("url", url);
+        startActivity(intent);
     }
+
+    protected void startActivityForResult(Class<?> cls, int requestCode) {
+        startActivityForResult(new Intent(aty, cls), requestCode);
+    }
+
     protected void initEvent() {
 
     }
@@ -196,7 +211,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
 
     @Override
     public void showToast(final String s) {
-        if (aty!=null) {
+        if (aty != null) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -210,7 +225,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
 
     @Override
     public void showToast(final int id) {
-        if (aty!=null) {
+        if (aty != null) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -237,7 +252,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
 
     @Override
     public void showWaitDialog(boolean isCancel, DialogInterface.OnCancelListener cancelListener) {
-         showWaitDialog("", isCancel, cancelListener);
+        showWaitDialog("", isCancel, cancelListener);
     }
 
 
@@ -261,7 +276,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
      */
 
     public void showWaitDialog(String message, boolean isCancel, DialogInterface.OnCancelListener cancelListener) {
-        if (aty==null) {
+        if (aty == null) {
             return;
         }
         if (mLoadingDialog == null) {
@@ -285,7 +300,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
      * 隐藏
      */
     public void hideWaitDialog() {
-        if (aty==null) {
+        if (aty == null) {
             return;
         }
         if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
@@ -315,6 +330,7 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
     public void setEmptyState(@EmptyState int emptyState) {
         mStateModel.setEmptyState(emptyState);
     }
+
     public RequestBody getRequestBody(Object object) {
         String str = ParseJsonUtils.getjsonStr(object);
         return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), str);
@@ -322,6 +338,6 @@ public abstract class BaseActivity<P extends BasePresenter, B extends ViewDataBi
 
     @Override
     public void backToLogin() {
-        MyApplication.backToLogin(aty,new Intent(aty, LoginActivity.class));
+        MyApplication.backToLogin(aty, new Intent(aty, LoginActivity.class));
     }
 }

@@ -7,11 +7,20 @@ package com.anjian.model.request;
 public class UpdateSanXiaoCheckRequest {
     private String id;
     private String tspId;
+    private String letId;
     private String optionId;
     private String saferSign;
     private String businesserSign;
     private String witherSign;
     private String modifyImg;
+
+    public String getLetId() {
+        return letId;
+    }
+
+    public void setLetId(String letId) {
+        this.letId = letId;
+    }
 
     public String getId() {
         return id;

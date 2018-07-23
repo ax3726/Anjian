@@ -111,6 +111,8 @@ public class QiYeInfoModel {
         private int employeeNum;
         private String enterpriseDoorHeadImg;
         private String enterpriseName;
+        private String pdpDoorHeadImg;
+        private String pdpName;
         private int enterpriseScale;
         private String examineTime;
         private String examineUser;
@@ -125,6 +127,22 @@ public class QiYeInfoModel {
         private String updateBy;
         private String updateTime;
         private int urgentDevice=-1;
+
+        public String getPdpDoorHeadImg() {
+            return pdpDoorHeadImg;
+        }
+
+        public void setPdpDoorHeadImg(String pdpDoorHeadImg) {
+            this.pdpDoorHeadImg = pdpDoorHeadImg;
+        }
+
+        public String getPdpName() {
+            return pdpName;
+        }
+
+        public void setPdpName(String pdpName) {
+            this.pdpName = pdpName;
+        }
 
         public String getAreaId() {
             return areaId;

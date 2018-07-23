@@ -108,8 +108,26 @@ public class SanXiaoInfoModel {
         private String position;
         private String tspDoorHeadImg;
         private String tspName;
+        private String letDoorHeadImg;
+        private String letName;
         private String updateBy;
         private String updateTime;
+
+        public String getLetDoorHeadImg() {
+            return letDoorHeadImg;
+        }
+
+        public void setLetDoorHeadImg(String letDoorHeadImg) {
+            this.letDoorHeadImg = letDoorHeadImg;
+        }
+
+        public String getLetName() {
+            return letName;
+        }
+
+        public void setLetName(String letName) {
+            this.letName = letName;
+        }
 
         public String getAreaId() {
             return areaId;

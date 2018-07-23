@@ -36,6 +36,7 @@ import retrofit2.http.Query;
 /**
  * Created by lm on 2017/11/22.
  * Description:
+ * 人口密集场所是 /app/pdpInfo 开头的  出租屋是/app/letInfo开头的  其他场所是/app/otpInfo 开头的
  */
 
 public interface ApiService {
@@ -88,6 +89,17 @@ public interface ApiService {
     @POST("security-monitor/app/enterpriseInfo/update")
     Flowable<BaseBean> updateQiYe(@Body RequestBody body, @Query("token") String token);
 
+    //新增人口密集信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpInfo/add")
+    Flowable<BaseBean> addPdp(@Body RequestBody body, @Query("token") String token);
+
+    //更新人口密集信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpInfo/update")
+    Flowable<BaseBean> updatePdp(@Body RequestBody body, @Query("token") String token);
+
+
     //企业列表信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/geo/enterprise")
@@ -97,26 +109,61 @@ public interface ApiService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("security-monitor/app/enterpriseInfo/info/{id}")
     Flowable<QiYeInfoModel> qiYeInfo(@Path("id") String id, @Query("token") String token);
-
-    //三小信息
+    //人口密集信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @GET("security-monitor/app/tspInfo/info/{id}")
-    Flowable<SanXiaoInfoModel> sanXiaoInfo(@Path("id") String id, @Query("token") String token);
-
-    //更新三小场所信息
-    @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("security-monitor/app/tspInfo/update")
-    Flowable<BaseBean> updateSanXiao(@Body RequestBody body, @Query("token") String token);
+    @GET("security-monitor/app/enterpriseInfo/info/{id}")
+    Flowable<QiYeInfoModel> pdpInfo(@Path("id") String id, @Query("token") String token);
 
     //三小场所信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/geo/tsp")
     Flowable<CompanyLisyModel> sanXiaoList(@Body RequestBody body, @Query("token") String token);
 
+    //人口密集场所信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/geo/pdp")
+    Flowable<CompanyLisyModel> renKouList(@Body RequestBody body, @Query("token") String token);
+
+    //出租屋信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/geo/let")
+    Flowable<CompanyLisyModel> letList(@Body RequestBody body, @Query("token") String token);
+
+    //其他场所信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/geo/otp")
+    Flowable<CompanyLisyModel> otherList(@Body RequestBody body, @Query("token") String token);
+
+
+    //三小信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("security-monitor/app/tspInfo/info/{id}")
+    Flowable<SanXiaoInfoModel> sanXiaoInfo(@Path("id") String id, @Query("token") String token);
+
+    //出租屋信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @GET("security-monitor/app/letInfo/info/{id}")
+    Flowable<SanXiaoInfoModel> letInfo(@Path("id") String id, @Query("token") String token);
+
+    //更新三小场所信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/tspInfo/update")
+    Flowable<BaseBean> updateSanXiao(@Body RequestBody body, @Query("token") String token);
+
+    //更新出租屋信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/letInfo/update")
+
+    Flowable<BaseBean> updateLet(@Body RequestBody body, @Query("token") String token);
     //新增三小场所信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/tspInfo/add")
     Flowable<BaseBean> addSanXiao(@Body RequestBody body, @Query("token") String token);
+
+    //新增出租屋信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/letInfo/add")
+    Flowable<BaseBean> addLet(@Body RequestBody body, @Query("token") String token);
 
     //新增现场交流信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -206,16 +253,33 @@ public interface ApiService {
     @POST("security-monitor/app/tspTeachAct/add")
     Flowable<BaseBean> addYanLian(@Body RequestBody body, @Query("token") String token);
 
+    //新增培训演练
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/letTeachAct/add")
+    Flowable<BaseBean> addYanLian1(@Body RequestBody body, @Query("token") String token);
+
     //培训演练列表
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/tspTeachAct/list")
     Flowable<YanLianListModel> getYanLianList(@Body RequestBody body, @Query("token") String token);
 
 
+    //培训演练列表1
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/letTeachAct/list")
+    Flowable<YanLianListModel> getYanLianList1(@Body RequestBody body, @Query("token") String token);
+
+
     //新增三小场所选项列表
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/tspOption/add")
     Flowable<SanXiaoSelectModel> addSanXiaoSelectList(@Body RequestBody body, @Query("token") String token);
+
+
+    //新增出租屋选项列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/letOption/add")
+    Flowable<SanXiaoSelectModel> addLetSelectList(@Body RequestBody body, @Query("token") String token);
 
     //添加现场检查列表
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -236,17 +300,31 @@ public interface ApiService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/tspLocaleExamine/add")
     Flowable<BaseBean> addSanXiaoCheck(@Body RequestBody body, @Query("token") String token);
+    //添加现场检查列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/letLocaleExamine/add")
+    Flowable<BaseBean> addSanXiaoCheck1(@Body RequestBody body, @Query("token") String token);
 
     //现场检查列表
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/tspLocaleExamine/list")
     Flowable<SanXiaoCheckListModel> getSanXiaoCheckList(@Body RequestBody body, @Query("token") String token);
 
+    //现场检查列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/letLocaleExamine/list")
+    Flowable<SanXiaoCheckListModel> getSanXiaoCheckList1(@Body RequestBody body, @Query("token") String token);
+
     //更新现场检查列表
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/tspLocaleExamine/update")
     Flowable<BaseBean> updateSanXiaoCheck(@Body RequestBody body, @Query("token") String token);
 
+
+    //更新现场检查列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/letLocaleExamine/update")
+    Flowable<BaseBean> updateSanXiaoCheck1(@Body RequestBody body, @Query("token") String token);
 
     //添加企业选项列表
     @Headers({"Content-Type: application/json", "Accept: application/json"})

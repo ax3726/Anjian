@@ -8,6 +8,8 @@ public class UpdateQiYeRequset {
     String id;
     String enterpriseName;
     String enterpriseDoorHeadImg;
+    String pdpName;
+    String pdpDoorHeadImg;
     String businessLicenceCode;
     String businessLicenceImg;
     String industry;
@@ -23,6 +25,22 @@ public class UpdateQiYeRequset {
     String employeeNum;
     String position;
     String referType;
+
+    public String getPdpName() {
+        return pdpName;
+    }
+
+    public void setPdpName(String pdpName) {
+        this.pdpName = pdpName;
+    }
+
+    public String getPdpDoorHeadImg() {
+        return pdpDoorHeadImg;
+    }
+
+    public void setPdpDoorHeadImg(String pdpDoorHeadImg) {
+        this.pdpDoorHeadImg = pdpDoorHeadImg;
+    }
 
     public String getReferType() {
         return referType;

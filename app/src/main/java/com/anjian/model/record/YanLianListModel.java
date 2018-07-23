@@ -81,8 +81,17 @@ public class YanLianListModel {
         private String selferSign;
         private String title;
         private String tspId;
+        private String letId;
         private String updateBy;
         private String updateTime;
+
+        public String getLetId() {
+            return letId;
+        }
+
+        public void setLetId(String letId) {
+            this.letId = letId;
+        }
 
         public String getCreateBy() {
             return createBy;

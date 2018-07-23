@@ -38,7 +38,7 @@ import okhttp3.RequestBody;
  * Description:
  */
 
-public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends ViewDataBinding> extends RxFragment implements BaseFragmentView,BaseHttpListener {
+public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends ViewDataBinding> extends RxFragment implements BaseFragmentView, BaseHttpListener {
 
     /**
      * Fragment根视图
@@ -47,6 +47,7 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends Vi
     protected P mPresenter;
     protected B mBinding;
     protected Activity aty;
+    protected int mUType = 0;//默认
     /**
      * 加载进度
      */
@@ -130,13 +131,26 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends Vi
     }
 
 
+    protected void getActivityType() {
+        if (getArguments() != null) {
+            mUType = getArguments().getInt("utype", 0);
+        }
+    }
+
     protected void startActivity(Class<?> cls) {
         startActivity(new Intent(aty, cls));
     }
 
-    protected void startActivity(Class<?> cls,String id) {
+    protected void startActivity(Class<?> cls, String id) {
         Intent intent = new Intent(aty, cls);
-        intent.putExtra("id",id);
+        intent.putExtra("id", id);
+        startActivity(intent);
+    }
+
+    protected void startActivity(Class<?> cls, String id, int type) {
+        Intent intent = new Intent(aty, cls);
+        intent.putExtra("id", id);
+        intent.putExtra("utype", type);
         startActivity(intent);
     }
 
@@ -203,7 +217,6 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends Vi
     }
 
 
-
     protected abstract P createPresenter();
 
     /**
@@ -214,12 +227,12 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends Vi
      */
 
     public void showWaitDialog(String message) {
-         showWaitDialog(message, true, null);
+        showWaitDialog(message, true, null);
     }
 
     @Override
     public void showWaitDialog(boolean isCancel, DialogInterface.OnCancelListener cancelListener) {
-         showWaitDialog("", isCancel, cancelListener);
+        showWaitDialog("", isCancel, cancelListener);
     }
 
 
@@ -230,7 +243,7 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends Vi
      */
 
     public void showWaitDialog() {
-         showWaitDialog("", true, null);
+        showWaitDialog("", true, null);
     }
 
     /**
@@ -243,7 +256,7 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends Vi
      */
 
     public void showWaitDialog(String message, boolean isCancel, DialogInterface.OnCancelListener cancelListener) {
-        if (aty==null) {
+        if (aty == null) {
             return;
         }
         if (mLoadingDialog == null) {
@@ -259,7 +272,6 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends Vi
         }
 
 
-
     }
     /***************************************************************************
      * 弹出窗方法
@@ -268,7 +280,7 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends Vi
      * 隐藏
      */
     public void hideWaitDialog() {
-        if (aty==null) {
+        if (aty == null) {
             return;
         }
         if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
@@ -289,7 +301,7 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends Vi
 
     public <T> FlowableTransformer<T, T> callbackOnIOToMainThread() {
         return tObservable -> tObservable.subscribeOn(Schedulers.io())
-                  .retryWhen(RetryWithDelayFunction.create())
+                .retryWhen(RetryWithDelayFunction.create())
                 .filter(t -> aty != null).observeOn(AndroidSchedulers.mainThread())
                 .compose(bindToLifecycle());
     }
@@ -298,11 +310,13 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter, B extends Vi
     public void setEmptyState(@EmptyState int emptyState) {
         mStateModel.setEmptyState(emptyState);
     }
+
     public RequestBody getRequestBody(Object object) {
         return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), ParseJsonUtils.getjsonStr(object));
     }
+
     @Override
     public void backToLogin() {
-        MyApplication.backToLogin(aty,new Intent(aty, LoginActivity.class));
+        MyApplication.backToLogin(aty, new Intent(aty, LoginActivity.class));
     }
 }

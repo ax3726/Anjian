@@ -57,6 +57,9 @@ public class AddWeiHuaActivity extends PhotoActivity<BasePresenter, ActivityAddW
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mDataBean != null) {
+                    return;
+                }
                 submitMessage();
             }
         });

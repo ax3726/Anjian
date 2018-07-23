@@ -10,6 +10,7 @@ import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityAddSanXiaoBinding;
 import com.anjian.model.BaseBean;
+import com.anjian.model.OcrModel;
 import com.anjian.model.record.SanXiaoInfoModel;
 import com.anjian.model.record.SysAreaModel;
 import com.anjian.model.request.AddSanXiaoRequest;
@@ -18,6 +19,11 @@ import com.anjian.ui.common.PhotoActivity;
 import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.sdk.OnResultListener;
+import com.baidu.ocr.sdk.exception.OCRError;
+import com.baidu.ocr.sdk.model.OcrRequestParams;
+import com.baidu.ocr.sdk.model.OcrResponseResult;
 import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.qqtheme.framework.picker.OptionPicker;
+import ml.gsy.com.library.utils.ParseJsonUtils;
 
 public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAddSanXiaoBinding> implements View.OnClickListener {
     private String[] mTypeList = new String[]{
@@ -61,8 +68,12 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
+        if (mUType == 0) {
+            mTitleBarLayout.setTitle("三小场所信息");
+        } else if (mUType == 1) {
+            mTitleBarLayout.setTitle("出租屋信息");
+        }
 
-        mTitleBarLayout.setTitle("三小场所信息");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightTxt("保存");
         mTitleBarLayout.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +92,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
     protected void initData() {
         super.initData();
         mDataBean = (SanXiaoInfoModel.DataBean) getIntent().getSerializableExtra("data");
+
         initView();
     }
 
@@ -90,16 +102,20 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         }
         mBinding.tvAddTou.setVisibility(View.GONE);
         mBinding.imgTou.setVisibility(View.VISIBLE);
-        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getTspDoorHeadImg())).into(mBinding.imgTou);
+        if (mUType == 0) {
+            mBinding.etName.setText(mDataBean.getTspName());
+            Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getTspDoorHeadImg())).into(mBinding.imgTou);
+        } else if (mUType == 1) {
+            mBinding.etName.setText(mDataBean.getLetName());
+            Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLetDoorHeadImg())).into(mBinding.imgTou);
+        }
+
 
         mBinding.tvAddZhi.setVisibility(View.GONE);
         mBinding.imgZhi.setVisibility(View.VISIBLE);
         Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getBusinessLicenceImg())).into(mBinding.imgZhi);
 
 
-
-
-        mBinding.etName.setText(mDataBean.getTspName());
         mBinding.tvJiedao.setText(mDataBean.getAreaName());
         mBinding.etZhizhao.setText(mDataBean.getBusinessLicenceCode());
         mBinding.etContactName.setText(mDataBean.getContactName());
@@ -199,8 +215,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         String Num = mBinding.etNum.getText().toString().trim();
 
         AddSanXiaoRequest addSanXiaoRequest = new AddSanXiaoRequest();
-        addSanXiaoRequest.setTspName(name);
-        addSanXiaoRequest.setTspDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+
         addSanXiaoRequest.setAreaId(fourId);
         addSanXiaoRequest.setAreaRelation(threeId);
         addSanXiaoRequest.setAreaName(fourName);
@@ -212,32 +227,63 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         addSanXiaoRequest.setContactPhone(ContactsPhone);
         addSanXiaoRequest.setEmail(Mail);
         addSanXiaoRequest.setIndustry(String.valueOf(mTypeIndex));
-
-
-        Api.getApi().addSanXiao(getRequestBody(addSanXiaoRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新三小");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+        if (mUType == 0) {
+            addSanXiaoRequest.setTspName(name);
+            addSanXiaoRequest.setTspDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+            Api.getApi().addSanXiao(getRequestBody(addSanXiaoRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新三小");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
-            }
-        });
+                }
+            });
+        } else if (mUType == 1) {
+            addSanXiaoRequest.setLetName(name);
+            addSanXiaoRequest.setLetDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+            Api.getApi().addLet(getRequestBody(addSanXiaoRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新出租屋");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+        }
+
+
     }
 
     private void updateMessage() {
@@ -251,10 +297,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
 
         UpdateSanXiaoRequest addSanXiaoRequest = new UpdateSanXiaoRequest();
         addSanXiaoRequest.setId(mDataBean.getId());
-        addSanXiaoRequest.setTspName(name);
-        if (!TextUtils.isEmpty(mImgHead)) {
-            addSanXiaoRequest.setTspDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
-        }
+
         addSanXiaoRequest.setAreaId(fourId);
         addSanXiaoRequest.setAreaRelation(threeId);
         addSanXiaoRequest.setAreaName(fourName);
@@ -270,30 +313,67 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         addSanXiaoRequest.setIndustry(String.valueOf(mTypeIndex));
 
 
-        Api.getApi().updateSanXiao(getRequestBody(addSanXiaoRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新三小");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+        if (mUType == 0) {
+            addSanXiaoRequest.setTspName(name);
+            if (!TextUtils.isEmpty(mImgHead)) {
+                addSanXiaoRequest.setTspDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+            }
+            Api.getApi().updateSanXiao(getRequestBody(addSanXiaoRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新三小");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
+                }
+            });
+        } else if (mUType == 1) {
+            addSanXiaoRequest.setLetName(name);
+            if (!TextUtils.isEmpty(mImgHead)) {
+                addSanXiaoRequest.setLetDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
             }
-        });
+            Api.getApi().updateLet(getRequestBody(addSanXiaoRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新出租屋");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+        }
+
+
     }
 
     private void selectJieDao() {
@@ -373,6 +453,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
                 Glide.with(aty).load(file).into(mBinding.imgTou);
             } else if (type == 2) {
                 mImgZhi = path;
+                LoadOcr(path);
                 mBinding.tvAddZhi.setVisibility(View.GONE);
                 mBinding.imgZhi.setVisibility(View.VISIBLE);
                 Glide.with(aty).load(file).into(mBinding.imgZhi);
@@ -384,5 +465,35 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
     @Override
     public void photoFaild() {
         showToast("图片加载失败!");
+    }
+
+    private void LoadOcr(String path) {
+        // 营业执照识别参数设置
+        OcrRequestParams param = new OcrRequestParams();
+
+        // 设置image参数
+        param.setImageFile(new File(path));
+
+        // 调用营业执照识别服务
+        OCR.getInstance(aty).recognizeBusinessLicense(param, new OnResultListener<OcrResponseResult>() {
+            @Override
+            public void onResult(OcrResponseResult result) {
+                OcrModel model = null;
+                try {
+                    model = ParseJsonUtils.getBean(result.getJsonRes(), OcrModel.class);
+                    mBinding.etName.setText(model.getWords_result().get单位名称().getWords());
+                    mBinding.etContactName.setText(model.getWords_result().get法人().getWords());
+
+                } catch (Exception ex) {
+
+                }
+
+            }
+
+            @Override
+            public void onError(OCRError error) {
+                showToast(error.getMessage());
+            }
+        });
     }
 }

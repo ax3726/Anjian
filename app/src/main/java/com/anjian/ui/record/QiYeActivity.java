@@ -44,7 +44,8 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
         super.initData();
         EventBus.getDefault().register(this);
         mId = getIntent().getStringExtra("id");
-        getQiyeInfo();
+
+        getData();
     }
 
     @Override
@@ -65,6 +66,14 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
 
     }
 
+    private void getData() {
+        if (mUType == 0) {
+            getQiyeInfo();
+        } else if (mUType == 1) {
+            getPdpInfo();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -75,7 +84,7 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
                 if (mDataBean != null) {
                     JingWeiRequest jingWeiRequest = new JingWeiRequest();
                     String[] split = mDataBean.getPosition().split(",");
-                    if (split.length>0) {
+                    if (split.length > 0) {
                         jingWeiRequest.setLatitude(split[0]);
                         jingWeiRequest.setLongitude(split[1]);
                     }
@@ -134,19 +143,42 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
         });
     }
 
+    private void getPdpInfo() {
+        Api.getApi().pdpInfo(mId, MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<QiYeInfoModel>(this, true) {
+            @Override
+            public void onSuccess(QiYeInfoModel baseBean) {
+                initView(baseBean.getData());
+            }
+
+            @Override
+            public void onFail(String errMsg) {
+
+            }
+        });
+    }
+
+
     private void initView(QiYeInfoModel.DataBean dataBean) {
         if (dataBean == null) {
             return;
         }
         mDataBean = dataBean;
-        mBinding.tvName.setText(dataBean.getEnterpriseName());
-        Glide.with(aty).load(DemoUtils.getUrl(dataBean.getEnterpriseDoorHeadImg())).into(mBinding.img);
+        if (mUType == 0) {
+            mBinding.tvName.setText(dataBean.getEnterpriseName());
+            Glide.with(aty).load(DemoUtils.getUrl(dataBean.getEnterpriseDoorHeadImg())).into(mBinding.img);
+        } else if (mUType == 1) {
+            mBinding.tvName.setText(dataBean.getPdpName());
+            Glide.with(aty).load(DemoUtils.getUrl(dataBean.getPdpDoorHeadImg())).into(mBinding.img);
+        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refersh(String messageEvent) {
         if ("刷新企业".equals(messageEvent)) {
             getQiyeInfo();
+        } else if ("刷新人口密集".equals(messageEvent)) {
+            getPdpInfo();
         }
     }
 

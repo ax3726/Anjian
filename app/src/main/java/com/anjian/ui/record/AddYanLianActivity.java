@@ -62,6 +62,9 @@ public class AddYanLianActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mDataBean != null) {
+                    return;
+                }
                 new AlertDialog.Builder(aty)
                         .setTitle("提示")
                         .setMessage("是否添加签名？")
@@ -210,37 +213,69 @@ public class AddYanLianActivity extends PhotoActivity<BasePresenter, ActivityAdd
             return;
         }
         AddYanLianRequest addYanLianRequest=new AddYanLianRequest();
-        addYanLianRequest.setTspId(mId);
+
         addYanLianRequest.setTitle(Name);
         addYanLianRequest.setLocaleTeachImg(DemoUtils.imageToBase64(mImgPei));
         addYanLianRequest.setLocale_act_img(DemoUtils.imageToBase64(mImgYan));
         if (!TextUtils.isEmpty(mImgQianMin)) {
             addYanLianRequest.setSelfer_sign(DemoUtils.imageToBase64(mImgQianMin));
         }
-        Api.getApi().addYanLian(getRequestBody(addYanLianRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+        if (mUType==0) {
+            addYanLianRequest.setTspId(mId);
+            Api.getApi().addYanLian(getRequestBody(addYanLianRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
-            }
-        });
+                }
+            });
+
+        } else if (mUType==1) {
+            addYanLianRequest.setLetId(mId);
+            Api.getApi().addYanLian1(getRequestBody(addYanLianRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+        }
+
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

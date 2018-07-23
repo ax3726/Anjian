@@ -95,9 +95,27 @@ public class SanXiaoCheckListModel {
         private String saferSign;
         private String tspId;
         private String tspName;
+        private String letId;
+        private String letName;
         private String updateBy;
         private String updateTime;
         private String witherSign;
+
+        public String getLetId() {
+            return letId;
+        }
+
+        public void setLetId(String letId) {
+            this.letId = letId;
+        }
+
+        public String getLetName() {
+            return letName;
+        }
+
+        public void setLetName(String letName) {
+            this.letName = letName;
+        }
 
         public int getModifyExpire() {
             return modifyExpire;

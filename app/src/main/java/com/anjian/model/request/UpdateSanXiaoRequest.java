@@ -9,6 +9,9 @@ public class UpdateSanXiaoRequest {
     private String id;
     private String tspName;
     private String tspDoorHeadImg;
+    private String letName;
+    private String letDoorHeadImg;
+
     private String industry;
     private String areaId;
     private String areaName;
@@ -20,6 +23,22 @@ public class UpdateSanXiaoRequest {
     private String contactName;
     private String contactPhone;
     private String email;
+
+    public String getLetName() {
+        return letName;
+    }
+
+    public void setLetName(String letName) {
+        this.letName = letName;
+    }
+
+    public String getLetDoorHeadImg() {
+        return letDoorHeadImg;
+    }
+
+    public void setLetDoorHeadImg(String letDoorHeadImg) {
+        this.letDoorHeadImg = letDoorHeadImg;
+    }
 
     public String getId() {
         return id;

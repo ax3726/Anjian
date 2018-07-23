@@ -74,6 +74,9 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mDataBean != null) {
+                    return;
+                }
                 submitMessage();
             }
         });
@@ -84,7 +87,7 @@ public class AddTeZhongActivity extends PhotoActivity<BasePresenter, ActivityAdd
         if (mDataBean == null) {
             return;
         }
-        mTitleBarLayout.setRightShow(false);
+        mTitleBarLayout.setRightTxt("");
 
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);

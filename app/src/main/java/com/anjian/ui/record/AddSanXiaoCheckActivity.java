@@ -102,7 +102,7 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mDataBean == null) {
+                if (mDataBean != null) {
                     return;
                 }
                 new AlertDialog.Builder(aty)
@@ -272,7 +272,7 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
         }*/
 
         AddSanXiaoCheckRequest addSanXiaoCheckRequest = new AddSanXiaoCheckRequest();
-        addSanXiaoCheckRequest.setTspId(mId);
+
         addSanXiaoCheckRequest.setDangerDesc(Yinhuan);
         addSanXiaoCheckRequest.setModifyExpire(mDay);
      /*   addSanXiaoCheckRequest.setModifyStep(Cuoshi);
@@ -287,29 +287,64 @@ public class AddSanXiaoCheckActivity extends PhotoActivity<BasePresenter, Activi
         if (!TextUtils.isEmpty(mImgPath3)) {
             addSanXiaoCheckRequest.setWitherSign(DemoUtils.imageToBase64(mImgPath3));
         }
-        Api.getApi().addSanXiaoCheck(getRequestBody(addSanXiaoCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+
+        if (mUType==0) {
+            addSanXiaoCheckRequest.setTspId(mId);
+            Api.getApi().addSanXiaoCheck(getRequestBody(addSanXiaoCheckRequest), MyApplication.getInstance().getToken())
+                    .compose(callbackOnIOToMainThread())
+                    .subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
-            }
-        });
+                }
+            });
+        } else if (mUType==1) {
+            addSanXiaoCheckRequest.setLetId(mId);
+            Api.getApi().addSanXiaoCheck1(getRequestBody(addSanXiaoCheckRequest), MyApplication.getInstance().getToken())
+                    .compose(callbackOnIOToMainThread())
+                    .subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+        }
+
     }
 }

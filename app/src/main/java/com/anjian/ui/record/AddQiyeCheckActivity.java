@@ -103,7 +103,7 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mDataBean == null) {
+                if (mDataBean != null) {
                     return;
                 }
                 new AlertDialog.Builder(aty)
