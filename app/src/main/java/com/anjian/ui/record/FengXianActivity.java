@@ -12,7 +12,7 @@ import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
 import com.anjian.databinding.ActivityWeiHuaBinding;
-import com.anjian.model.record.XiaoFangListModel;
+import com.anjian.model.record.FengXianListModel;
 import com.anjian.model.request.AddListRequest;
 import com.anjian.utils.DemoUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -31,8 +31,8 @@ import ml.gsy.com.library.adapters.recyclerview.CommonAdapter;
 import ml.gsy.com.library.adapters.recyclerview.base.ViewHolder;
 
 public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBinding> {
-    private List<XiaoFangListModel.DataBean> mDataList = new ArrayList<>();
-    private CommonAdapter<XiaoFangListModel.DataBean> mCommonAdapter;
+    private List<FengXianListModel.DataBean> mDataList = new ArrayList<>();
+    private CommonAdapter<FengXianListModel.DataBean> mCommonAdapter;
 
     private int mPosition = 1;
     private int mSize = 10;
@@ -77,13 +77,13 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHua
         super.initData();
         EventBus.getDefault().register(aty);
         mId = getIntent().getStringExtra("id");
-        mCommonAdapter = new CommonAdapter<XiaoFangListModel.DataBean>(aty, R.layout.item_wei_hua, mDataList) {
+        mCommonAdapter = new CommonAdapter<FengXianListModel.DataBean>(aty, R.layout.item_company_list, mDataList) {
             @Override
-            protected void convert(ViewHolder holder, XiaoFangListModel.DataBean item, int position) {
+            protected void convert(ViewHolder holder, FengXianListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
-                holder.setText(R.id.tv_name, item.getFireDeviceName());
-                holder.setText(R.id.tv_num, "数量:" + item.getFireDeviceNum());
+                holder.setText(R.id.tv_name, item.getDangerName());
                 holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getLocaleImg()), 0);
+
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -124,15 +124,15 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHua
         addListRequest.setSize(mSize);
         addListRequest.getCondition().setId(mId);
         if (mUType == 0) {
-            Api.getApi().getXiaoFangList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<XiaoFangListModel>(this, true) {
+            Api.getApi().getFengXianList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<FengXianListModel>(this, true) {
                 @Override
-                public void onSuccess(XiaoFangListModel baseBean) {
+                public void onSuccess(FengXianListModel baseBean) {
 
                     finishRefersh();
                     if (mPosition == 1) {
                         mDataList.clear();
                     }
-                    List<XiaoFangListModel.DataBean> data = baseBean.getData();
+                    List<FengXianListModel.DataBean> data = baseBean.getData();
                     if (data != null & data.size() > 0) {
                         mDataList.addAll(data);
                         if (data.size() < mSize) {
@@ -156,15 +156,15 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHua
             });
 
         } else if (mUType == 1) {
-            Api.getApi().getXiaoFangList1(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<XiaoFangListModel>(this, true) {
+            Api.getApi().getFengXianList1(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<FengXianListModel>(this, true) {
                 @Override
-                public void onSuccess(XiaoFangListModel baseBean) {
+                public void onSuccess(FengXianListModel baseBean) {
 
                     finishRefersh();
                     if (mPosition == 1) {
                         mDataList.clear();
                     }
-                    List<XiaoFangListModel.DataBean> data = baseBean.getData();
+                    List<FengXianListModel.DataBean> data = baseBean.getData();
                     if (data != null & data.size() > 0) {
                         mDataList.addAll(data);
                         if (data.size() < mSize) {

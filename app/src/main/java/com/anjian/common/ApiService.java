@@ -16,7 +16,6 @@ import com.anjian.model.record.SanXiaoCheckListModel;
 import com.anjian.model.record.SanXiaoInfoModel;
 import com.anjian.model.record.SanXiaoSelectModel;
 import com.anjian.model.record.SearchModel;
-import com.anjian.model.record.SearchSanXiaoModel;
 import com.anjian.model.record.SysAreaModel;
 import com.anjian.model.record.TeZhongListModel;
 import com.anjian.model.record.WeiHuaListModel;
@@ -325,6 +324,10 @@ public interface ApiService {
     Flowable<FengXianListModel> getFengXianList(@Body RequestBody body, @Query("token") String token);
 
 
+    //安全生产风险辨识列表信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpDangerIdentification/list")
+    Flowable<FengXianListModel> getFengXianList1(@Body RequestBody body, @Query("token") String token);
     //新增培训演练
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/tspTeachAct/add")
