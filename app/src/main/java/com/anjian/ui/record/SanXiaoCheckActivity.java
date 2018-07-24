@@ -167,8 +167,42 @@ public class SanXiaoCheckActivity extends BaseActivity<BasePresenter, ActivityQi
                             finishRefersh();
                         }
                     });
-        } else {
+        } else if (mUType==1) {
             Api.getApi().getSanXiaoCheckList1(getRequestBody(addListRequest), MyApplication.getInstance().getToken())
+                    .compose(callbackOnIOToMainThread())
+                    .subscribe(new BaseNetListener<SanXiaoCheckListModel>(this, true) {
+                        @Override
+                        public void onSuccess(SanXiaoCheckListModel baseBean) {
+
+                            finishRefersh();
+                            if (mPosition == 1) {
+                                mDataList.clear();
+                            }
+                            List<SanXiaoCheckListModel.DataBean> data = baseBean.getData();
+                            if (data != null & data.size() > 0) {
+                                mDataList.addAll(data);
+                                if (data.size() < mSize) {
+                                    mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                                }
+                            }
+                            if (mPosition == 1 && mDataList.size() == 0) {
+                                mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                            } else {
+                                mBinding.rcBody.setBackground(null);
+                            }
+                            mCommonAdapter.notifyDataSetChanged();
+
+                            mBinding.tvHint.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
+                            mBinding.tvHint.setText(mDataList.size() + "条待整改：");
+                        }
+
+                        @Override
+                        public void onFail(String errMsg) {
+                            finishRefersh();
+                        }
+                    });
+        }else if (mUType==2) {
+            Api.getApi().getSanXiaoCheckList2(getRequestBody(addListRequest), MyApplication.getInstance().getToken())
                     .compose(callbackOnIOToMainThread())
                     .subscribe(new BaseNetListener<SanXiaoCheckListModel>(this, true) {
                         @Override

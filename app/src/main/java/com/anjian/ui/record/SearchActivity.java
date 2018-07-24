@@ -72,7 +72,7 @@ public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBi
                         seatchRenKou();
                     }else if (mBinding.rbChuzu.isChecked()) {
                         seatchChuZu();
-                    }else if (mBinding.rbRenkou.isChecked()) {
+                    }else if (mBinding.rbOther.isChecked()) {
                         seatchOther();
                     }
 
@@ -127,13 +127,13 @@ public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBi
                             startActivity(SanXiaoActivity.class, item.getId(),1);
                         }
                     });
-                }else if (mBinding.rbRenkou.isChecked()) {
+                }else if (mBinding.rbOther.isChecked()) {
                     holder.setText(R.id.tv_name, item.getOtpName());
                     holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getOtpDoorHeadImg()), 0);
                     lly_item.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(SanXiaoActivity.class, item.getId());
+                            startActivity(OtherActivity.class, item.getId());
                         }
                     });
                 }

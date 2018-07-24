@@ -97,12 +97,30 @@ public class SanXiaoCheckListModel {
         private String tspName;
         private String letId;
         private String letName;
+        private String otpId;
+        private String otpName;
         private String updateBy;
         private String updateTime;
         private String witherSign;
 
         public String getLetId() {
             return letId;
+        }
+
+        public String getOtpId() {
+            return otpId;
+        }
+
+        public void setOtpId(String otpId) {
+            this.otpId = otpId;
+        }
+
+        public String getOtpName() {
+            return otpName;
+        }
+
+        public void setOtpName(String otpName) {
+            this.otpName = otpName;
         }
 
         public void setLetId(String letId) {

@@ -8,6 +8,7 @@ public class UpdateSanXiaoCheckRequest {
     private String id;
     private String tspId;
     private String letId;
+    private String otpId;
     private String optionId;
     private String saferSign;
     private String businesserSign;
@@ -20,6 +21,14 @@ public class UpdateSanXiaoCheckRequest {
 
     public void setLetId(String letId) {
         this.letId = letId;
+    }
+
+    public String getOtpId() {
+        return otpId;
+    }
+
+    public void setOtpId(String otpId) {
+        this.otpId = otpId;
     }
 
     public String getId() {

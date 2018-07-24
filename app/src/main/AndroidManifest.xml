@@ -57,7 +57,7 @@
         <activity
             android:name=".ui.main.LoginActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.record.SearchActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -181,7 +181,9 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.common.PhotoPreviewActivity" />
-        <activity android:name=".ui.home.MessageActivity"></activity>
+        <activity android:name=".ui.home.MessageActivity" />
+        <activity android:name=".ui.record.AddOtherActivity" />
+        <activity android:name=".ui.record.OtherActivity"></activity>
     </application>
 
 </manifest>

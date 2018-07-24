@@ -252,6 +252,32 @@ public class SanXiaoCheckInfoActivity extends PhotoActivity<BasePresenter, Activ
 
                 }
             });
+        } else if (mUType == 2) {
+            updateSanXiaoCheckRequest.setOtpId(mDataBean.getOtpId());
+            Api.getApi().updateSanXiaoCheck2(getRequestBody(updateSanXiaoCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
         }
 
 

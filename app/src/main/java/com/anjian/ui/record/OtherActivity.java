@@ -1,6 +1,8 @@
 package com.anjian.ui.record;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -10,9 +12,9 @@ import com.anjian.base.BaseNetListener;
 import com.anjian.base.BasePresenter;
 import com.anjian.common.Api;
 import com.anjian.common.MyApplication;
+import com.anjian.databinding.ActivityOtherBinding;
 import com.anjian.databinding.ActivitySanXiaoBinding;
-import com.anjian.model.BaseBean;
-import com.anjian.model.record.QiYeInfoModel;
+import com.anjian.model.record.OtherInfoModel;
 import com.anjian.model.record.SanXiaoInfoModel;
 import com.anjian.model.request.JingWeiRequest;
 import com.anjian.utils.DemoUtils;
@@ -23,9 +25,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiaoBinding> implements View.OnClickListener {
+public class OtherActivity extends BaseActivity<BasePresenter, ActivityOtherBinding> implements View.OnClickListener {
     private String mId = "";
-    private SanXiaoInfoModel.DataBean mDataBean;
+    private OtherInfoModel.DataBean mDataBean;
 
     @Override
     protected BasePresenter createPresenter() {
@@ -34,7 +36,7 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_san_xiao;
+        return R.layout.activity_other;
     }
 
     @Override
@@ -49,8 +51,7 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
         mBinding.rlyBack.setOnClickListener(this);
         mBinding.imgAddress.setOnClickListener(this);
         mBinding.imgXiugai.setOnClickListener(this);
-        mBinding.imgXianchang.setOnClickListener(this);
-        mBinding.imgYanlian.setOnClickListener(this);
+
         mBinding.imgPaicha.setOnClickListener(this);
 
     }
@@ -71,7 +72,7 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
                 finish();
                 break;
             case R.id.img_address:
-                if (mDataBean != null&& !TextUtils.isEmpty(mDataBean.getPosition())) {
+                if (mDataBean != null && !TextUtils.isEmpty(mDataBean.getPosition())) {
                     JingWeiRequest jingWeiRequest = new JingWeiRequest();
                     String[] split = mDataBean.getPosition().split(",");
                     if (split.length > 0) {
@@ -86,49 +87,28 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
 
                 break;
             case R.id.img_xiugai:
-                Intent intent = new Intent(aty, AddSanXiaoActivity.class);
+                Intent intent = new Intent(aty, AddOtherActivity.class);
                 intent.putExtra("data", mDataBean);
-                intent.putExtra("utype", mUType);
                 startActivity(intent);
                 break;
-            case R.id.img_xianchang:
-                startActivity(SanxiaoSelectActivity.class, mId,mUType);
-                break;
-            case R.id.img_yanlian:
-                startActivity(YanLianActivity.class, mId,mUType);
-                break;
             case R.id.img_paicha:
-                startActivity(SanXiaoCheckActivity.class, mId,mUType);
+                startActivity(SanXiaoCheckActivity.class, mId, 2);
 
                 break;
 
         }
     }
-    private void loadData()
-    {
-        if (mUType == 0) {
-            getSanXiaoInfo();
-        } else if(mUType==1) {
-            getLetInfo();
-        }
-    }
-    private void getSanXiaoInfo() {
-        Api.getApi().sanXiaoInfo(mId, MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SanXiaoInfoModel>(this, true) {
-            @Override
-            public void onSuccess(SanXiaoInfoModel baseBean) {
-                initView(baseBean.getData());
-            }
 
-            @Override
-            public void onFail(String errMsg) {
+    private void loadData() {
 
-            }
-        });
+        getOtherInfo();
+
     }
-    private void getLetInfo() {
-        Api.getApi().letInfo(mId, MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<SanXiaoInfoModel>(this, true) {
+
+    private void getOtherInfo() {
+        Api.getApi().otherInfo(mId, MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<OtherInfoModel>(this, true) {
             @Override
-            public void onSuccess(SanXiaoInfoModel baseBean) {
+            public void onSuccess(OtherInfoModel baseBean) {
                 initView(baseBean.getData());
             }
 
@@ -139,26 +119,22 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
         });
     }
 
-    private void initView(SanXiaoInfoModel.DataBean dataBean) {
+
+    private void initView(OtherInfoModel.DataBean dataBean) {
         if (dataBean == null) {
             return;
         }
         mDataBean = dataBean;
-        if (mUType == 0) {
-            mBinding.tvName.setText(dataBean.getTspName());
-            Glide.with(aty).load(DemoUtils.getUrl(dataBean.getTspDoorHeadImg())).into(mBinding.img);
-        } else if(mUType==1) {
-            mBinding.tvName.setText(dataBean.getLetName());
-            Glide.with(aty).load(DemoUtils.getUrl(dataBean.getLetDoorHeadImg())).into(mBinding.img);
-        }
+
+        mBinding.tvName.setText(dataBean.getOtpName());
+        Glide.with(aty).load(DemoUtils.getUrl(dataBean.getOtpDoorHeadImg())).into(mBinding.img);
+
 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refersh(String messageEvent) {
-        if ("刷新三小".equals(messageEvent)) {
-            loadData();
-        }else  if ("刷新出租屋".equals(messageEvent)) {
+        if ("刷新其他".equals(messageEvent)) {
             loadData();
         }
     }

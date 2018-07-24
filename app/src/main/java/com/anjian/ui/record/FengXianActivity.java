@@ -36,7 +36,8 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHua
 
     private int mPosition = 1;
     private int mSize = 10;
-    private String mId="";
+    private String mId = "";
+
     @Override
     protected boolean isPrestener() {
         return false;
@@ -60,13 +61,13 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHua
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
-        mTitleBarLayout.setTitle("风险管控");
+        mTitleBarLayout.setTitle("风险辨识");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightImg(R.drawable.record_add_icon);
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(AddFengXianActivity.class,mId,mUType);
+                startActivity(AddFengXianActivity.class, mId, mUType);
             }
         });
     }
@@ -75,20 +76,20 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHua
     protected void initData() {
         super.initData();
         EventBus.getDefault().register(aty);
-        mId= getIntent().getStringExtra("id");
+        mId = getIntent().getStringExtra("id");
         mCommonAdapter = new CommonAdapter<XiaoFangListModel.DataBean>(aty, R.layout.item_wei_hua, mDataList) {
             @Override
             protected void convert(ViewHolder holder, XiaoFangListModel.DataBean item, int position) {
                 LinearLayout lly_item = holder.getView(R.id.lly_item);
                 holder.setText(R.id.tv_name, item.getFireDeviceName());
                 holder.setText(R.id.tv_num, "数量:" + item.getFireDeviceNum());
-                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getLocaleImg()),0);
+                holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getLocaleImg()), 0);
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(aty, AddFengXianActivity.class);
-                        intent.putExtra("data",item);
-                        intent.putExtra("utype",mUType);
+                        intent.putExtra("data", item);
+                        intent.putExtra("utype", mUType);
                         startActivity(intent);
                     }
                 });
@@ -122,7 +123,7 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHua
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
         addListRequest.getCondition().setId(mId);
-        if (mUType==0) {
+        if (mUType == 0) {
             Api.getApi().getXiaoFangList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<XiaoFangListModel>(this, true) {
                 @Override
                 public void onSuccess(XiaoFangListModel baseBean) {
@@ -154,7 +155,7 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHua
                 }
             });
 
-        } else if (mUType==1) {
+        } else if (mUType == 1) {
             Api.getApi().getXiaoFangList1(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<XiaoFangListModel>(this, true) {
                 @Override
                 public void onSuccess(XiaoFangListModel baseBean) {

@@ -90,7 +90,7 @@ public class RecordFragment extends BaseFragment<BaseFragmentPresenter, Fragment
 
                     @Override
                     public void onOther() {
-
+                        startActivity(AddOtherActivity.class);
                     }
                 });
                 selectCompanywindow.showPopupWindow();

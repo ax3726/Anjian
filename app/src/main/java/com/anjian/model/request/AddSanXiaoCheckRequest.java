@@ -7,6 +7,7 @@ package com.anjian.model.request;
 public class AddSanXiaoCheckRequest {
     private String tspId;
     private String letId;
+    private String otpId;
     private String dangerDesc;
     private String localeImg;
     private String modifyStep;
@@ -16,6 +17,14 @@ public class AddSanXiaoCheckRequest {
     private String businesserSign;
     private String witherSign;
     private String modifyImg;
+
+    public String getOtpId() {
+        return otpId;
+    }
+
+    public void setOtpId(String otpId) {
+        this.otpId = otpId;
+    }
 
     public String getLetId() {
         return letId;

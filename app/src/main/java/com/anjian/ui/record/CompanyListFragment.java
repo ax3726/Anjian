@@ -43,6 +43,7 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
     private CommonAdapter<CompanyLisyModel.DataBean> mCommonAdapter;
     private int mType = 0;  //0 企业  1三小 2 密集 3,出租屋  4其他
     private boolean mIsFirst = false;
+
     @Override
     protected boolean isPrestener() {
         return false;
@@ -66,18 +67,17 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
         }
 
         mType = getArguments().getInt("type", 0);
-        if (mType==0) {
+        if (mType == 0) {
             mBinding.tvHint.setText("在您附近的企业");
-        } else if (mType==1) {
+        } else if (mType == 1) {
             mBinding.tvHint.setText("在您附近的三小场所");
-        } else if (mType==2) {
+        } else if (mType == 2) {
             mBinding.tvHint.setText("在您附近的人口密集场所");
-        } else if (mType==3) {
+        } else if (mType == 3) {
             mBinding.tvHint.setText("在您附近的出租屋");
-        } else if (mType==4) {
+        } else if (mType == 4) {
             mBinding.tvHint.setText("在您附近的其他场所");
         }
-
 
 
         mCommonAdapter = new CommonAdapter<CompanyLisyModel.DataBean>(aty, R.layout.item_company_list, mDataList) {
@@ -90,17 +90,16 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
                 lly_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mType==0) {
+                        if (mType == 0) {
                             startActivity(QiYeActivity.class, item.getKey());
-                        } else if (mType==1) {
+                        } else if (mType == 1) {
                             startActivity(SanXiaoActivity.class, item.getKey());
-                        } else if (mType==2) {
-                            startActivity(QiYeActivity.class, item.getKey(),1);
-                        } else if (mType==3) {
-                            startActivity(SanXiaoActivity.class, item.getKey(),1);
-
-                        } else if (mType==4) {
-
+                        } else if (mType == 2) {
+                            startActivity(QiYeActivity.class, item.getKey(), 1);
+                        } else if (mType == 3) {
+                            startActivity(SanXiaoActivity.class, item.getKey(), 1);
+                        } else if (mType == 4) {
+                            startActivity(OtherActivity.class, item.getKey());
                         }
 
 
@@ -129,15 +128,15 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
 
 
     private void getdata() {
-        if (mType==0) {
+        if (mType == 0) {
             getQiYeList();
-        } else if (mType==1) {
+        } else if (mType == 1) {
             getSanXiaoList();
-        } else if (mType==2) {
+        } else if (mType == 2) {
             getrenKouList();
-        } else if (mType==3) {
+        } else if (mType == 3) {
             getletList();
-        } else if (mType==4) {
+        } else if (mType == 4) {
             getotherList();
         }
 
@@ -270,6 +269,7 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
         });
 
     }
+
     private void getotherList() {
         JingWeiRequest jingWeiRequest = new JingWeiRequest();
         Location location = DemoUtils.getLocation(aty);
@@ -302,18 +302,17 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
     }
 
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refersh(String messageEvent) {
-        if ("刷新企业".equals(messageEvent)&&mType == 0) {
+        if ("刷新企业".equals(messageEvent) && mType == 0) {
             getQiYeList();
-        } else if ("刷新三小".equals(messageEvent)&&mType == 1) {
+        } else if ("刷新三小".equals(messageEvent) && mType == 1) {
             getSanXiaoList();
-        } else if ("刷新人口密集".equals(messageEvent)&&mType == 2) {
+        } else if ("刷新人口密集".equals(messageEvent) && mType == 2) {
             getrenKouList();
-        } else if ("刷新出租屋".equals(messageEvent)&&mType == 3) {
+        } else if ("刷新出租屋".equals(messageEvent) && mType == 3) {
             getletList();
-        } else if ("刷新其他".equals(messageEvent)&&mType == 4) {
+        } else if ("刷新其他".equals(messageEvent) && mType == 4) {
             getotherList();
         }
 
