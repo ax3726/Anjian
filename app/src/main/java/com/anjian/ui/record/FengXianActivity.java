@@ -66,7 +66,7 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHua
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(AddFengXianActivity.class,mId);
+               startActivity(AddFengXianActivity.class,mId,mUType);
             }
         });
     }
@@ -88,6 +88,7 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHua
                     public void onClick(View v) {
                         Intent intent = new Intent(aty, AddFengXianActivity.class);
                         intent.putExtra("data",item);
+                        intent.putExtra("utype",mUType);
                         startActivity(intent);
                     }
                 });
@@ -121,36 +122,72 @@ public class FengXianActivity extends BaseActivity<BasePresenter, ActivityWeiHua
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
         addListRequest.getCondition().setId(mId);
-        Api.getApi().getXiaoFangList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<XiaoFangListModel>(this, true) {
-            @Override
-            public void onSuccess(XiaoFangListModel baseBean) {
+        if (mUType==0) {
+            Api.getApi().getXiaoFangList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<XiaoFangListModel>(this, true) {
+                @Override
+                public void onSuccess(XiaoFangListModel baseBean) {
 
-            finishRefersh();
-                if (mPosition == 1) {
-                    mDataList.clear();
-                }
-                List<XiaoFangListModel.DataBean> data = baseBean.getData();
-                if (data != null & data.size() > 0) {
-                    mDataList.addAll(data);
-                    if (data.size() < mSize) {
-                        mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                    finishRefersh();
+                    if (mPosition == 1) {
+                        mDataList.clear();
                     }
+                    List<XiaoFangListModel.DataBean> data = baseBean.getData();
+                    if (data != null & data.size() > 0) {
+                        mDataList.addAll(data);
+                        if (data.size() < mSize) {
+                            mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                        }
+                    }
+                    if (mPosition == 1 && mDataList.size() == 0) {
+                        mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                    } else {
+                        mBinding.rcBody.setBackground(null);
+                    }
+                    mCommonAdapter.notifyDataSetChanged();
+
+
                 }
-                if (mPosition == 1 && mDataList.size() == 0) {
-                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
-                } else {
-                    mBinding.rcBody.setBackground(null);
+
+                @Override
+                public void onFail(String errMsg) {
+                    finishRefersh();
                 }
-                mCommonAdapter.notifyDataSetChanged();
+            });
+
+        } else if (mUType==1) {
+            Api.getApi().getXiaoFangList1(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<XiaoFangListModel>(this, true) {
+                @Override
+                public void onSuccess(XiaoFangListModel baseBean) {
+
+                    finishRefersh();
+                    if (mPosition == 1) {
+                        mDataList.clear();
+                    }
+                    List<XiaoFangListModel.DataBean> data = baseBean.getData();
+                    if (data != null & data.size() > 0) {
+                        mDataList.addAll(data);
+                        if (data.size() < mSize) {
+                            mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                        }
+                    }
+                    if (mPosition == 1 && mDataList.size() == 0) {
+                        mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                    } else {
+                        mBinding.rcBody.setBackground(null);
+                    }
+                    mCommonAdapter.notifyDataSetChanged();
 
 
-            }
+                }
 
-            @Override
-            public void onFail(String errMsg) {
-                finishRefersh();
-            }
-        });
+                @Override
+                public void onFail(String errMsg) {
+                    finishRefersh();
+                }
+            });
+
+        }
+
     }
 
     private void finishRefersh() {

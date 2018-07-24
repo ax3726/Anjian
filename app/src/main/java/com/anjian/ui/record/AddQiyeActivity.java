@@ -109,14 +109,22 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         }
         mBinding.tvAddTou.setVisibility(View.GONE);
         mBinding.imgTou.setVisibility(View.VISIBLE);
-        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getEnterpriseDoorHeadImg())).into(mBinding.imgTou);
+
 
         mBinding.tvAddZhi.setVisibility(View.GONE);
         mBinding.imgZhi.setVisibility(View.VISIBLE);
         Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getBusinessLicenceImg())).into(mBinding.imgZhi);
 
+        if (mUType==0) {
+            Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getEnterpriseDoorHeadImg())).into(mBinding.imgTou);
+            mBinding.etName.setText(mDataBean.getEnterpriseName());
+        } else if (mUType==1) {
+            Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getPdpDoorHeadImg())).into(mBinding.imgTou);
+            mBinding.etName.setText(mDataBean.getPdpName());
+        }
 
-        mBinding.etName.setText(mDataBean.getEnterpriseName());
+
+
         mBinding.tvJiedao.setText(mDataBean.getDetailAddress());
         mBinding.etZhizhao.setText(mDataBean.getBusinessLicenceCode());
         mBinding.etContactsName.setText(mDataBean.getContactName());

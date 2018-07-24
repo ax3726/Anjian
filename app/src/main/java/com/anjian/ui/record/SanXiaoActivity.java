@@ -1,6 +1,7 @@
 package com.anjian.ui.record;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.anjian.R;
@@ -70,7 +71,7 @@ public class SanXiaoActivity extends BaseActivity<BasePresenter, ActivitySanXiao
                 finish();
                 break;
             case R.id.img_address:
-                if (mDataBean != null) {
+                if (mDataBean != null&& !TextUtils.isEmpty(mDataBean.getPosition())) {
                     JingWeiRequest jingWeiRequest = new JingWeiRequest();
                     String[] split = mDataBean.getPosition().split(",");
                     if (split.length > 0) {

@@ -62,22 +62,22 @@ public interface ApiService {
     //三小搜索
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("security-monitor/app/tspInfo/vagueSearch")
-    Flowable<SearchSanXiaoModel> sanXiaoSearch(@Query("token") String token, @Query("keyWord") String keyWord);
+    Flowable<SearchModel> sanXiaoSearch(@Query("token") String token, @Query("keyWord") String keyWord);
 
     //人口密集场所
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("security-monitor/app/pdpInfo/vagueSearch")
-    Flowable<SearchSanXiaoModel> renKouSearch(@Query("token") String token, @Query("keyWord") String keyWord);
+    Flowable<SearchModel> renKouSearch(@Query("token") String token, @Query("keyWord") String keyWord);
 
     //出租屋
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("security-monitor/app/letInfo/vagueSearch")
-    Flowable<SearchSanXiaoModel> chuZuSearch(@Query("token") String token, @Query("keyWord") String keyWord);
+    Flowable<SearchModel> chuZuSearch(@Query("token") String token, @Query("keyWord") String keyWord);
 
     //其他
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @GET("security-monitor/app/otpInfo/vagueSearch")
-    Flowable<SearchSanXiaoModel> otherSearch(@Query("token") String token, @Query("keyWord") String keyWord);
+    Flowable<SearchModel> otherSearch(@Query("token") String token, @Query("keyWord") String keyWord);
 
     //新增企业信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -111,7 +111,7 @@ public interface ApiService {
     Flowable<QiYeInfoModel> qiYeInfo(@Path("id") String id, @Query("token") String token);
     //人口密集信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @GET("security-monitor/app/enterpriseInfo/info/{id}")
+    @GET("security-monitor/app/pdpInfo/info/{id}")
     Flowable<QiYeInfoModel> pdpInfo(@Path("id") String id, @Query("token") String token);
 
     //三小场所信息
@@ -170,6 +170,11 @@ public interface ApiService {
     @POST("security-monitor/app/localeMeeting/add")
     Flowable<BaseBean> addJiaoLiu(@Body RequestBody body, @Query("token") String token);
 
+    //新增现场交流信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpLocaleMeeting/add")
+    Flowable<BaseBean> addJiaoLiu1(@Body RequestBody body, @Query("token") String token);
+
     //更新现场交流信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/localeMeeting/update")
@@ -180,42 +185,70 @@ public interface ApiService {
     @POST("security-monitor/app/localeMeeting/list")
     Flowable<JiaoLiuListModel> getJiaoLiuList(@Body RequestBody body, @Query("token") String token);
 
+
+    //现场交流列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpLocaleMeeting/list")
+    Flowable<JiaoLiuListModel> getJiaoLiuList1(@Body RequestBody body, @Query("token") String token);
+
+
     //新增现危化品信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/dangerChemical/add")
     Flowable<BaseBean> addWeiHua(@Body RequestBody body, @Query("token") String token);
 
+    //新增现危化品信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpDangerChemical/add")
+    Flowable<BaseBean> addWeiHua1(@Body RequestBody body, @Query("token") String token);
 
     //现危化品列表信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/dangerChemical/list")
     Flowable<WeiHuaListModel> getWeiHuaList(@Body RequestBody body, @Query("token") String token);
 
+    //现危化品列表信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpDangerChemical/list")
+    Flowable<WeiHuaListModel> getWeiHuaList1(@Body RequestBody body, @Query("token") String token);
 
     //新增有限空间
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/limitSpace/add")
     Flowable<BaseBean> addYouXian(@Body RequestBody body, @Query("token") String token);
 
+    //新增有限空间
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpLimitSpace/add")
+    Flowable<BaseBean> addYouXian1(@Body RequestBody body, @Query("token") String token);
 
     //有限空间列表信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/limitSpace/list")
     Flowable<YouXianListModel> getYouXianList(@Body RequestBody body, @Query("token") String token);
 
-
+    //有限空间列表信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpLimitSpace/list")
+    Flowable<YouXianListModel> getYouXianList1(@Body RequestBody body, @Query("token") String token);
     //新增粉尘涉爆
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/dustExplosion/add")
     Flowable<BaseBean> addFenCheng(@Body RequestBody body, @Query("token") String token);
 
-
+    //新增粉尘涉爆
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpDustExplosion/add")
+    Flowable<BaseBean> addFenCheng1(@Body RequestBody body, @Query("token") String token);
     //粉尘涉爆列表信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/dustExplosion/list")
     Flowable<FenChengListModel> getFenChengList(@Body RequestBody body, @Query("token") String token);
 
-
+    //粉尘涉爆列表信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpDustExplosion/list")
+    Flowable<FenChengListModel> getFenChengList1(@Body RequestBody body, @Query("token") String token);
     //新增特种设备信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/specialDevice/add")
@@ -223,25 +256,48 @@ public interface ApiService {
 
     //新增特种设备信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpSpecialDevice/add")
+    Flowable<BaseBean> addTeZhong1(@Body RequestBody body, @Query("token") String token);
+
+    //新增特种设备信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/specialDevice/list")
     Flowable<TeZhongListModel> getTeZhongList(@Body RequestBody body, @Query("token") String token);
+
+    //新增特种设备信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpSpecialDevice/list")
+    Flowable<TeZhongListModel> getTeZhongList1(@Body RequestBody body, @Query("token") String token);
 
     //新增消防设施信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/enterpriseInfo/update")
     Flowable<BaseBean> addXiaoFang(@Body RequestBody body, @Query("token") String token);
 
+    //新增消防设施信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpInfo/update")
+    Flowable<BaseBean> addXiaoFang1(@Body RequestBody body, @Query("token") String token);
+
     //消防设施列表信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/fireDevice/list")
     Flowable<XiaoFangListModel> getXiaoFangList(@Body RequestBody body, @Query("token") String token);
+
+    //消防设施列表信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpFireDevice/list")
+    Flowable<XiaoFangListModel> getXiaoFangList1(@Body RequestBody body, @Query("token") String token);
 
     //新增安全生产风险辨识信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/dangerIdentification/add")
     Flowable<BaseBean> addFengXian(@Body RequestBody body, @Query("token") String token);
 
-
+    //新增安全生产风险辨识信息
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpDangerIdentification/add")
+    Flowable<BaseBean> addFengXian1(@Body RequestBody body, @Query("token") String token);
     //安全生产风险辨识列表信息
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/dangerIdentification/list")
@@ -286,15 +342,31 @@ public interface ApiService {
     @POST("security-monitor/app/localeExamine/add")
     Flowable<BaseBean> addQiYeCheck(@Body RequestBody body, @Query("token") String token);
 
+    //添加现场检查列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpLocaleExamine/add")
+    Flowable<BaseBean> addQiYeCheck1(@Body RequestBody body, @Query("token") String token);
+
     //更新现场检查列表
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/localeExamine/update")
     Flowable<BaseBean> updateQiYeCheck(@Body RequestBody body, @Query("token") String token);
 
+    //更新现场检查列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpLocaleExamine/update")
+    Flowable<BaseBean> updateQiYeCheck1(@Body RequestBody body, @Query("token") String token);
+
     //现场检查列表
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/localeExamine/list")
     Flowable<QiYeCheckListModel> getQiYeCheckList(@Body RequestBody body, @Query("token") String token);
+
+
+    //现场检查列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpLocaleExamine/list")
+    Flowable<QiYeCheckListModel> getQiYeCheckList1(@Body RequestBody body, @Query("token") String token);
 
     //添加现场检查列表
     @Headers({"Content-Type: application/json", "Accept: application/json"})
@@ -331,9 +403,20 @@ public interface ApiService {
     @POST("security-monitor/app/enterpriseOption/update")
     Flowable<BaseBean> updateQiYeSelectList(@Body RequestBody body, @Query("token") String token);
 
+
+    //添加企业选项列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpOption/update")
+    Flowable<BaseBean> updateQiYeSelectList1(@Body RequestBody body, @Query("token") String token);
+
     //企业选项列表
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("security-monitor/app/enterpriseOption/list")
     Flowable<QiyeSelectListModel> getQiYeSelectList(@Body RequestBody body, @Query("token") String token);
+
+    //企业选项列表
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("security-monitor/app/pdpOption/list")
+    Flowable<QiyeSelectListModel> getQiYeSelectList1(@Body RequestBody body, @Query("token") String token);
 
 }

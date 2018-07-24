@@ -6,6 +6,7 @@ package com.anjian.model.request;
 
 public class AddQiYeCheckRequest {
     private String enterpriseId;
+    private String pdpId;
     private String dangerDesc;
     private String localeImg;
     private String modifyStep;
@@ -15,6 +16,14 @@ public class AddQiYeCheckRequest {
     private String businesserSign;
     private String witherSign;
     private String modifyImg;
+
+    public String getPdpId() {
+        return pdpId;
+    }
+
+    public void setPdpId(String pdpId) {
+        this.pdpId = pdpId;
+    }
 
     public int getModifyExpire() {
         return modifyExpire;

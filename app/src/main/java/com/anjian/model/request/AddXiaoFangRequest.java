@@ -7,10 +7,19 @@ package com.anjian.model.request;
 public class AddXiaoFangRequest {
     private String id;
     private String enterpriseName;
+    private String pdpName;
     private int controlStep;
     private int urgentDevice;
     private int controlStandBook;
     private String existProblem;
+
+    public String getPdpName() {
+        return pdpName;
+    }
+
+    public void setPdpName(String pdpName) {
+        this.pdpName = pdpName;
+    }
 
     public String getEnterpriseName() {
         return enterpriseName;

@@ -181,7 +181,7 @@ public class QiYeCheckInfoActivity extends PhotoActivity<BasePresenter, Activity
 
         UpdateQiYeCheckRequest updateQiYeCheckRequest = new UpdateQiYeCheckRequest();
         updateQiYeCheckRequest.setId(mDataBean.getId());
-        updateQiYeCheckRequest.setEnterpriseId(mDataBean.getEnterpriseId());
+
 
         updateQiYeCheckRequest.setModifyImg(DemoUtils.imageToBase64(mImgPath));
         if (!TextUtils.isEmpty(mImgPath1)) {
@@ -194,29 +194,61 @@ public class QiYeCheckInfoActivity extends PhotoActivity<BasePresenter, Activity
         if (!TextUtils.isEmpty(mImgPath3)) {
             updateQiYeCheckRequest.setWitherSign(DemoUtils.imageToBase64(mImgPath3));
         }
-        Api.getApi().updateQiYeCheck(getRequestBody(updateQiYeCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+        if (mUType==0) {
+            updateQiYeCheckRequest.setEnterpriseId(mDataBean.getEnterpriseId());
+            Api.getApi().updateQiYeCheck(getRequestBody(updateQiYeCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
-            }
-        });
+                }
+            });
+
+        } else if (mUType==1) {
+            updateQiYeCheckRequest.setPdpId(mDataBean.getPdpId());
+            Api.getApi().updateQiYeCheck1(getRequestBody(updateQiYeCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+
+        }
+
     }
 }

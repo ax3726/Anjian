@@ -1,6 +1,7 @@
 package com.anjian.ui.record;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.anjian.R;
@@ -81,7 +82,7 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
                 finish();
                 break;
             case R.id.img_address:
-                if (mDataBean != null) {
+                if (mDataBean != null&& !TextUtils.isEmpty(mDataBean.getPosition())) {
                     JingWeiRequest jingWeiRequest = new JingWeiRequest();
                     String[] split = mDataBean.getPosition().split(",");
                     if (split.length > 0) {
@@ -97,34 +98,35 @@ public class QiYeActivity extends BaseActivity<BasePresenter, ActivityQiYeBindin
             case R.id.img_xiugai:
                 Intent intent = new Intent(aty, AddQiyeActivity.class);
                 intent.putExtra("data", mDataBean);
+                intent.putExtra("utype", mUType);
                 startActivity(intent);
                 break;
             case R.id.img_xianchang:
-                startActivity(QiYeSelectActivity.class, mId);
+                startActivity(QiYeSelectActivity.class, mId, mUType);
                 break;
             case R.id.img_jiaoliu:
-                startActivity(JiaoLiuActivity.class, mId);
+                startActivity(JiaoLiuActivity.class, mId, mUType);
                 break;
             case R.id.img_paicha:
-                startActivity(QiYeCheckActivity.class, mId);
-                //startActivity(FengXianActivity.class, mId);
+                startActivity(QiYeCheckActivity.class, mId,mUType);
                 break;
             case R.id.img_weihua:
-                startActivity(WeiHuaActivity.class, mId);
+                startActivity(WeiHuaActivity.class, mId,mUType);
                 break;
             case R.id.img_tezhong:
-                startActivity(TeZhongActivity.class, mId);
+                startActivity(TeZhongActivity.class, mId,mUType);
                 break;
             case R.id.img_fengxian:
-                Intent intent1 = new Intent(aty, AddFengXianActivity.class);
+                Intent intent1 = new Intent(aty, GuanKongActivity.class);
                 intent1.putExtra("data", mDataBean);
+                intent1.putExtra("utype", mUType);
                 startActivity(intent1);
                 break;
             case R.id.img_youxian:
-                startActivity(YouXianActivity.class, mId);
+                startActivity(YouXianActivity.class, mId,mUType);
                 break;
             case R.id.img_fencheng:
-                startActivity(FenChengActivity.class, mId);
+                startActivity(FenChengActivity.class, mId,mUType);
                 break;
         }
     }

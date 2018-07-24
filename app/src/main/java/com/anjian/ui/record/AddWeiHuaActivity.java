@@ -206,34 +206,66 @@ public class AddWeiHuaActivity extends PhotoActivity<BasePresenter, ActivityAddW
         }
         AddWeiHuaRequest addWeiHuaRequest = new AddWeiHuaRequest();
 
-        addWeiHuaRequest.setEnterpriseId(mId);
+
         addWeiHuaRequest.setChemicalName(Name);
         addWeiHuaRequest.setChemicalNum(Num);
         addWeiHuaRequest.setWorkPosition(Address);
         addWeiHuaRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));
-        Api.getApi().addWeiHua(getRequestBody(addWeiHuaRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+        if (mUType==0) {
+            addWeiHuaRequest.setEnterpriseId(mId);
+            Api.getApi().addWeiHua(getRequestBody(addWeiHuaRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
-            }
-        });
+                }
+            });
+
+        } else if (mUType==1) {
+            addWeiHuaRequest.setPdpId(mId);
+            Api.getApi().addWeiHua1(getRequestBody(addWeiHuaRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+
+        }
+
     }
 }

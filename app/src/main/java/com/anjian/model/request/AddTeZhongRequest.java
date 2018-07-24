@@ -6,6 +6,7 @@ package com.anjian.model.request;
 
 public class AddTeZhongRequest {
     private String enterpriseId;
+    private String pdpId;
     private String specialDeviceName;
     private String specialDeviceNum;
     private String specialDeviceUnit;
@@ -16,6 +17,14 @@ public class AddTeZhongRequest {
     private int licensedWork;
     private String examineBeginDate;
     private String examineEndDate;
+
+    public String getPdpId() {
+        return pdpId;
+    }
+
+    public void setPdpId(String pdpId) {
+        this.pdpId = pdpId;
+    }
 
     public String getUsePms() {
         return usePms;

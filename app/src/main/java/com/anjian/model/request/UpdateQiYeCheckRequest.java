@@ -11,6 +11,15 @@ public class UpdateQiYeCheckRequest {
     private String witherSign;
     private String modifyImg;
     private String enterpriseId;
+    private String pdpId;
+
+    public String getPdpId() {
+        return pdpId;
+    }
+
+    public void setPdpId(String pdpId) {
+        this.pdpId = pdpId;
+    }
 
     public String getEnterpriseId() {
         return enterpriseId;

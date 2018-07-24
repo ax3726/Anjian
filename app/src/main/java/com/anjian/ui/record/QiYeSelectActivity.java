@@ -78,33 +78,63 @@ public class QiYeSelectActivity extends BaseActivity<BasePresenter, ActivitySanx
 
     private void getDataList() {
         AddListSelectRequest addListRequest = new AddListSelectRequest();
-        // addListRequest.getCondition().setId(mId);
-        addListRequest.getCondition().setId("1016600357733539841");
-        Api.getApi().getQiYeSelectList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<QiyeSelectListModel>(this, true) {
-            @Override
-            public void onSuccess(QiyeSelectListModel baseBean) {
+        addListRequest.getCondition().setId(mId);
+       // addListRequest.getCondition().setId("1016600357733539841");
+        if (mUType==0) {
+            Api.getApi().getQiYeSelectList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<QiyeSelectListModel>(this, true) {
+                @Override
+                public void onSuccess(QiyeSelectListModel baseBean) {
 
-                List<QiyeSelectListModel.DataBean> data = baseBean.getData();
-                if (data != null & data.size() > 0) {
+                    List<QiyeSelectListModel.DataBean> data = baseBean.getData();
+                    if (data != null & data.size() > 0) {
 
-                    mDataBean = data.get(0);
-                    String optionItems = data.get(0).getOptionItems();
+                        mDataBean = data.get(0);
+                        String optionItems = data.get(0).getOptionItems();
 
-                    if (!TextUtils.isEmpty(optionItems)) {
-                        List<OptionItemsModel> OptionItemsModel = ParseJsonUtils.getBeanList(optionItems, new TypeToken<List<OptionItemsModel>>() {
-                        }.getType());
-                        mDataList.addAll(OptionItemsModel);
-                        mAdapter.notifyDataSetChanged();
+                        if (!TextUtils.isEmpty(optionItems)) {
+                            List<OptionItemsModel> OptionItemsModel = ParseJsonUtils.getBeanList(optionItems, new TypeToken<List<OptionItemsModel>>() {
+                            }.getType());
+                            mDataList.addAll(OptionItemsModel);
+                            mAdapter.notifyDataSetChanged();
+                        }
                     }
+
                 }
 
-            }
+                @Override
+                public void onFail(String errMsg) {
 
-            @Override
-            public void onFail(String errMsg) {
+                }
+            });
+        } else if (mUType==1){
+            Api.getApi().getQiYeSelectList1(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<QiyeSelectListModel>(this, true) {
+                @Override
+                public void onSuccess(QiyeSelectListModel baseBean) {
 
-            }
-        });
+                    List<QiyeSelectListModel.DataBean> data = baseBean.getData();
+                    if (data != null & data.size() > 0) {
+
+                        mDataBean = data.get(0);
+                        String optionItems = data.get(0).getOptionItems();
+
+                        if (!TextUtils.isEmpty(optionItems)) {
+                            List<OptionItemsModel> OptionItemsModel = ParseJsonUtils.getBeanList(optionItems, new TypeToken<List<OptionItemsModel>>() {
+                            }.getType());
+                            mDataList.addAll(OptionItemsModel);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+        }
+
+
     }
 
     private CommonAdapter<OptionItemsModel.ItemListBean> adapter = null;
@@ -209,32 +239,64 @@ public class QiYeSelectActivity extends BaseActivity<BasePresenter, ActivitySanx
         addQiyeSelectRequest.setId(mDataBean.getId());
         addQiyeSelectRequest.setOptionItems(ParseJsonUtils.getjsonStr(mDataList));
 
-        Api.getApi().updateQiYeSelectList(getRequestBody(addQiyeSelectRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
+        if (mUType==0) {
+            Api.getApi().updateQiYeSelectList(getRequestBody(addQiyeSelectRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
 
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
 
-                            finish();
+                                finish();
 
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
-            }
-        });
+                }
+            });
+
+        } else if (mUType==1) {
+            Api.getApi().updateQiYeSelectList1(getRequestBody(addQiyeSelectRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+
+                                finish();
+
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+
+        }
+
 
     }
 }

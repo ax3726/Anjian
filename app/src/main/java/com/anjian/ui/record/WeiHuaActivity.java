@@ -68,7 +68,7 @@ public class WeiHuaActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBi
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(AddWeiHuaActivity.class,mId);
+                startActivity(AddWeiHuaActivity.class,mId,mUType);
             }
         });
     }
@@ -90,6 +90,7 @@ public class WeiHuaActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBi
                     public void onClick(View v) {
                         Intent intent = new Intent(aty, AddWeiHuaActivity.class);
                         intent.putExtra("data",item);
+                        intent.putExtra("utype",mUType);
                         startActivity(intent);
                     }
                 });
@@ -123,36 +124,73 @@ public class WeiHuaActivity extends BaseActivity<BasePresenter, ActivityWeiHuaBi
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
         addListRequest.getCondition().setId(mId);
-        Api.getApi().getWeiHuaList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<WeiHuaListModel>(this, true) {
-            @Override
-            public void onSuccess(WeiHuaListModel baseBean) {
 
-                finishRefersh();
-                if (mPosition == 1) {
-                    mDataList.clear();
-                }
-                List<WeiHuaListModel.DataBean> data = baseBean.getData();
-                if (data != null & data.size() > 0) {
-                    mDataList.addAll(data);
-                    if (data.size() < mSize) {
-                        mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+        if (mUType==0) {
+            Api.getApi().getWeiHuaList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<WeiHuaListModel>(this, true) {
+                @Override
+                public void onSuccess(WeiHuaListModel baseBean) {
+
+                    finishRefersh();
+                    if (mPosition == 1) {
+                        mDataList.clear();
                     }
+                    List<WeiHuaListModel.DataBean> data = baseBean.getData();
+                    if (data != null & data.size() > 0) {
+                        mDataList.addAll(data);
+                        if (data.size() < mSize) {
+                            mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                        }
+                    }
+                    if (mPosition == 1 && mDataList.size() == 0) {
+                        mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                    } else {
+                        mBinding.rcBody.setBackground(null);
+                    }
+                    mCommonAdapter.notifyDataSetChanged();
+
+
                 }
-                if (mPosition == 1 && mDataList.size() == 0) {
-                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
-                } else {
-                    mBinding.rcBody.setBackground(null);
+
+                @Override
+                public void onFail(String errMsg) {
+                    finishRefersh();
                 }
-                mCommonAdapter.notifyDataSetChanged();
+            });
+
+        } else if (mUType==1) {
+            Api.getApi().getWeiHuaList1(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<WeiHuaListModel>(this, true) {
+                @Override
+                public void onSuccess(WeiHuaListModel baseBean) {
+
+                    finishRefersh();
+                    if (mPosition == 1) {
+                        mDataList.clear();
+                    }
+                    List<WeiHuaListModel.DataBean> data = baseBean.getData();
+                    if (data != null & data.size() > 0) {
+                        mDataList.addAll(data);
+                        if (data.size() < mSize) {
+                            mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                        }
+                    }
+                    if (mPosition == 1 && mDataList.size() == 0) {
+                        mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                    } else {
+                        mBinding.rcBody.setBackground(null);
+                    }
+                    mCommonAdapter.notifyDataSetChanged();
 
 
-            }
+                }
 
-            @Override
-            public void onFail(String errMsg) {
-                finishRefersh();
-            }
-        });
+                @Override
+                public void onFail(String errMsg) {
+                    finishRefersh();
+                }
+            });
+
+        }
+
     }
 
     private void finishRefersh() {

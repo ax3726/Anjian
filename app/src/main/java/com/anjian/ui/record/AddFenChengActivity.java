@@ -27,7 +27,8 @@ public class AddFenChengActivity extends PhotoActivity<BasePresenter, ActivityAd
 
     private String mImgPath = "";
     private FenChengListModel.DataBean mDataBean = null;
-    private String mId="";
+    private String mId = "";
+
     @Override
     protected boolean isPrestener() {
         return false;
@@ -70,7 +71,7 @@ public class AddFenChengActivity extends PhotoActivity<BasePresenter, ActivityAd
     protected void initData() {
         super.initData();
         mDataBean = (FenChengListModel.DataBean) getIntent().getSerializableExtra("data");
-        mId=getIntent().getStringExtra("id");
+        mId = getIntent().getStringExtra("id");
         initView();
     }
 
@@ -91,7 +92,7 @@ public class AddFenChengActivity extends PhotoActivity<BasePresenter, ActivityAd
             @Override
             public void onClick(View v) {
 
-                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleImg()));
+                startActivityUrl(PhotoPreviewActivity.class, DemoUtils.getUrl(mDataBean.getLocaleImg()));
             }
         });
     }
@@ -206,34 +207,65 @@ public class AddFenChengActivity extends PhotoActivity<BasePresenter, ActivityAd
         }
         AddFenChengRequest addWeiHuaRequest = new AddFenChengRequest();
 
-        addWeiHuaRequest.setEnterpriseId(mId);
+
         addWeiHuaRequest.setDustName(Name);
         addWeiHuaRequest.setDustNum(Num);
         addWeiHuaRequest.setWorkPosition(Address);
         addWeiHuaRequest.setLocaleImg(DemoUtils.imageToBase64(mImgPath));
-        Api.getApi().addFenCheng(getRequestBody(addWeiHuaRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+        if (mUType == 0) {
+            addWeiHuaRequest.setEnterpriseId(mId);
+            Api.getApi().addFenCheng(getRequestBody(addWeiHuaRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
-            }
-        });
+                }
+            });
+
+        } else if (mUType == 1) {
+            addWeiHuaRequest.setPdpId(mId);
+            Api.getApi().addFenCheng1(getRequestBody(addWeiHuaRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+
+        }
     }
 }

@@ -6,6 +6,7 @@ package com.anjian.model.request;
 
 public class AddFengXianRequest {
     private String enterpriseId;
+    private String pdpId;
     private String dangerName;
     private String detailPosition;
     private String localeImg;
@@ -13,6 +14,14 @@ public class AddFengXianRequest {
     private String lossPrediction;
     private String dangerLevel;
     private String modifyStep;
+
+    public String getPdpId() {
+        return pdpId;
+    }
+
+    public void setPdpId(String pdpId) {
+        this.pdpId = pdpId;
+    }
 
     public String getEnterpriseId() {
         return enterpriseId;

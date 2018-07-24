@@ -83,6 +83,8 @@ public class QiYeCheckListModel {
         private String dangerDesc;
         private String enterpriseId;
         private String enterpriseName;
+        private String pdpId;
+        private String pdpName;
         private String id;
         private int isDel;
         private String lawReason;
@@ -96,6 +98,22 @@ public class QiYeCheckListModel {
         private String updateBy;
         private String updateTime;
         private String witherSign;
+
+        public String getPdpId() {
+            return pdpId;
+        }
+
+        public void setPdpId(String pdpId) {
+            this.pdpId = pdpId;
+        }
+
+        public String getPdpName() {
+            return pdpName;
+        }
+
+        public void setPdpName(String pdpName) {
+            this.pdpName = pdpName;
+        }
 
         public int getModifyExpire() {
             return modifyExpire;

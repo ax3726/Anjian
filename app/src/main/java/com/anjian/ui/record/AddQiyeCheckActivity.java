@@ -273,7 +273,7 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
         }*/
 
         AddQiYeCheckRequest addQiYeCheckRequest = new AddQiYeCheckRequest();
-        addQiYeCheckRequest.setEnterpriseId(mId);
+
         addQiYeCheckRequest.setDangerDesc(Yinhuan);
         addQiYeCheckRequest.setModifyExpire(mDay);
        /* addQiYeCheckRequest.setModifyStep(Cuoshi);
@@ -289,29 +289,61 @@ public class AddQiyeCheckActivity extends PhotoActivity<BasePresenter, ActivityA
         if (!TextUtils.isEmpty(mImgPath3)) {
             addQiYeCheckRequest.setWitherSign(DemoUtils.imageToBase64(mImgPath3));
         }
-        Api.getApi().addQiYeCheck(getRequestBody(addQiYeCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+        if (mUType==0) {
+            addQiYeCheckRequest.setEnterpriseId(mId);
+            Api.getApi().addQiYeCheck(getRequestBody(addQiYeCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
-            }
-        });
+                }
+            });
+
+        } else if (mUType==1) {
+            addQiYeCheckRequest.setPdpId(mId);
+            Api.getApi().addQiYeCheck1(getRequestBody(addQiYeCheckRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+
+        }
+
     }
 }

@@ -74,7 +74,7 @@ public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityQiyeC
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(AddQiyeCheckActivity.class, mId);
+                startActivity(AddQiyeCheckActivity.class, mId,mUType);
             }
         });
     }
@@ -97,6 +97,7 @@ public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityQiyeC
                     public void onClick(View v) {
                         Intent intent = new Intent(aty, QiYeCheckInfoActivity.class);
                         intent.putExtra("data", item);
+                        intent.putExtra("utype", mUType);
                         startActivity(intent);
                     }
                 });
@@ -130,37 +131,74 @@ public class QiYeCheckActivity extends BaseActivity<BasePresenter, ActivityQiyeC
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
         addListRequest.getCondition().setId(mId);
-        Api.getApi().getQiYeCheckList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<QiYeCheckListModel>(this, true) {
-            @Override
-            public void onSuccess(QiYeCheckListModel baseBean) {
+        if (mUType == 0) {
+            Api.getApi().getQiYeCheckList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<QiYeCheckListModel>(this, true) {
+                @Override
+                public void onSuccess(QiYeCheckListModel baseBean) {
 
-                finishRefersh();
-                if (mPosition == 1) {
-                    mDataList.clear();
-                }
-                List<QiYeCheckListModel.DataBean> data = baseBean.getData();
-                if (data != null & data.size() > 0) {
-                    mDataList.addAll(data);
-                    if (data.size() < mSize) {
-                        mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                    finishRefersh();
+                    if (mPosition == 1) {
+                        mDataList.clear();
                     }
-                }
-                if (mPosition == 1 && mDataList.size() == 0) {
-                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
-                } else {
-                    mBinding.rcBody.setBackground(null);
-                }
-                mCommonAdapter.notifyDataSetChanged();
+                    List<QiYeCheckListModel.DataBean> data = baseBean.getData();
+                    if (data != null & data.size() > 0) {
+                        mDataList.addAll(data);
+                        if (data.size() < mSize) {
+                            mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                        }
+                    }
+                    if (mPosition == 1 && mDataList.size() == 0) {
+                        mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                    } else {
+                        mBinding.rcBody.setBackground(null);
+                    }
+                    mCommonAdapter.notifyDataSetChanged();
 
-                mBinding.tvHint.setVisibility(mDataList.size()==0?View.GONE:View.VISIBLE);
-                mBinding.tvHint.setText(mDataList.size() + "条待整改：");
-            }
+                    mBinding.tvHint.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
+                    mBinding.tvHint.setText(mDataList.size() + "条待整改：");
+                }
 
-            @Override
-            public void onFail(String errMsg) {
-                finishRefersh();
-            }
-        });
+                @Override
+                public void onFail(String errMsg) {
+                    finishRefersh();
+                }
+            });
+
+        } else if (mUType == 1) {
+            Api.getApi().getQiYeCheckList1(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<QiYeCheckListModel>(this, true) {
+                @Override
+                public void onSuccess(QiYeCheckListModel baseBean) {
+
+                    finishRefersh();
+                    if (mPosition == 1) {
+                        mDataList.clear();
+                    }
+                    List<QiYeCheckListModel.DataBean> data = baseBean.getData();
+                    if (data != null & data.size() > 0) {
+                        mDataList.addAll(data);
+                        if (data.size() < mSize) {
+                            mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                        }
+                    }
+                    if (mPosition == 1 && mDataList.size() == 0) {
+                        mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                    } else {
+                        mBinding.rcBody.setBackground(null);
+                    }
+                    mCommonAdapter.notifyDataSetChanged();
+
+                    mBinding.tvHint.setVisibility(mDataList.size() == 0 ? View.GONE : View.VISIBLE);
+                    mBinding.tvHint.setText(mDataList.size() + "条待整改：");
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+                    finishRefersh();
+                }
+            });
+
+        }
+
     }
 
     private void finishRefersh() {

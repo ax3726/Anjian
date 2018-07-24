@@ -6,11 +6,20 @@ package com.anjian.model.request;
 
 public class AddJiaoLiuRequest {
     private String enterpriseId;
+    private String pdpId;
     private String meetingName;
     private String meetingUser;
     private String meetingContent;
     private String localeImg;
     private String selferSign;
+
+    public String getPdpId() {
+        return pdpId;
+    }
+
+    public void setPdpId(String pdpId) {
+        this.pdpId = pdpId;
+    }
 
     public String getSelferSign() {
         return selferSign;

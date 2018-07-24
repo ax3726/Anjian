@@ -6,11 +6,20 @@ package com.anjian.model.request;
 
 public class AddFenChengRequest {
     private String enterpriseId;
+    private String pdpId;
     private String dustName;
     private String dustNum;
     private String dustUnit;
     private String workPosition;
     private String localeImg;
+
+    public String getPdpId() {
+        return pdpId;
+    }
+
+    public void setPdpId(String pdpId) {
+        this.pdpId = pdpId;
+    }
 
     public String getEnterpriseId() {
         return enterpriseId;

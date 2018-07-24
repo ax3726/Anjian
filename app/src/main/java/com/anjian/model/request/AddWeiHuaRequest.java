@@ -6,11 +6,20 @@ package com.anjian.model.request;
 
 public class AddWeiHuaRequest {
     private String enterpriseId;
+    private String pdpId;
     private String chemicalName;
     private String chemicalNum;
     private String chemicalUnit;
     private String workPosition;
     private String localeImg;
+
+    public String getPdpId() {
+        return pdpId;
+    }
+
+    public void setPdpId(String pdpId) {
+        this.pdpId = pdpId;
+    }
 
     public String getEnterpriseId() {
         return enterpriseId;

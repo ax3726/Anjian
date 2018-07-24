@@ -29,7 +29,8 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
     private String mImgPath = "";
     private String mImgQianMin = "";
     private JiaoLiuListModel.DataBean mDataBean = null;
-    private String mId="";
+    private String mId = "";
+
     @Override
     protected boolean isPrestener() {
         return false;
@@ -96,7 +97,7 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
     protected void initData() {
         super.initData();
         mDataBean = (JiaoLiuListModel.DataBean) getIntent().getSerializableExtra("data");
-        mId=getIntent().getStringExtra("id");
+        mId = getIntent().getStringExtra("id");
         initView();
     }
 
@@ -105,10 +106,10 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
             return;
         }
         mTitleBarLayout.setRightTxt("");
-      //  mBinding.tvQiye.setText(mDataBean.getEnterpriseName());
+        //  mBinding.tvQiye.setText(mDataBean.getEnterpriseName());
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);
-        Glide.with(aty).load( DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
 
 
         mBinding.etName.setText(mDataBean.getMeetingName());
@@ -124,7 +125,7 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
             @Override
             public void onClick(View v) {
 
-                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleImg()));
+                startActivityUrl(PhotoPreviewActivity.class, DemoUtils.getUrl(mDataBean.getLocaleImg()));
             }
         });
     }
@@ -232,7 +233,7 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
             return;
         }
         AddJiaoLiuRequest addJiaoLiuRequest = new AddJiaoLiuRequest();
-        addJiaoLiuRequest.setEnterpriseId(mId);
+
         addJiaoLiuRequest.setMeetingName(Name);
         addJiaoLiuRequest.setMeetingUser(People);
         addJiaoLiuRequest.setMeetingContent(Content);
@@ -240,30 +241,63 @@ public class AddJiaoLiuActivity extends PhotoActivity<BasePresenter, ActivityAdd
         if (!TextUtils.isEmpty(mImgQianMin)) {
             addJiaoLiuRequest.setSelferSign(DemoUtils.imageToBase64(mImgQianMin));
         }
-        Api.getApi().addJiaoLiu(getRequestBody(addJiaoLiuRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
-            @Override
-            public void onSuccess(BaseBean baseBean) {
-                showToast(baseBean.getMessage());
-                EventBus.getDefault().post("刷新");
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            sleep(1500);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+        if (mUType == 0) {
+            addJiaoLiuRequest.setEnterpriseId(mId);
+            Api.getApi().addJiaoLiu(getRequestBody(addJiaoLiuRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }
+                    }.start();
+                }
 
-            @Override
-            public void onFail(String errMsg) {
+                @Override
+                public void onFail(String errMsg) {
 
-            }
-        });
+                }
+            });
+
+        } else if (mUType == 1) {
+            addJiaoLiuRequest.setPdpId(mId);
+            Api.getApi().addJiaoLiu1(getRequestBody(addJiaoLiuRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
+                @Override
+                public void onSuccess(BaseBean baseBean) {
+                    showToast(baseBean.getMessage());
+                    EventBus.getDefault().post("刷新");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sleep(1500);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+
+                }
+            });
+
+
+        }
+
     }
 
     private void updateMessage() {

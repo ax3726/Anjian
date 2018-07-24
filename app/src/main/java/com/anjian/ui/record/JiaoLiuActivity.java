@@ -67,7 +67,7 @@ public class JiaoLiuActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
         mTitleBarLayout.setRightListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(AddJiaoLiuActivity.class,mId);
+                startActivity(AddJiaoLiuActivity.class,mId,mUType);
             }
         });
     }
@@ -89,6 +89,7 @@ public class JiaoLiuActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
                     public void onClick(View v) {
                         Intent intent = new Intent(aty, AddJiaoLiuActivity.class);
                         intent.putExtra("data",item);
+                        intent.putExtra("utype",mUType);
                         startActivity(intent);
                     }
                 });
@@ -122,34 +123,68 @@ public class JiaoLiuActivity extends BaseActivity<BasePresenter, ActivityWeiHuaB
         addListRequest.setCurrent(mPosition);
         addListRequest.setSize(mSize);
         addListRequest.getCondition().setId(mId);
-        Api.getApi().getJiaoLiuList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<JiaoLiuListModel>(this, true) {
-            @Override
-            public void onSuccess(JiaoLiuListModel baseBean) {
+        if (mUType==0) {
+            Api.getApi().getJiaoLiuList(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<JiaoLiuListModel>(this, true) {
+                @Override
+                public void onSuccess(JiaoLiuListModel baseBean) {
 
-                finishRefersh();
-                if (mPosition==1) {
-                    mDataList.clear();
-                }
-                List<JiaoLiuListModel.DataBean> data = baseBean.getData();
-                if (data!=null&data.size()>0) {
-                    mDataList.addAll(data);
-                    if (data.size()<mSize) {
-                        mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                    finishRefersh();
+                    if (mPosition==1) {
+                        mDataList.clear();
                     }
+                    List<JiaoLiuListModel.DataBean> data = baseBean.getData();
+                    if (data!=null&data.size()>0) {
+                        mDataList.addAll(data);
+                        if (data.size()<mSize) {
+                            mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                        }
+                    }
+                    if (mPosition == 1 && mDataList.size() == 0) {
+                        mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                    } else {
+                        mBinding.rcBody.setBackground(null);
+                    }
+                    mCommonAdapter.notifyDataSetChanged();
                 }
-                if (mPosition == 1 && mDataList.size() == 0) {
-                    mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
-                } else {
-                    mBinding.rcBody.setBackground(null);
-                }
-                mCommonAdapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onFail(String errMsg) {
-                finishRefersh();
-            }
-        });
+                @Override
+                public void onFail(String errMsg) {
+                    finishRefersh();
+                }
+            });
+
+        } else if (mUType==1) {
+            Api.getApi().getJiaoLiuList1(getRequestBody(addListRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<JiaoLiuListModel>(this, true) {
+                @Override
+                public void onSuccess(JiaoLiuListModel baseBean) {
+
+                    finishRefersh();
+                    if (mPosition==1) {
+                        mDataList.clear();
+                    }
+                    List<JiaoLiuListModel.DataBean> data = baseBean.getData();
+                    if (data!=null&data.size()>0) {
+                        mDataList.addAll(data);
+                        if (data.size()<mSize) {
+                            mBinding.srlBodyList.finishLoadmoreWithNoMoreData();
+                        }
+                    }
+                    if (mPosition == 1 && mDataList.size() == 0) {
+                        mBinding.rcBody.setBackgroundResource(R.drawable.img_deafault_icon);
+                    } else {
+                        mBinding.rcBody.setBackground(null);
+                    }
+                    mCommonAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onFail(String errMsg) {
+                    finishRefersh();
+                }
+            });
+
+        }
+
     }
 
     private void finishRefersh() {
