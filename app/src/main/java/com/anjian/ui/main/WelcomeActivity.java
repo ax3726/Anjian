@@ -33,7 +33,6 @@ public class WelcomeActivity extends BaseActivity<BasePresenter, ActivityWelcome
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
-
                                     startActivity(MainActivity.class);
                                     finish();
                                 }
