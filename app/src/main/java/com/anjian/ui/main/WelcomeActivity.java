@@ -24,8 +24,20 @@ public class WelcomeActivity extends BaseActivity<BasePresenter, ActivityWelcome
                         @Override
                         public void onSuccess(LoginModel baseBean) {
                             MyApplication.getInstance().setToken(baseBean.getData());
-                            startActivity(MainActivity.class);
-                            finish();
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    super.run();
+                                    try {
+                                        sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    startActivity(MainActivity.class);
+                                    finish();
+                                }
+                            }.start();
                         }
 
                         @Override

@@ -41,6 +41,10 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
     private String[] mHangye = new String[]{
             "冶金", "有色金属", "机械", "纺织", "轻工", "化工", "医药", "建材", "烟草", "烟草爆竹", "其他"
     };
+    private String[] mHangye1 = new String[]{
+            "宾馆", "经营场所", "娱乐场所", "学校", "寄宿场所", "公共聚集", "其他"
+    };
+
     private String items[] = {"粉尘涉爆", "有限空间", "特种设备", "涉氨"};
     private String mImgHead = "";//门头照片
     private String mImgZhi = "";//执照照片
@@ -50,9 +54,9 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
     private QiYeInfoModel.DataBean mDataBean = null;
     private String mTypeShe = "";//涉及类型
 
-    private String[] itmes= new String[]{
-        "规模企业", "一般企业", "小微企业"};
-    private String[] itmes1= new String[]{
+    private String[] itmes = new String[]{
+            "规模企业", "一般企业", "小微企业"};
+    private String[] itmes1 = new String[]{
             "大", "小", "中"};
 
     @Override
@@ -141,18 +145,21 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
 
         mTypeIndex = mDataBean.getEnterpriseScale();
 
-        if (mUType==0) {
-            mBinding.tvGuimo.setText(itmes[mTypeIndex-1]);
-        } else if (mUType==1) {
-            mBinding.tvGuimo.setText(itmes1[mTypeIndex-1]);
+        if (mUType == 0) {
+            mBinding.tvGuimo.setText(itmes[mTypeIndex - 1]);
+        } else if (mUType == 1) {
+            mBinding.tvGuimo.setText(itmes1[mTypeIndex - 1]);
         }
-
-
 
 
         mHnagyeindex = mDataBean.getIndustry();
 
-        mBinding.tvHangye.setText(mHangye[mHnagyeindex == 0 ? 10 : mHnagyeindex--]);
+        if (mUType == 0) {
+            mBinding.tvHangye.setText(mHangye[mHnagyeindex == 0 ? 10 : mHnagyeindex--]);
+        } else if (mUType == 1) {
+            mBinding.tvHangye.setText(mHangye1[mHnagyeindex == 0 ? 6 : mHnagyeindex--]);
+        }
+
 
         mBinding.etMianji.setText(mDataBean.getFloorArea() + "");
         mBinding.etNum.setText(mDataBean.getEmployeeNum() + "");
@@ -204,12 +211,12 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
 
                 break;
             case R.id.tv_guimo://企业规模
-                OptionPicker picker = new OptionPicker(this,mUType==0?itmes:itmes1 );
+                OptionPicker picker = new OptionPicker(this, mUType == 0 ? itmes : itmes1);
 
                 picker.setOffset(2);
                 picker.setSelectedIndex(1);
                 picker.setTextSize(16);
-                picker.setCycleDisable(true); //选项不循环滚动
+              //  picker.setCycleDisable(true); //选项不循环滚动
                 picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
                     @Override
                     public void onOptionPicked(int i, String s) {
@@ -221,7 +228,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
                 picker.show();
                 break;
             case R.id.tv_hangye://所属行业
-                OptionPicker picker1 = new OptionPicker(this, mHangye);
+                OptionPicker picker1 = new OptionPicker(this, mUType == 0 ? mHangye : mHangye1);
                 picker1.setOffset(2);
                 picker1.setSelectedIndex(1);
                 picker1.setTextSize(16);
