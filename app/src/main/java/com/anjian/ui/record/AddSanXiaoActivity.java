@@ -92,6 +92,10 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
     protected void initData() {
         super.initData();
         mDataBean = (SanXiaoInfoModel.DataBean) getIntent().getSerializableExtra("data");
+        if (mUType == 1) {
+            mBinding.flyImgZhi.setVisibility(View.GONE);
+            mBinding.tvHint.setText("居住人数");
+        }
 
         initView();
     }
@@ -220,7 +224,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         addSanXiaoRequest.setAreaRelation(threeId);
         addSanXiaoRequest.setAreaName(fourName);
         addSanXiaoRequest.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
-        addSanXiaoRequest.setBusinessLicenceImg(DemoUtils.imageToBase64(mImgZhi));
+
         addSanXiaoRequest.setBusinessLicenceCode(zhizhao);
         addSanXiaoRequest.setEmployeeNum(Num);
         addSanXiaoRequest.setContactName(ContactsName);
@@ -229,6 +233,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         addSanXiaoRequest.setIndustry(String.valueOf(mTypeIndex));
         if (mUType == 0) {
             addSanXiaoRequest.setTspName(name);
+            addSanXiaoRequest.setBusinessLicenceImg(DemoUtils.imageToBase64(mImgZhi));
             addSanXiaoRequest.setTspDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
             Api.getApi().addSanXiao(getRequestBody(addSanXiaoRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
                 @Override
@@ -302,9 +307,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         addSanXiaoRequest.setAreaRelation(threeId);
         addSanXiaoRequest.setAreaName(fourName);
         addSanXiaoRequest.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
-        if (!TextUtils.isEmpty(mImgZhi)) {
-            addSanXiaoRequest.setBusinessLicenceImg(DemoUtils.imageToBase64(mImgZhi));
-        }
+
         addSanXiaoRequest.setBusinessLicenceCode(zhizhao);
         addSanXiaoRequest.setEmployeeNum(Num);
         addSanXiaoRequest.setContactName(ContactsName);
@@ -317,6 +320,9 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
             addSanXiaoRequest.setTspName(name);
             if (!TextUtils.isEmpty(mImgHead)) {
                 addSanXiaoRequest.setTspDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+            }
+            if (!TextUtils.isEmpty(mImgZhi)) {
+                addSanXiaoRequest.setBusinessLicenceImg(DemoUtils.imageToBase64(mImgZhi));
             }
             Api.getApi().updateSanXiao(getRequestBody(addSanXiaoRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
                 @Override
@@ -481,8 +487,14 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
                 OcrModel model = null;
                 try {
                     model = ParseJsonUtils.getBean(result.getJsonRes(), OcrModel.class);
-                    mBinding.etName.setText(model.getWords_result().get单位名称().getWords());
-                    mBinding.etContactName.setText(model.getWords_result().get法人().getWords());
+
+                    String name = model.getWords_result().get单位名称().getWords();
+                    String people = model.getWords_result().get法人().getWords();
+                    String adddress = model.getWords_result().get地址().getWords();
+                    mBinding.etName.setText("无".equals(name) ? "" : name);
+                    mBinding.etContactName.setText("无".equals(people) ? "" : people);
+                    mBinding.etZhizhao.setText("无".equals(adddress) ? "" : adddress);
+
 
                 } catch (Exception ex) {
 

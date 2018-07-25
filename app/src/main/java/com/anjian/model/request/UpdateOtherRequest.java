@@ -7,7 +7,7 @@ package com.anjian.model.request;
 public class UpdateOtherRequest {
     private String id;
     private String otpName;
-    private String otpDoorHeadImg;
+    private String otpImg;
     private String areaId;
     private String areaName;
     private String areaRelation;
@@ -32,12 +32,12 @@ public class UpdateOtherRequest {
         this.otpName = otpName;
     }
 
-    public String getOtpDoorHeadImg() {
-        return otpDoorHeadImg;
+    public String getOtpImg() {
+        return otpImg;
     }
 
-    public void setOtpDoorHeadImg(String otpDoorHeadImg) {
-        this.otpDoorHeadImg = otpDoorHeadImg;
+    public void setOtpImg(String otpImg) {
+        this.otpImg = otpImg;
     }
 
     public String getAreaId() {

@@ -55,7 +55,7 @@ public class SearchModel {
         private String letDoorHeadImg;
         private String letName;
 
-        private String otpDoorHeadImg;
+        private String otpImg;
         private String otpName;
 
         private String id;
@@ -124,12 +124,12 @@ public class SearchModel {
             this.letName = letName;
         }
 
-        public String getOtpDoorHeadImg() {
-            return otpDoorHeadImg;
+        public String getOtpImg() {
+            return otpImg;
         }
 
-        public void setOtpDoorHeadImg(String otpDoorHeadImg) {
-            this.otpDoorHeadImg = otpDoorHeadImg;
+        public void setOtpImg(String otpImg) {
+            this.otpImg = otpImg;
         }
 
         public String getOtpName() {

@@ -182,7 +182,10 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.common.PhotoPreviewActivity" />
         <activity android:name=".ui.home.MessageActivity" />
-        <activity android:name=".ui.record.AddOtherActivity" />
+        <activity
+            android:name=".ui.record.AddOtherActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.record.OtherActivity"></activity>
     </application>
 

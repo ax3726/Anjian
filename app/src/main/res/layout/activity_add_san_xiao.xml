@@ -287,10 +287,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:inputType="number"
                     android:background="@color/colorWhite"
                     android:gravity="right"
                     android:hint="点击输入"
+                    android:inputType="number"
                     android:layoutDirection="rtl"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
@@ -348,6 +348,7 @@
                 android:paddingRight="15px">
 
                 <TextView
+                    android:id="@+id/tv_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="从业人员"

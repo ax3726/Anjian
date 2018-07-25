@@ -50,6 +50,11 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
     private QiYeInfoModel.DataBean mDataBean = null;
     private String mTypeShe = "";//涉及类型
 
+    private String[] itmes= new String[]{
+        "规模企业", "一般企业", "小微企业"};
+    private String[] itmes1= new String[]{
+            "大", "小", "中"};
+
     @Override
     protected boolean isPrestener() {
         return false;
@@ -99,7 +104,11 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
     protected void initData() {
         super.initData();
         mDataBean = (QiYeInfoModel.DataBean) getIntent().getSerializableExtra("data");
-
+        if (mUType == 1) {
+            mBinding.tvNameHint.setText("单位名称");
+            mBinding.tvAddressHint.setText("单位地址");
+            mBinding.tvGuimoHint.setText("单位规模");
+        }
         initView();
     }
 
@@ -115,14 +124,13 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         mBinding.imgZhi.setVisibility(View.VISIBLE);
         Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getBusinessLicenceImg())).into(mBinding.imgZhi);
 
-        if (mUType==0) {
+        if (mUType == 0) {
             Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getEnterpriseDoorHeadImg())).into(mBinding.imgTou);
             mBinding.etName.setText(mDataBean.getEnterpriseName());
-        } else if (mUType==1) {
+        } else if (mUType == 1) {
             Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getPdpDoorHeadImg())).into(mBinding.imgTou);
             mBinding.etName.setText(mDataBean.getPdpName());
         }
-
 
 
         mBinding.tvJiedao.setText(mDataBean.getDetailAddress());
@@ -132,15 +140,14 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         mBinding.etMail.setText(mDataBean.getEmail());
 
         mTypeIndex = mDataBean.getEnterpriseScale();
-        String guimo = "";
-        if (mTypeIndex == 1) {
-            guimo = "规模企业";
-        } else if (mTypeIndex == 2) {
-            guimo = "一般企业";
-        } else {
-            guimo = "小微企业";
+
+        if (mUType==0) {
+            mBinding.tvGuimo.setText(itmes[mTypeIndex-1]);
+        } else if (mUType==1) {
+            mBinding.tvGuimo.setText(itmes1[mTypeIndex-1]);
         }
-        mBinding.tvGuimo.setText(guimo);
+
+
 
 
         mHnagyeindex = mDataBean.getIndustry();
@@ -197,9 +204,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
 
                 break;
             case R.id.tv_guimo://企业规模
-                OptionPicker picker = new OptionPicker(this, new String[]{
-                        "规模企业", "一般企业", "小微企业"
-                });
+                OptionPicker picker = new OptionPicker(this,mUType==0?itmes:itmes1 );
 
                 picker.setOffset(2);
                 picker.setSelectedIndex(1);
@@ -607,8 +612,13 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
                 OcrModel model = null;
                 try {
                     model = ParseJsonUtils.getBean(result.getJsonRes(), OcrModel.class);
-                    mBinding.etName.setText(model.getWords_result().get单位名称().getWords());
-                    mBinding.etContactsName.setText(model.getWords_result().get法人().getWords());
+
+                    String name = model.getWords_result().get单位名称().getWords();
+                    String people = model.getWords_result().get法人().getWords();
+                    String adddress = model.getWords_result().get地址().getWords();
+                    mBinding.etName.setText("无".equals(name) ? "" : name);
+                    mBinding.etContactsName.setText("无".equals(people) ? "" : people);
+                    mBinding.etZhizhao.setText("无".equals(adddress) ? "" : adddress);
 
                 } catch (Exception ex) {
 

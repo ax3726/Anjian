@@ -129,7 +129,7 @@ public class SearchActivity extends BaseActivity<BasePresenter, ActivitySearchBi
                     });
                 }else if (mBinding.rbOther.isChecked()) {
                     holder.setText(R.id.tv_name, item.getOtpName());
-                    holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getOtpDoorHeadImg()), 0);
+                    holder.setImageurl(R.id.img, DemoUtils.getUrl(item.getOtpImg()), 0);
                     lly_item.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

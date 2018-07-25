@@ -1,6 +1,8 @@
 package com.anjian.ui.mine;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.anjian.R;
@@ -13,6 +15,7 @@ import com.anjian.common.MyApplication;
 import com.anjian.databinding.FragmentMineBinding;
 import com.anjian.model.main.UserInfoModel;
 import com.anjian.ui.main.LoginActivity;
+import com.anjian.ui.record.AutographActivity;
 import com.anjian.utils.DemoUtils;
 import com.bumptech.glide.Glide;
 
@@ -45,9 +48,28 @@ public class MineFragment extends BaseFragment<BaseFragmentPresenter, FragmentMi
         mBinding.btnTui.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CacheService.getIntance().clearUser();
-                startActivity(LoginActivity.class);
-                aty.finish();
+
+                new AlertDialog.Builder(aty)
+                        .setTitle("提示")
+                        .setMessage("退出登陆？")
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                CacheService.getIntance().clearUser();
+                                startActivity(LoginActivity.class);
+                                aty.finish();
+                            }
+                        })
+                        .create().show();
+
+
             }
         });
     }

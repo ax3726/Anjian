@@ -137,7 +137,7 @@ public class AddOtherActivity extends PhotoActivity<BasePresenter, ActivityAddOt
         mBinding.imgTou.setVisibility(View.VISIBLE);
 
         mBinding.etName.setText(mDataBean.getOtpName());
-        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getOtpDoorHeadImg())).into(mBinding.imgTou);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getOtpImg())).into(mBinding.imgTou);
 
 
         mBinding.tvJiedao.setText(mDataBean.getAreaName());
@@ -205,7 +205,7 @@ public class AddOtherActivity extends PhotoActivity<BasePresenter, ActivityAddOt
 
         addSanXiaoRequest.setOtpName(name);
         addSanXiaoRequest.setManager(Manager);
-        addSanXiaoRequest.setOtpDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+        addSanXiaoRequest.setOtpImg(DemoUtils.imageToBase64(mImgHead));
         addSanXiaoRequest.setContactName(ContactsName);
         addSanXiaoRequest.setContactPhone(ContactsPhone);
 
@@ -256,7 +256,7 @@ public class AddOtherActivity extends PhotoActivity<BasePresenter, ActivityAddOt
 
         addSanXiaoRequest.setOtpName(name);
         if (!TextUtils.isEmpty(mImgHead)) {
-            addSanXiaoRequest.setOtpDoorHeadImg(DemoUtils.imageToBase64(mImgHead));
+            addSanXiaoRequest.setOtpImg(DemoUtils.imageToBase64(mImgHead));
         }
         addSanXiaoRequest.setContactName(ContactsName);
         addSanXiaoRequest.setContactPhone(ContactsPhone);

@@ -91,17 +91,17 @@ public class OtherInfoModel {
         private String id;
         private String manager;
         private String otpName;
-        private String otpDoorHeadImg;
+        private String otpImg;
         private String position;
         private String updateBy;
         private String updateTime;
 
-        public String getOtpDoorHeadImg() {
-            return otpDoorHeadImg;
+        public String getOtpImg() {
+            return otpImg;
         }
 
-        public void setOtpDoorHeadImg(String otpDoorHeadImg) {
-            this.otpDoorHeadImg = otpDoorHeadImg;
+        public void setOtpImg(String otpImg) {
+            this.otpImg = otpImg;
         }
 
         public String getAreaId() {

@@ -31,8 +31,9 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
 
     private String mImgPath = "";//图片路径
     private FengXianListModel.DataBean mDataBean = null;
-    private String mId="";
-    private String mTypeShe="";
+    private String mId = "";
+    private String mTypeShe = "";
+
     @Override
     protected boolean isPrestener() {
         return false;
@@ -74,7 +75,7 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
     protected void initData() {
         super.initData();
         mDataBean = (FengXianListModel.DataBean) getIntent().getSerializableExtra("data");
-        mId=getIntent().getStringExtra("id");
+        mId = getIntent().getStringExtra("id");
         initView();
     }
 
@@ -86,7 +87,7 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
 
         mBinding.tvAddTimg.setVisibility(View.GONE);
         mBinding.img.setVisibility(View.VISIBLE);
-        Glide.with(aty).load( DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
+        Glide.with(aty).load(DemoUtils.getUrl(mDataBean.getLocaleImg())).into(mBinding.img);
         mBinding.etName.setText(mDataBean.getDangerName());
 
         mBinding.etName.setFocusable(false);
@@ -94,7 +95,31 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
 
         mBinding.tvAddress.setText(mDataBean.getDetailPosition());
         mBinding.tvFengxian.setText(mDataBean.getDangerLevel());
-        mBinding.tvShigu.setText(mDataBean.getEasyHappenCaseType());
+
+        if (!TextUtils.isEmpty(mDataBean.getEasyHappenCaseType())) {
+            String[] split = mDataBean.getEasyHappenCaseType().split(",");
+
+            if (split.length > 0) {
+
+                String txts = "";
+                for (String str : split) {
+                    int i = Integer.valueOf(str);
+                    if (TextUtils.isEmpty(txts)) {//
+                        txts = items[i - 1];
+                    } else {
+                        txts = txts + "、" + items[i - 1];
+
+                    }
+                }
+                mBinding.tvShigu.setText(txts);
+            }
+
+        }
+
+
+
+
+
       /*  mBinding.tvSuoshi.setText(mDataBean.getLossPrediction());
         mBinding.tvZhengai.setText(mDataBean.getModifyStep());*/
 
@@ -103,12 +128,14 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
             @Override
             public void onClick(View v) {
 
-                startActivityUrl(PhotoPreviewActivity.class,DemoUtils.getUrl(mDataBean.getLocaleImg()));
+                startActivityUrl(PhotoPreviewActivity.class, DemoUtils.getUrl(mDataBean.getLocaleImg()));
             }
         });
     }
-    private String items[] = {"火药爆炸", "物体打击", "车辆伤害", "机械伤害", "起重伤害"     , "触电", "淹溺", "灼烫", "高处坠落",
+
+    private String items[] = {"火药爆炸", "物体打击", "车辆伤害", "机械伤害", "起重伤害", "触电", "淹溺", "灼烫", "高处坠落",
             "坍塌", "冒顶片帮", "透水", "锅炉爆炸", "容器爆炸", "其他爆炸", "中毒和窒息", "其他伤害"};
+
     /**
      * 多选
      */
@@ -150,6 +177,7 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
         });
         builder.create().show();
     }
+
     @Override
     protected void initEvent() {
         super.initEvent();
@@ -313,7 +341,7 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
         //   addFengXianRequest.setLossPrediction(Suoshi);
         addFengXianRequest.setDangerLevel(Fengxian);
         //   addFengXianRequest.setModifyStep(Zhengai);
-        if (mUType==0) {
+        if (mUType == 0) {
             addFengXianRequest.setEnterpriseId(mId);
             Api.getApi().addFengXian(getRequestBody(addFengXianRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
                 @Override
@@ -340,7 +368,7 @@ public class AddFengXianActivity extends PhotoActivity<BasePresenter, ActivityAd
                 }
             });
 
-        } else if (mUType==1) {
+        } else if (mUType == 1) {
             addFengXianRequest.setPdpId(mId);
             Api.getApi().addFengXian1(getRequestBody(addFengXianRequest), MyApplication.getInstance().getToken()).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<BaseBean>(this, true) {
                 @Override

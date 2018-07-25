@@ -111,7 +111,7 @@ public class RecordFragment extends BaseFragment<BaseFragmentPresenter, Fragment
     @Override
     protected void initData() {
         super.initData();
-        title.add("看企业");
+        title.add("生产企业");
         title.add("三小场所");
         title.add("人口密集场所");
         title.add("出租屋");

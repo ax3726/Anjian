@@ -15,7 +15,7 @@
             android:orientation="vertical">
 
             <com.zhy.autolayout.AutoFrameLayout
-                    android:id="@+id/fly_img_tou"
+                android:id="@+id/fly_img_tou"
                 android:layout_width="match_parent"
                 android:layout_height="170px"
                 android:layout_marginLeft="15px"
@@ -38,9 +38,9 @@
 
                 <ImageView
                     android:id="@+id/img_tou"
-                    android:scaleType="fitXY"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="fitXY"
                     android:visibility="gone" />
 
             </com.zhy.autolayout.AutoFrameLayout>
@@ -69,9 +69,9 @@
 
                 <ImageView
                     android:id="@+id/img_zhi"
-                    android:scaleType="fitXY"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="fitXY"
                     android:visibility="gone" />
 
             </com.zhy.autolayout.AutoFrameLayout>
@@ -91,6 +91,7 @@
                 android:paddingRight="15px">
 
                 <TextView
+                    android:id="@+id/tv_name_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="企业名称"
@@ -166,6 +167,7 @@
                 android:paddingRight="15px">
 
                 <TextView
+                    android:id="@+id/tv_address_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="企业地址"
@@ -306,6 +308,7 @@
                 android:paddingRight="15px">
 
                 <TextView
+                    android:id="@+id/tv_guimo_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="企业规模"
@@ -399,9 +402,9 @@
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="right"
-                    android:layoutDirection="rtl"
                     android:hint="点击输入"
                     android:inputType="number"
+                    android:layoutDirection="rtl"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
                     android:textSize="14px" />
@@ -418,11 +421,12 @@
                         android:text="m"
                         android:textColor="@color/color4a4a4a"
                         android:textSize="16px" />
+
                     <TextView
-                        android:layout_toRightOf="@+id/tv_mi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                      android:layout_alignTop="@+id/tv_mi"
+                        android:layout_alignTop="@+id/tv_mi"
+                        android:layout_toRightOf="@+id/tv_mi"
                         android:text="2"
                         android:textColor="@color/color4a4a4a"
                         android:textSize="10px" />
@@ -513,6 +517,7 @@
                     android:src="@drawable/record_right_icon" />
 
             </com.zhy.autolayout.AutoLinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="63px"

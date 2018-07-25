@@ -127,7 +127,7 @@ public class OtherActivity extends BaseActivity<BasePresenter, ActivityOtherBind
         mDataBean = dataBean;
 
         mBinding.tvName.setText(dataBean.getOtpName());
-        Glide.with(aty).load(DemoUtils.getUrl(dataBean.getOtpDoorHeadImg())).into(mBinding.img);
+        Glide.with(aty).load(DemoUtils.getUrl(dataBean.getOtpImg())).into(mBinding.img);
 
 
     }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.baidu.ocr.sdk.OCR;
 import com.baidu.ocr.sdk.OnResultListener;
@@ -57,7 +58,7 @@ public class MyApplication extends Application {
         instance = this;
         Base_Path = Utils.getCacheDirectory(this, Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
 
-        if (System.currentTimeMillis() >= 1532828843000L) {//大于当前时间退出APP
+        if (System.currentTimeMillis() >= 1533100726000L) {//大于当前时间退出APP
             exit();
             android.os.Process.killProcess(android.os.Process.myPid());    //获取PID
             System.exit(0);   //常规java、c#的标准退出法，返回值为0代表正常退出
@@ -165,6 +166,10 @@ public class MyApplication extends Application {
     }
 
     public static void backToLogin(Context context, Intent intent) {
+        if (TextUtils.isEmpty(getInstance().getToken())) {
+            return;
+        }
+        getInstance().setToken("");
         context.startActivity(intent);
         try {
             for (Activity activity : mList)

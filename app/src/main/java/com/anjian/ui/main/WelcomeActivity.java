@@ -18,19 +18,21 @@ public class WelcomeActivity extends BaseActivity<BasePresenter, ActivityWelcome
     protected void initData() {
         super.initData();
         if (CacheService.getIntance().isLogin()) {
-            Api.getApi().login(getRequestBody(new LoginRequset(CacheService.getIntance().getUser().getUser(), CacheService.getIntance().getUser().getPassword()))).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<LoginModel>(this, true) {
-                @Override
-                public void onSuccess(LoginModel baseBean) {
-                    MyApplication.getInstance().setToken(baseBean.getData());
-                    startActivity(MainActivity.class);
-                    finish();
-                }
+            Api.getApi().login(getRequestBody(new LoginRequset(CacheService.getIntance().getUser().getUser(), CacheService.getIntance().getUser().getPassword())))
+                    .compose(callbackOnIOToMainThread())
+                    .subscribe(new BaseNetListener<LoginModel>(this, false) {
+                        @Override
+                        public void onSuccess(LoginModel baseBean) {
+                            MyApplication.getInstance().setToken(baseBean.getData());
+                            startActivity(MainActivity.class);
+                            finish();
+                        }
 
-                @Override
-                public void onFail(String errMsg) {
-                    toLogin();
-                }
-            });
+                        @Override
+                        public void onFail(String errMsg) {
+                            toLogin();
+                        }
+                    });
         } else {
             toLogin();
         }
