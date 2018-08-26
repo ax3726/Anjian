@@ -186,7 +186,8 @@
             android:name=".ui.record.AddOtherActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.record.OtherActivity"></activity>
+        <activity android:name=".ui.record.OtherActivity" />
+        <activity android:name=".ui.common.DocumentActivity"></activity>
     </application>
 
 </manifest>

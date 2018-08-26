@@ -99,12 +99,12 @@ dependencies {
     // compile(name: 'baselibrary', ext: 'aar')
     //  compile 'com.lm.baselibrary:baselibrary:1.0'
     compile project(':library')
+    compile files('libs/ocr-sdk.jar')
     compile 'cn.qqtheme.framework:WheelPicker:1.4.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
-    compile files('libs/ocr-sdk.jar')
 }
 configurations.all {
 

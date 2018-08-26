@@ -6,6 +6,7 @@ import com.anjian.R;
 import com.anjian.base.BaseFragment;
 import com.anjian.base.BaseFragmentPresenter;
 import com.anjian.databinding.FragmentHomeBinding;
+import com.anjian.ui.common.DocumentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class HomeFragment extends BaseFragment<BaseFragmentPresenter, FragmentHo
         mTitleBarLayout.setLeftListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(DocumentActivity.class);
             }
         });
         mTitleBarLayout.setRightShow(true);
