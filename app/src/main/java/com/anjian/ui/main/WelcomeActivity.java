@@ -23,7 +23,7 @@ public class WelcomeActivity extends BaseActivity<BasePresenter, ActivityWelcome
                     .subscribe(new BaseNetListener<LoginModel>(this, false) {
                         @Override
                         public void onSuccess(LoginModel baseBean) {
-                            MyApplication.getInstance().setToken(baseBean.getData());
+                            MyApplication.getInstance().setToken(baseBean.getData().getToken());
                             new Thread() {
                                 @Override
                                 public void run() {

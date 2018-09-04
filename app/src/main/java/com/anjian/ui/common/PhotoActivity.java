@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -116,7 +117,8 @@ public abstract class PhotoActivity<P extends BasePresenter, B extends ViewDataB
                 picPath = state + "/" + filename;
                 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
 
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+               intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+               // intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.parse(picPath));
                 startActivityForResult(intent, 4);
             }
 

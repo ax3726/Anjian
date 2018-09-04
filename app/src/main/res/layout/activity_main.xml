@@ -107,7 +107,7 @@
                 android:drawablePadding="6dp"
                 android:drawableTop="@drawable/record_icon"
                 android:gravity="center"
-                android:text="记录"
+                android:text="众点安全"
                 android:paddingBottom="1dp"
                 android:textColor="@color/color999999"
                 android:textSize="10dp" />

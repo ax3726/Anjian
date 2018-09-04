@@ -20,7 +20,7 @@ public class CacheService {
 
     public static CacheService getIntance() {
         if (mCacheService == null) {
-            return new CacheService();
+            mCacheService= new CacheService();
         }
         return mCacheService;
     }

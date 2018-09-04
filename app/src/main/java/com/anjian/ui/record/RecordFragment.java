@@ -97,7 +97,7 @@ public class RecordFragment extends BaseFragment<BaseFragmentPresenter, Fragment
 
             }
         });
-        mTitleBarLayout.setTitle("记录");
+        mTitleBarLayout.setTitle("众点安全");
         mTitleBarLayout.setRightShow(true);
         mTitleBarLayout.setRightImg(R.drawable.record_search_icon);
         mTitleBarLayout.setRightListener(new View.OnClickListener() {

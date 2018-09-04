@@ -2,10 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <WebView
+    <com.tencent.smtt.sdk.WebView
         android:id="@+id/wv_body"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </WebView>
+    </com.tencent.smtt.sdk.WebView>
 </layout>

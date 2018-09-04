@@ -46,7 +46,7 @@ public class HomeFragment extends BaseFragment<BaseFragmentPresenter, FragmentHo
         mTitleBarLayout.setLeftListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(DocumentActivity.class);
+               // startActivity(DocumentActivity.class);
             }
         });
         mTitleBarLayout.setRightShow(true);
