@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">安全生产安全员端</string>
+    <string name="app_name">安全生产政府端</string>
     <string name="no_data">暂无数据</string>
     <string name="please_check_net_state">请检查网络状态</string>
     <string name="server_not_avaliabe">服务不可用</string>

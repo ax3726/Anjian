@@ -51,6 +51,7 @@ public class LoginActivity extends BaseActivity<BasePresenter, ActivityLoginBind
             }
         });
     }
+
     private void checkLogin() {
         String phone = mBinding.etPhone.getText().toString().trim();
         String password = mBinding.etPassword.getText().toString().trim();
@@ -66,10 +67,16 @@ public class LoginActivity extends BaseActivity<BasePresenter, ActivityLoginBind
         Api.getApi().login(getRequestBody(new LoginRequset(phone, password))).compose(callbackOnIOToMainThread()).subscribe(new BaseNetListener<LoginModel>(this, true) {
             @Override
             public void onSuccess(LoginModel baseBean) {
-                MyApplication.getInstance().setToken(baseBean.getData().getToken());
-                CacheService.getIntance().setUser(new UserModel(phone,password));
-                startActivity(MainActivity.class);
-                finish();
+                if ("1".equals(baseBean.getData().getUserType())) {
+                    MyApplication.getInstance().setToken(baseBean.getData().getToken());
+                    CacheService.getIntance().setUser(new UserModel(phone, password));
+                    startActivity(MainActivity.class);
+                    finish();
+                } else {
+                    showToast("该用户无法登陆！");
+                }
+
+
             }
 
             @Override
