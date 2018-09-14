@@ -10,7 +10,7 @@ public class LoginModel {
     /**
      * code : 200
      * count : 0
-     * data : {"placeId":"1024913629628477441","placeType":0,"userType":"1","token":"4ead169f39691c569f4a54f743b119cd"}
+     * data : {"placeId":null,"placeType":null,"areaId":"988438702663471106","userType":"1","areaName":"鲤城区","token":"25a5b143ee0c47150eeae0a14c34552e"}
      * message : 成功
      */
 
@@ -53,15 +53,19 @@ public class LoginModel {
 
     public static class DataBean {
         /**
-         * placeId : 1024913629628477441
-         * placeType : 0
+         * placeId : null
+         * placeType : null
+         * areaId : 988438702663471106
          * userType : 1
-         * token : 4ead169f39691c569f4a54f743b119cd
+         * areaName : 鲤城区
+         * token : 25a5b143ee0c47150eeae0a14c34552e
          */
 
         private String placeId;
-        private int placeType;
+        private String placeType;
+        private String areaId;
         private String userType;
+        private String areaName;
         private String token;
 
         public String getPlaceId() {
@@ -72,12 +76,20 @@ public class LoginModel {
             this.placeId = placeId;
         }
 
-        public int getPlaceType() {
+        public String getPlaceType() {
             return placeType;
         }
 
-        public void setPlaceType(int placeType) {
+        public void setPlaceType(String placeType) {
             this.placeType = placeType;
+        }
+
+        public String getAreaId() {
+            return areaId;
+        }
+
+        public void setAreaId(String areaId) {
+            this.areaId = areaId;
         }
 
         public String getUserType() {
@@ -86,6 +98,14 @@ public class LoginModel {
 
         public void setUserType(String userType) {
             this.userType = userType;
+        }
+
+        public String getAreaName() {
+            return areaName;
+        }
+
+        public void setAreaName(String areaName) {
+            this.areaName = areaName;
         }
 
         public String getToken() {

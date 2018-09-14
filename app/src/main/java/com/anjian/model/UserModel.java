@@ -9,10 +9,20 @@ import java.io.Serializable;
 public class UserModel implements Serializable{
     private String user;
     private String password;
+    private String areaName;
 
-    public UserModel(String user, String password) {
+    public UserModel(String user, String password, String areaName) {
         this.user = user;
         this.password = password;
+        this.areaName = areaName;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
     }
 
     public String getUser() {

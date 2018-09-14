@@ -1,12 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.zhy.autolayout.AutoLinearLayout
+    <com.zhy.autolayout.AutoFrameLayout
         android:id="@+id/llt_welcome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/welcome_icon"
+
         android:orientation="vertical">
 
-    </com.zhy.autolayout.AutoLinearLayout>
+
+        <ImageView
+            android:id="@+id/img_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/welcome_icon" />
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/rly_body"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_welcome"
+            android:visibility="gone">
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:id="@+id/rly_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="103px">
+
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="84px"
+
+                    android:layout_height="84px"
+                    android:src="@drawable/wecome_logo_cion" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/img"
+                    android:layout_marginLeft="30px"
+                    android:layout_toRightOf="@+id/img"
+                    android:text="金井安全"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="38px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tv_title"
+                    android:layout_below="@+id/tv_title"
+                    android:text="一库两平台"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="28px" />
+            </com.zhy.autolayout.AutoRelativeLayout>
+
+            <ImageView
+
+                android:layout_width="match_parent"
+                android:layout_height="311px"
+                android:layout_below="@+id/rly_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="52px"
+                android:layout_marginRight="52px"
+                android:layout_marginTop="88px"
+                android:src="@drawable/wecome_center_cion" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="14px"
+                android:text="Copyright@晋江市启明信息技术有限公司 版权所有"
+                android:textColor="@color/colorWhite"
+                android:textSize="12px" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+
+    </com.zhy.autolayout.AutoFrameLayout>
 </layout>

@@ -1,5 +1,7 @@
 package com.anjian.ui.main;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,9 @@ import com.anjian.ui.mine.MineFragment;
 import com.anjian.ui.record.RecordFragment;
 import com.anjian.utils.DemoUtils;
 import com.anjian.utils.DoubleClickExitHelper;
+import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +87,7 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
         });
         initFragment();
         DemoUtils.getLocation(aty);
+        inintVersion();
     }
 
     @Override
@@ -135,5 +141,45 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
             return mDoubleClickExit.onKeyDown(keyCode, event);
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void inintVersion() {
+
+        PgyUpdateManager.setIsForced(true); //设置是否强制更新。true为强制更新；false为不强制更新（默认值）。
+        PgyUpdateManager.register(this, new UpdateManagerListener() {
+            @Override
+            public void onNoUpdateAvailable() {
+
+            }
+
+            @Override
+            public void onUpdateAvailable(String result) {
+                // 将新版本信息封装到AppBean中
+                final AppBean appBean = getAppBeanFromString(result);
+                new AlertDialog.Builder(aty)
+                        .setTitle("更新")
+                        .setMessage("")
+                        .setNegativeButton(
+                                "确定",
+                                new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(
+                                            DialogInterface dialog,
+                                            int which) {
+                                        startDownloadTask(
+                                                aty,
+                                                appBean.getDownloadURL());
+                                    }
+                                }).show();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PgyUpdateManager.unregister();
     }
 }
