@@ -164,11 +164,11 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         mBinding.etMianji.setText(mDataBean.getFloorArea() + "");
         mBinding.etNum.setText(mDataBean.getEmployeeNum() + "");
 
-        fourId = mDataBean.getAreaId();
+        fiveId = mDataBean.getAreaId();
         areaId = mDataBean.getAreaId();
 
-        threeId = mDataBean.getAreaRelation();
-        fourName = mDataBean.getAreaName();
+        fourId = mDataBean.getAreaRelation();
+        fiveName = mDataBean.getAreaName();
 
 
         if (!TextUtils.isEmpty(mDataBean.getReferType())) {
@@ -344,10 +344,10 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         addQiYeRequset.setContactPhone(ContactsPhone);
         addQiYeRequset.setEmail(Mail);
         addQiYeRequset.setEnterpriseScale(String.valueOf(mTypeIndex));
-        addQiYeRequset.setAreaId(fourId);
-        addQiYeRequset.setAreaRelation(threeId);
+        addQiYeRequset.setAreaId(fiveId);
+        addQiYeRequset.setAreaRelation(fourId);
         addQiYeRequset.setDetailAddress(jiedao);
-        addQiYeRequset.setAreaName(fourName);
+        addQiYeRequset.setAreaName(fiveName);
         addQiYeRequset.setFloorArea(Mianji);
         addQiYeRequset.setEmployeeNum(Num);
         addQiYeRequset.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
@@ -435,10 +435,10 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         addQiYeRequset.setContactPhone(ContactsPhone);
         addQiYeRequset.setEmail(Mail);
         addQiYeRequset.setEnterpriseScale(String.valueOf(mTypeIndex));
-        addQiYeRequset.setAreaId(fourId);
-        addQiYeRequset.setAreaRelation(threeId);
+        addQiYeRequset.setAreaId(fiveId);
+        addQiYeRequset.setAreaRelation(fourId);
         addQiYeRequset.setDetailAddress(jiedao);
-        addQiYeRequset.setAreaName(fourName);
+        addQiYeRequset.setAreaName(fiveName);
         addQiYeRequset.setFloorArea(Mianji);
         addQiYeRequset.setEmployeeNum(Num);
         addQiYeRequset.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
@@ -524,6 +524,9 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
     private String fourName = "";
     private String fourId = "";
 
+    private String fiveName = "";
+    private String fiveId = "";
+
     private String areaId = "";
     private int index = 0;
 
@@ -557,14 +560,18 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
                             fourName = s;
                             areaId = sysAreaModel.getData().get(i).getId();
                             fourId = sysAreaModel.getData().get(i).getId();
+                        } else if (index == 4) {
+                            fiveName = s;
+                            areaId = sysAreaModel.getData().get(i).getId();
+                            fiveId = sysAreaModel.getData().get(i).getId();
                         }
 
-                        if (index < 3) {
+                        if (index < 4) {
                             index++;
                             getAreadata();
-                        } else if (index == 3) {
+                        } else if (index == 4) {
                             index = 0;
-                            mBinding.tvJiedao.setText(fourName);
+                            mBinding.tvJiedao.setText(fiveName);
                         }
 
                     }

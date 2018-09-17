@@ -132,11 +132,11 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
 
         mBinding.etNum.setText(mDataBean.getEmployeeNum() + "");
 
-        fourId = mDataBean.getAreaId();
+        fiveId = mDataBean.getAreaId();
         areaId = mDataBean.getAreaId();
 
-        threeId = mDataBean.getAreaRelation();
-        fourName = mDataBean.getAreaName();
+        fourId = mDataBean.getAreaRelation();
+        fiveName = mDataBean.getAreaName();
 
     }
 
@@ -220,9 +220,9 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
 
         AddSanXiaoRequest addSanXiaoRequest = new AddSanXiaoRequest();
 
-        addSanXiaoRequest.setAreaId(fourId);
-        addSanXiaoRequest.setAreaRelation(threeId);
-        addSanXiaoRequest.setAreaName(fourName);
+        addSanXiaoRequest.setAreaId(fiveId);
+        addSanXiaoRequest.setAreaRelation(fourId);
+        addSanXiaoRequest.setAreaName(fiveName);
         addSanXiaoRequest.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
 
         addSanXiaoRequest.setBusinessLicenceCode(zhizhao);
@@ -303,9 +303,9 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         UpdateSanXiaoRequest addSanXiaoRequest = new UpdateSanXiaoRequest();
         addSanXiaoRequest.setId(mDataBean.getId());
 
-        addSanXiaoRequest.setAreaId(fourId);
-        addSanXiaoRequest.setAreaRelation(threeId);
-        addSanXiaoRequest.setAreaName(fourName);
+        addSanXiaoRequest.setAreaId(fiveId);
+        addSanXiaoRequest.setAreaRelation(fourId);
+        addSanXiaoRequest.setAreaName(fiveName);
         addSanXiaoRequest.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
 
         addSanXiaoRequest.setBusinessLicenceCode(zhizhao);
@@ -391,9 +391,10 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
     private String twoName = "";
     private String threeName = "";
     private String threeId = "";
-    private String fourName = "";
-    private String fourId = "";
 
+    private String fourId = "";
+    private String fiveId = "";
+    private String fiveName = "";
     private String areaId = "";
     private int index = 0;
 
@@ -424,17 +425,21 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
                             areaId = sysAreaModel.getData().get(i).getId();
                             threeId = sysAreaModel.getData().get(i).getId();
                         } else if (index == 3) {
-                            fourName = s;
+
                             areaId = sysAreaModel.getData().get(i).getId();
                             fourId = sysAreaModel.getData().get(i).getId();
+                        } else if (index == 4) {
+                            fiveName = s;
+                            areaId = sysAreaModel.getData().get(i).getId();
+                            fiveId = sysAreaModel.getData().get(i).getId();
                         }
 
-                        if (index < 3) {
+                        if (index < 4) {
                             index++;
                             getAreadata();
-                        } else if (index == 3) {
+                        } else if (index == 4) {
                             index = 0;
-                            mBinding.tvJiedao.setText(fourName);
+                            mBinding.tvJiedao.setText(fiveName);
                         }
 
                     }
