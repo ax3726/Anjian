@@ -157,8 +157,8 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
                 // 将新版本信息封装到AppBean中
                 final AppBean appBean = getAppBeanFromString(result);
                 new AlertDialog.Builder(aty)
-                        .setTitle("更新")
-                        .setMessage("")
+                        .setTitle("检测到有版本更新")
+                        .setMessage(appBean.getReleaseNote())
                         .setNegativeButton(
                                 "确定",
                                 new DialogInterface.OnClickListener() {
