@@ -18,6 +18,7 @@ import com.anjian.model.request.UpdateSanXiaoRequest;
 import com.anjian.ui.common.PhotoActivity;
 import com.anjian.ui.common.PhotoPreviewActivity;
 import com.anjian.utils.DemoUtils;
+import com.anjian.utils.LocationHelper;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.baidu.ocr.sdk.OCR;
 import com.baidu.ocr.sdk.OnResultListener;
@@ -86,11 +87,23 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
                 }
             }
         });
+        mBinding.tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDataBean != null) {
+                    updateMessage();
+                } else {
+                    submitMessage();
+                }
+
+            }
+        });
     }
 
     @Override
     protected void initData() {
         super.initData();
+        LocationHelper.getInstance().startLocation(aty);
         mDataBean = (SanXiaoInfoModel.DataBean) getIntent().getSerializableExtra("data");
         if (mUType == 1) {
             mBinding.flyImgZhi.setVisibility(View.GONE);
@@ -479,6 +492,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
     }
 
     private void LoadOcr(String path) {
+        showWaitDialog("正在识别中...");
         // 营业执照识别参数设置
         OcrRequestParams param = new OcrRequestParams();
 
@@ -489,6 +503,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
         OCR.getInstance(aty).recognizeBusinessLicense(param, new OnResultListener<OcrResponseResult>() {
             @Override
             public void onResult(OcrResponseResult result) {
+                hideWaitDialog();
                 OcrModel model = null;
                 try {
                     model = ParseJsonUtils.getBean(result.getJsonRes(), OcrModel.class);
@@ -509,6 +524,7 @@ public class AddSanXiaoActivity extends PhotoActivity<BasePresenter, ActivityAdd
 
             @Override
             public void onError(OCRError error) {
+                hideWaitDialog();
                 showToast(error.getMessage());
             }
         });

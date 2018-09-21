@@ -20,6 +20,7 @@ import com.anjian.model.request.AddQiYeRequset;
 import com.anjian.model.request.UpdateQiYeRequset;
 import com.anjian.ui.common.PhotoActivity;
 import com.anjian.utils.DemoUtils;
+import com.anjian.utils.LocationHelper;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.baidu.ocr.sdk.OCR;
 import com.baidu.ocr.sdk.OnResultListener;
@@ -101,12 +102,24 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
 
             }
         });
+        mBinding.tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDataBean != null) {
+                    updateMessage();
+                } else {
+                    submitMessage();
+                }
+
+            }
+        });
     }
 
 
     @Override
     protected void initData() {
         super.initData();
+        LocationHelper.getInstance().startLocation(aty);
         mDataBean = (QiYeInfoModel.DataBean) getIntent().getSerializableExtra("data");
         if (mUType == 1) {
             mBinding.tvNameHint.setText("单位名称");
@@ -613,6 +626,8 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
     }
 
     private void LoadOcr(String path) {
+        showWaitDialog("正在识别中...");
+
         // 营业执照识别参数设置
         OcrRequestParams param = new OcrRequestParams();
 
@@ -623,6 +638,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
         OCR.getInstance(aty).recognizeBusinessLicense(param, new OnResultListener<OcrResponseResult>() {
             @Override
             public void onResult(OcrResponseResult result) {
+                hideWaitDialog();
                 OcrModel model = null;
                 try {
                     model = ParseJsonUtils.getBean(result.getJsonRes(), OcrModel.class);
@@ -642,6 +658,7 @@ public class AddQiyeActivity extends PhotoActivity<BasePresenter, ActivityAddQiy
 
             @Override
             public void onError(OCRError error) {
+                hideWaitDialog();
                 showToast(error.getMessage());
             }
         });

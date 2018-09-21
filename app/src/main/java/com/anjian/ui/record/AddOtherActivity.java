@@ -23,6 +23,7 @@ import com.anjian.model.request.UpdateOtherRequest;
 import com.anjian.model.request.UpdateSanXiaoRequest;
 import com.anjian.ui.common.PhotoActivity;
 import com.anjian.utils.DemoUtils;
+import com.anjian.utils.LocationHelper;
 import com.anjian.widget.popupwindow.SelectPhotopopuwindow;
 import com.baidu.ocr.sdk.OCR;
 import com.baidu.ocr.sdk.OnResultListener;
@@ -119,11 +120,22 @@ public class AddOtherActivity extends PhotoActivity<BasePresenter, ActivityAddOt
                 }
             }
         });
+        mBinding.tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDataBean != null) {
+                    updateMessage();
+                } else {
+                    submitMessage();
+                }
+            }
+        });
     }
 
     @Override
     protected void initData() {
         super.initData();
+        LocationHelper.getInstance().startLocation(aty);
         mDataBean = (OtherInfoModel.DataBean) getIntent().getSerializableExtra("data");
 
         initView();
@@ -143,14 +155,14 @@ public class AddOtherActivity extends PhotoActivity<BasePresenter, ActivityAddOt
         mBinding.tvJiedao.setText(mDataBean.getAreaName());
         mBinding.etContactName.setText(mDataBean.getContactName());
         mBinding.etContactPhone.setText(mDataBean.getContactPhone());
-        mBinding.etManager.setText(mDataBean.getManager());
+        mBinding.tvManager.setText(mDataBean.getManager());
 
 
-        fourId = mDataBean.getAreaId();
+        fiveId = mDataBean.getAreaId();
         areaId = mDataBean.getAreaId();
 
-        threeId = mDataBean.getAreaRelation();
-        fourName = mDataBean.getAreaName();
+        fourId = mDataBean.getAreaRelation();
+        fiveName = mDataBean.getAreaName();
 
     }
 
@@ -159,6 +171,7 @@ public class AddOtherActivity extends PhotoActivity<BasePresenter, ActivityAddOt
         super.initEvent();
         mBinding.tvJiedao.setOnClickListener(this);
         mBinding.flyHeadImg.setOnClickListener(this);
+        mBinding.tvManager.setOnClickListener(this);
 
     }
 
@@ -185,6 +198,20 @@ public class AddOtherActivity extends PhotoActivity<BasePresenter, ActivityAddOt
                 });
                 selectPhotopopuwindow.showPopupWindow();
                 break;
+            case R.id.tv_manager://场所类别
+                String[] list = new String[]{"居民", "其他"};
+                OptionPicker picker1 = new OptionPicker(this, list);
+                picker1.setOffset(2);
+                picker1.setSelectedIndex(1);
+                picker1.setTextSize(16);
+                picker1.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+                    @Override
+                    public void onOptionPicked(int i, String s) {
+                        mBinding.tvManager.setText(s);
+                    }
+                });
+                picker1.show();
+                break;
 
         }
     }
@@ -194,13 +221,13 @@ public class AddOtherActivity extends PhotoActivity<BasePresenter, ActivityAddOt
         String jiedao = mBinding.tvJiedao.getText().toString().trim();
         String ContactsName = mBinding.etContactName.getText().toString().trim();
         String ContactsPhone = mBinding.etContactPhone.getText().toString().trim();
-        String Manager = mBinding.etManager.getText().toString().trim();
+        String Manager = mBinding.tvManager.getText().toString().trim();
 
         AddOtherRequest addSanXiaoRequest = new AddOtherRequest();
 
-        addSanXiaoRequest.setAreaId(fourId);
-        addSanXiaoRequest.setAreaRelation(threeId);
-        addSanXiaoRequest.setAreaName(fourName);
+        addSanXiaoRequest.setAreaId(fiveId);
+        addSanXiaoRequest.setAreaRelation(fourId);
+        addSanXiaoRequest.setAreaName(fiveName);
         addSanXiaoRequest.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
 
         addSanXiaoRequest.setOtpName(name);
@@ -242,15 +269,14 @@ public class AddOtherActivity extends PhotoActivity<BasePresenter, ActivityAddOt
         String jiedao = mBinding.tvJiedao.getText().toString().trim();
         String ContactsName = mBinding.etContactName.getText().toString().trim();
         String ContactsPhone = mBinding.etContactPhone.getText().toString().trim();
-        String Manager = mBinding.etManager.getText().toString().trim();
+        String Manager = mBinding.tvManager.getText().toString().trim();
 
 
         UpdateOtherRequest addSanXiaoRequest = new UpdateOtherRequest();
         addSanXiaoRequest.setId(mDataBean.getId());
-
-        addSanXiaoRequest.setAreaId(fourId);
-        addSanXiaoRequest.setAreaRelation(threeId);
-        addSanXiaoRequest.setAreaName(fourName);
+        addSanXiaoRequest.setAreaId(fiveId);
+        addSanXiaoRequest.setAreaRelation(fourId);
+        addSanXiaoRequest.setAreaName(fiveName);
         addSanXiaoRequest.setManager(Manager);
         addSanXiaoRequest.setPosition(DemoUtils.getLatitudeAndLongitude(aty));
 
@@ -299,6 +325,8 @@ public class AddOtherActivity extends PhotoActivity<BasePresenter, ActivityAddOt
     private String threeId = "";
     private String fourName = "";
     private String fourId = "";
+    private String fiveId = "";
+    private String fiveName = "";
 
     private String areaId = "";
     private int index = 0;
@@ -333,14 +361,18 @@ public class AddOtherActivity extends PhotoActivity<BasePresenter, ActivityAddOt
                             fourName = s;
                             areaId = sysAreaModel.getData().get(i).getId();
                             fourId = sysAreaModel.getData().get(i).getId();
+                        } else if (index == 4) {
+                            fiveName = s;
+                            areaId = sysAreaModel.getData().get(i).getId();
+                            fiveId = sysAreaModel.getData().get(i).getId();
                         }
 
-                        if (index < 3) {
+                        if (index < 4) {
                             index++;
                             getAreadata();
-                        } else if (index == 3) {
+                        } else if (index == 4) {
                             index = 0;
-                            mBinding.tvJiedao.setText(fourName);
+                            mBinding.tvJiedao.setText(fiveName);
                         }
 
                     }

@@ -211,23 +211,27 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="管理单位"
+                    android:text="场所类别"
                     android:textColor="@color/color4a4a4a"
                     android:textSize="16px" />
 
-                <EditText
-                    android:id="@+id/et_manager"
+                <TextView
+                    android:id="@+id/tv_manager"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="right"
-                    android:hint="点击输入"
-
-                    android:layoutDirection="rtl"
+                    android:hint="请选择"
                     android:textColor="@color/color4a4a4a"
                     android:textColorHint="@color/colord9d9d9"
                     android:textSize="14px" />
+
+                <ImageView
+                    android:layout_width="5px"
+                    android:layout_height="10px"
+                    android:layout_marginLeft="8px"
+                    android:src="@drawable/record_right_icon" />
 
             </com.zhy.autolayout.AutoLinearLayout>
 
@@ -235,6 +239,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/colorLine" />
+
+
+            <TextView
+                android:id="@+id/tv_ok"
+                android:layout_width="match_parent"
+                android:layout_height="50px"
+                android:textSize="14px"
+                android:text="保存"
+                android:layout_marginLeft="20px"
+                android:layout_marginTop="50px"
+                android:layout_marginRight="20px"
+                android:gravity="center"
+                android:background="@drawable/shape_common_blue"
+                android:textColor="@color/colorWhite"
+                />
+
 
 
         </com.zhy.autolayout.AutoLinearLayout>

@@ -41,7 +41,7 @@ public class HomeFragment extends BaseFragment<BaseFragmentPresenter, FragmentHo
     @Override
     protected void initTitleBar() {
         super.initTitleBar();
-        mTitleBarLayout.setTitle("安评信息");
+        mTitleBarLayout.setTitle("首页");
         mTitleBarLayout.setLeftImg(R.drawable.record_search_icon);
         mTitleBarLayout.setLeftListener(new View.OnClickListener() {
             @Override

@@ -20,6 +20,7 @@ import com.anjian.databinding.FragmentCompanylistBinding;
 import com.anjian.model.record.CompanyLisyModel;
 import com.anjian.model.request.JingWeiRequest;
 import com.anjian.utils.DemoUtils;
+import com.baidu.location.BDLocation;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -148,7 +149,7 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
 
     private void getQiYeList() {
         JingWeiRequest jingWeiRequest = new JingWeiRequest();
-        Location location = DemoUtils.getLocation(aty);
+        BDLocation location = DemoUtils.getLocation(aty);
         if (location != null) {
             jingWeiRequest.setLatitude(String.valueOf(location.getLatitude()));
             jingWeiRequest.setLongitude(String.valueOf(location.getLongitude()));
@@ -179,7 +180,7 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
 
     private void getSanXiaoList() {
         JingWeiRequest jingWeiRequest = new JingWeiRequest();
-        Location location = DemoUtils.getLocation(aty);
+        BDLocation location = DemoUtils.getLocation(aty);
         if (location != null) {
             jingWeiRequest.setLatitude(String.valueOf(location.getLatitude()));
             jingWeiRequest.setLongitude(String.valueOf(location.getLongitude()));
@@ -210,7 +211,7 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
 
     private void getrenKouList() {
         JingWeiRequest jingWeiRequest = new JingWeiRequest();
-        Location location = DemoUtils.getLocation(aty);
+        BDLocation location = DemoUtils.getLocation(aty);
         if (location != null) {
             jingWeiRequest.setLatitude(String.valueOf(location.getLatitude()));
             jingWeiRequest.setLongitude(String.valueOf(location.getLongitude()));
@@ -241,7 +242,7 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
 
     private void getletList() {
         JingWeiRequest jingWeiRequest = new JingWeiRequest();
-        Location location = DemoUtils.getLocation(aty);
+        BDLocation location = DemoUtils.getLocation(aty);
         if (location != null) {
             jingWeiRequest.setLatitude(String.valueOf(location.getLatitude()));
             jingWeiRequest.setLongitude(String.valueOf(location.getLongitude()));
@@ -272,7 +273,7 @@ public class CompanyListFragment extends BaseFragment<BaseFragmentPresenter, Fra
 
     private void getotherList() {
         JingWeiRequest jingWeiRequest = new JingWeiRequest();
-        Location location = DemoUtils.getLocation(aty);
+        BDLocation location = DemoUtils.getLocation(aty);
         if (location != null) {
             jingWeiRequest.setLatitude(String.valueOf(location.getLatitude()));
             jingWeiRequest.setLongitude(String.valueOf(location.getLongitude()));

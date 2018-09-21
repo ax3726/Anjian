@@ -15,6 +15,7 @@ import android.util.Base64;
 import android.widget.Toast;
 
 import com.anjian.common.MyApplication;
+import com.baidu.location.BDLocation;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -129,28 +130,33 @@ public class DemoUtils {
      * @return
      */
     public static String getLatitudeAndLongitude(Context context) {
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        if (location != null) {
-            return location.getLatitude() + "," + location.getLongitude();
+        BDLocation bdLocation = LocationHelper.getInstance().getBDLocation();
+        if (bdLocation != null) {
+            return bdLocation.getLatitude() + "," + bdLocation.getLongitude();
         } else {
+            LocationHelper.getInstance().startLocation(context);
             return "";
         }
 
     }
 
+
+
+
     /**
      * 获取经纬度
      *
-     * @param aty
+     * @param
      * @return
      */
-    public static Location getLocation(Activity aty) {
-
-        LocationManager locationManager = (LocationManager) aty.getSystemService(Context.LOCATION_SERVICE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        return location;
-
+    public static BDLocation getLocation(Context context) {
+        BDLocation bdLocation = LocationHelper.getInstance().getBDLocation();
+        if (bdLocation != null) {
+            return bdLocation;
+        } else {
+            LocationHelper.getInstance().startLocation(context);
+            return null;
+        }
     }
 
     /**

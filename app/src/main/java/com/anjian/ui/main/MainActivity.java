@@ -21,6 +21,7 @@ import com.anjian.ui.mine.MineFragment;
 import com.anjian.ui.record.RecordFragment;
 import com.anjian.utils.DemoUtils;
 import com.anjian.utils.DoubleClickExitHelper;
+import com.anjian.utils.LocationHelper;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
@@ -86,7 +87,7 @@ public class MainActivity extends BaseActivity<MainPrestener, ActivityMainBindin
             }
         });
         initFragment();
-        DemoUtils.getLocation(aty);
+        LocationHelper.getInstance().startLocation(aty);
         inintVersion();
     }
 
