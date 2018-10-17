@@ -24,15 +24,15 @@
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <!-- 这个权限用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
-    <!-- 这个权限用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
-    <!-- 必选-->
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 必选 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 获取网络状态 -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 网络通信-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />  <!-- 获取设备信息 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 获取MAC地址-->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 网络通信 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 获取设备信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 获取MAC地址 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 读写sdcard，storage等等 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 允许程序录制音频 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
@@ -43,16 +43,19 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
-        <!--百度地图-->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"></service>
+        <!-- 百度地图 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="M95UDTFNAsQaBAaehlGGw0IN9wTz8GMz" >
-        </meta-data>
-        <!--蒲公英 必选-->
+            android:value="M95UDTFNAsQaBAaehlGGw0IN9wTz8GMz"></meta-data>
+        <!-- 蒲公英 必选 -->
         <meta-data
             android:name="PGYER_APPID"
-            android:value="7d86c3ddc4124fbebebef0e0b7ef3e75"></meta-data>
+            android:value="7d86c3ddc4124fbebebef0e0b7ef3e75" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.anjian.fileprovider"
@@ -217,7 +220,9 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.record.OtherActivity" />
-        <activity android:name=".ui.common.DocumentActivity"></activity>
+        <activity android:name=".ui.common.DocumentActivity" />
+        <activity android:name=".ui.home.HomeNewsActivity"></activity>
+        <activity android:name=".ui.common.WebViewActivity"></activity>
     </application>
 
 </manifest>

@@ -2,6 +2,8 @@ package ml.gsy.com.library.adapters.recyclerview.base;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -48,7 +50,15 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         ViewHolder holder = new ViewHolder(context, itemView);
         return holder;
     }
-
+    /**
+     * 通过DataBinding类型获取对应的DataBinding实例
+     * @param t
+     * @param <T>
+     * @return
+     */
+    public <T extends ViewDataBinding> T getBinding(Class<T> t) {
+        return (T) DataBindingUtil.bind(mConvertView);
+    }
     /**
      * 通过viewId获取控件
      *

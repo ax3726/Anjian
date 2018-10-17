@@ -19,12 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import ml.gsy.com.library.R;
+
 
 /**
  * Created by recker on 16/4/17.
@@ -86,8 +86,10 @@ public class FlyBanner extends RelativeLayout {
     private Handler mAutoPlayHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            mCurrentPositon++;
-            mViewPager.setCurrentItem(mCurrentPositon);
+            if (mIsAutoPlaying) {
+                mCurrentPositon++;
+                mViewPager.setCurrentItem(mCurrentPositon);
+            }
             mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPalyTime);
         }
     };
@@ -280,6 +282,9 @@ public class FlyBanner extends RelativeLayout {
                 mCurrentPositon = position % (mImages.size() + 2);
             }
             switchToPoint(toRealPosition(mCurrentPositon));
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemChange(toRealPosition(mCurrentPositon));
+            }
         }
 
         @Override
@@ -292,6 +297,10 @@ public class FlyBanner extends RelativeLayout {
                 } else if (current == lastReal + 1) {
                     mViewPager.setCurrentItem(1, false);
                 }
+            } else if (state == ViewPager.SCROLL_STATE_DRAGGING) {//正在拖动
+                mIsAutoPlaying = false;
+            } else if (state == ViewPager.SCROLL_STATE_SETTLING) {//滑动结束
+                mIsAutoPlaying = true;
             }
         }
     };
@@ -332,14 +341,14 @@ public class FlyBanner extends RelativeLayout {
             if (mIsImageUrl) {
                 Glide.with(getContext())
                         .load(mImageUrls.get(toRealPosition(position)))
-                        .error(R.drawable.photo_error_icon)
+                        //   .error(R.drawable.photo_error_icon)
                         .into(imageView);
             } else {
                 Glide.with(getContext())
                         .load(mImages.get(toRealPosition(position)))
-                        .error(R.drawable.photo_error_icon)
+                        //   .error(R.drawable.photo_error_icon)
                         .into(imageView);
-              //  imageView.setImageResource(mImages.get(toRealPosition(position)));
+                //  imageView.setImageResource(mImages.get(toRealPosition(position)));
             }
             container.addView(imageView);
 
@@ -438,5 +447,7 @@ public class FlyBanner extends RelativeLayout {
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+
+        void onItemChange(int position);
     }
 }
