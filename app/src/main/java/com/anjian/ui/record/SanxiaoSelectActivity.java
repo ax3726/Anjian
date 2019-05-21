@@ -71,9 +71,9 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
         mId = getIntent().getStringExtra("id");
         List<SanXiaoSelectListModel> list = null;
         if (mUType == 0) {
-            list = (List<SanXiaoSelectListModel>) CacheUtils.getInstance().loadCache(Constant.SANXIAO_SELECT);
+            list = (List<SanXiaoSelectListModel>) CacheUtils.getInstance().loadCache(Constant.SANXIAO_SELECT+mId);
         } else if (mUType == 1) {
-            list = (List<SanXiaoSelectListModel>) CacheUtils.getInstance().loadCache(Constant.LET_SELECT);
+            list = (List<SanXiaoSelectListModel>) CacheUtils.getInstance().loadCache(Constant.LET_SELECT+mId);
         }
 
         if (list == null) {
@@ -257,7 +257,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
                 @Override
                 public void onSuccess(SanXiaoSelectModel baseBean) {
                     showToast(baseBean.getMessage());
-                    CacheUtils.getInstance().saveCache(Constant.SANXIAO_SELECT, mDataList);//保存数据
+                    CacheUtils.getInstance().saveCache(Constant.SANXIAO_SELECT+mId, mDataList);//保存数据
                     new Thread() {
                         @Override
                         public void run() {
@@ -285,7 +285,7 @@ public class SanxiaoSelectActivity extends BaseActivity<BasePresenter, ActivityS
                 @Override
                 public void onSuccess(SanXiaoSelectModel baseBean) {
                     showToast(baseBean.getMessage());
-                    CacheUtils.getInstance().saveCache(Constant.LET_SELECT, mDataList);//保存数据
+                    CacheUtils.getInstance().saveCache(Constant.LET_SELECT+mId, mDataList);//保存数据
                     new Thread() {
                         @Override
                         public void run() {
